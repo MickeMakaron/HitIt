@@ -50,7 +50,7 @@ class State
         /**
          * \brief Constructor
          *
-         * \param stack the stack this state belongs to.
+         * \param stack to insert state into at construction.
          */
         State(StateStack& stack);
 
@@ -82,7 +82,7 @@ class State
         /**
          * \brief Push state to stack.
          */
-        void requestStackPush(Ptr& state);
+        void requestStackPush(State* state);
 
         /**
          * \brief Pop state from stack.
@@ -92,7 +92,7 @@ class State
         /**
          * \brief Clear stack.
          */
-        void requestStateClear();
+        void requestStackClear();
 
     private:
         StateStack& mStack; ///< State stack this state belongs to.

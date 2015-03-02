@@ -33,8 +33,8 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "HitIt.hpp"
-
 #include "TIME_PER_FRAME.hpp"
+#include "GameState.hpp"
 ////////////////////////////////////////////////
 
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
@@ -42,6 +42,8 @@ HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
 {
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
+
+    mStateStack.push(new GameState(mStateStack));
 }
 
 ////////////////////////////////////////////////

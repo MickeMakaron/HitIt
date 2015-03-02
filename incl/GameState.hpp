@@ -20,40 +20,36 @@
 ****************************************************************
 ****************************************************************/
 
+#ifndef HITIT_GAMESTATE_HPP
+#define HITIT_GAMESTATE_HPP
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
+
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "State.hpp"
-#include "StateStack.hpp"
+//#include "World.hpp"
+//#include "Assets.hpp"
 ////////////////////////////////////////////////
 
-State::State(StateStack& stack)
-: mStack(stack)
+class GameState : public State
 {
-}
 
-////////////////////////////////////////////////
+	public:
+							GameState(StateStack& stack);
 
-void State::requestStackPush(State* state)
-{
-    mStack.push(state);
-}
+		virtual void		draw();
+		virtual bool		update();
+		virtual bool		handleEvent(const sf::Event& event);
 
-////////////////////////////////////////////////
+    private:
 
-void State::requestStackPop()
-{
-    mStack.pop();
-}
 
-////////////////////////////////////////////////
+	private:
 
-void State::requestStackClear()
-{
-    mStack.clear();
-}
+};
+
+#endif // HITIT_GAMESTATE_HPP

@@ -41,7 +41,7 @@ namespace sf
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include <State.hpp>
+#include "State.hpp"
 ////////////////////////////////////////////////
 
 class StateStack : private sf::NonCopyable
@@ -80,13 +80,15 @@ class StateStack : private sf::NonCopyable
         /**
          * \brief Push state on top of stack.
          *
-         * Note that the unique State pointer will
-         * be MOVED to the stack, resulting in
-         * invalidation.
+         * Note that the state stack will take
+         * ownership of the pointer by using
+         * unique pointers. This means the
+         * state object will be destructed
+         * when the state stack object is.
          *
-         * \param state unique State pointer to push.
+         * \param state State pointer to push.
          */
-        void push(State::Ptr& state);
+        void push(State* state);
 
         /**
          * \brief Pop state on top of stack.
@@ -104,6 +106,9 @@ class StateStack : private sf::NonCopyable
         bool isEmpty() const;
 
     private:
+        /**
+         * \brief Apply pending pushes, pops or clears.
+         */
         void                applyPendingChanges();
 
     private:

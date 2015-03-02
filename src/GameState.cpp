@@ -26,34 +26,40 @@
 #include "SFML/Window/Event.hpp"
 ////////////////////////////////////////////////
 
+
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "State.hpp"
-#include "StateStack.hpp"
+#include "GameState.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
-State::State(StateStack& stack)
-: mStack(stack)
+
+GameState::GameState(StateStack& stack)
+: State(stack)
+{
+    //Assets::load(ResourceList::Game);
+
+	//context.music->setVolume(10.f);
+	//context.music->play(Music::MissionTheme);
+
+}
+
+void GameState::draw()
 {
 }
 
-////////////////////////////////////////////////
-
-void State::requestStackPush(State* state)
+bool GameState::update()
 {
-    mStack.push(state);
+	return true;
 }
 
-////////////////////////////////////////////////
-
-void State::requestStackPop()
+bool GameState::handleEvent(const sf::Event& event)
 {
-    mStack.pop();
-}
+	// Escape pressed, trigger the pause screen
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+    {
+		//requestStackPush(States::Pause);
+    }
 
-////////////////////////////////////////////////
-
-void State::requestStackClear()
-{
-    mStack.clear();
+	return true;
 }

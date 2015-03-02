@@ -27,7 +27,7 @@
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include <StateStack.hpp>
+#include "StateStack.hpp"
 ////////////////////////////////////////////////
 
 StateStack::StateStack()
@@ -61,9 +61,9 @@ void StateStack::draw()
 
 ////////////////////////////////////////////////
 
-void StateStack::push(State::Ptr& state)
+void StateStack::push(State* state)
 {
-    mPushList.push_back(std::move(state));
+    mPushList.push_back(std::move(State::Ptr(state)));
     mPendingList.push_back(Push);
 }
 
