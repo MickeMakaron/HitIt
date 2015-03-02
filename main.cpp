@@ -1,8 +1,7 @@
-#include "SFML/Graphics/RenderWindow.hpp"
-#include "Midifile.h"
+#include "HitIt.hpp"
 
 int main()
 {
-    MidiFile midi();
-    sf::RenderWindow window();
+    HitIt game;
+    game.run();
 }
