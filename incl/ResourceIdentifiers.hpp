@@ -29,6 +29,9 @@ namespace ResourceID
     {
         enum ID
         {
+            GameStateBg,
+            MenuStateBg,
+            LoadingStateBg,
             IDCount,
         };
     }
