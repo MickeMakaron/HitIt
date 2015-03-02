@@ -44,24 +44,30 @@ class Assets
          *
          * \param texture ID of texture
          * \param filePath path to texture
+         *
+         * \return reference to loaded texture.
          */
-        static void load(ResourceID::Texture::ID texture,  const std::string& filePath);
+        static const sf::Texture& load(ResourceID::Texture::ID texture, const std::string& filePath);
 
         /**
          * \brief Load font.
          *
          * \param font ID of font
          * \param filePath path to font
+         *
+         * \return reference to loaded font.
          */
-        static void load(ResourceID::Font::ID font,     const std::string& filePath);
+        static const sf::Font& load(ResourceID::Font::ID font, const std::string& filePath);
 
         /**
          * \brief Load sound.
          *
          * \param sound ID of sound
          * \param filePath path to sound
+         *
+         * \return reference to loaded sound.
          */
-        static void load(ResourceID::Sound::ID sound,    const std::string& filePath);
+        static const sf::SoundBuffer& load(ResourceID::Sound::ID sound, const std::string& filePath);
 
         /**
          * \brief Get texture
@@ -70,7 +76,7 @@ class Assets
          *
          * \return reference to texture
          */
-        static const sf::Texture&       get(ResourceID::Texture::ID texture);
+        static const sf::Texture& get(ResourceID::Texture::ID texture);
 
         /**
          * \brief Get font
@@ -79,7 +85,7 @@ class Assets
          *
          * \return reference to font
          */
-        static const sf::Font&          get(ResourceID::Font::ID font);
+        static const sf::Font& get(ResourceID::Font::ID font);
 
         /**
          * \brief Get sound
@@ -88,7 +94,7 @@ class Assets
          *
          * \return reference to sound
          */
-        static const sf::SoundBuffer&   get(ResourceID::Sound::ID sound);
+        static const sf::SoundBuffer& get(ResourceID::Sound::ID sound);
 
         /**
          * \brief Release texture.

@@ -39,16 +39,20 @@ class ResourceHolder
          *
          * \param id ID of resource
          * \param filePath file path to resource
+         *
+         * \return const reference to loaded resource.
          */
-        void load(IdentifierT id, const std::string& filePath);
+        const ResourceT& load(IdentifierT id, const std::string& filePath);
 
         /**
          * \brief Load resource into memory by resource object.
          *
          * \param id ID of resource
          * \param resource resource object to load
+         *
+         * \return const reference to loaded resource.
          */
-        void load(IdentifierT id, const ResourceT& resource);
+        const ResourceT& load(IdentifierT id, const ResourceT& resource);
 
 
         /**

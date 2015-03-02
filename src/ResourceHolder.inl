@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////
 
 template <typename ResourceT, typename IdentifierT>
-void ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const std::string& filePath)
+const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const std::string& filePath)
 {
     auto inserted = mResourceMap.insert(std::make_pair(id, Resource()));
 
@@ -46,12 +46,14 @@ void ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const std::str
         inserted.first->second.resource = std::move(resource);
         inserted.first->second.counter = 1;
     }
+
+    return *inserted.first->second.resource;
 }
 
 ////////////////////////////////////////////////
 
 template <typename ResourceT, typename IdentifierT>
-void ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const ResourceT& resource)
+const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const ResourceT& resource)
 {
     auto inserted = mResourceMap.insert(std::make_pair(id, Resource()));
 
@@ -64,6 +66,8 @@ void ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const Resource
         inserted.first->second.resource = std::move(Ptr(&resource));
         inserted.first->second.counter = 1;
     }
+
+    return *inserted.first->second.resource;
 }
 
 ////////////////////////////////////////////////

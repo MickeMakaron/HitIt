@@ -31,23 +31,23 @@ ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>  Assets::mSoundHolder;
 
 ////////////////////////////////////////////////
 
-void Assets::load(ResourceID::Texture::ID texture, const std::string& filePath)
+const sf::Texture& Assets::load(ResourceID::Texture::ID texture, const std::string& filePath)
 {
-    mTextureHolder.load(texture, filePath);
+    return mTextureHolder.load(texture, filePath);
 }
 
 ////////////////////////////////////////////////
 
-void Assets::load(ResourceID::Font::ID font, const std::string& filePath)
+const sf::Font& Assets::load(ResourceID::Font::ID font, const std::string& filePath)
 {
-    mFontHolder.load(font, filePath);
+    return mFontHolder.load(font, filePath);
 }
 
 ////////////////////////////////////////////////
 
-void Assets::load(ResourceID::Sound::ID sound, const std::string& filePath)
+const sf::SoundBuffer& Assets::load(ResourceID::Sound::ID sound, const std::string& filePath)
 {
-    mSoundHolder.load(sound, filePath);
+    return mSoundHolder.load(sound, filePath);
 }
 
 ////////////////////////////////////////////////
