@@ -20,17 +20,31 @@
 ****************************************************************
 ****************************************************************/
 
-#include "HitIt.hpp"
-//#include "TIME_PER_FRAME.hpp"
-
+////////////////////////////////////////////////
+// C++ Standard Library
 #include <sstream>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Event.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "HitIt.hpp"
+
+#include "TIME_PER_FRAME.hpp"
+////////////////////////////////////////////////
 
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
 : mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", sf::Style::Titlebar | sf::Style::Close)
 {
     mWindow.setMouseCursorVisible(false);
-    //TIME_PER_FRAME::setAsSeconds(1/60.f);
+    TIME_PER_FRAME::setAsSeconds(1/60.f);
 }
+
+////////////////////////////////////////////////
 
 void HitIt::processInput()
 {
@@ -44,6 +58,8 @@ void HitIt::processInput()
     }
 }
 
+////////////////////////////////////////////////
+
 void HitIt::render()
 {
     mWindow.clear();
@@ -51,12 +67,13 @@ void HitIt::render()
     mWindow.display();
 }
 
+////////////////////////////////////////////////
+
 void HitIt::run()
 {
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
-   // sf::Time timePerFrame = sf::Time(sf::seconds(TIME_PER_FRAME::S));
-    sf::Time timePerFrame = sf::Time(sf::seconds(1/60.f));
+    sf::Time timePerFrame = sf::Time(sf::seconds(TIME_PER_FRAME::seconds()));
     while(mWindow.isOpen())
     {
         sf::Time dt = clock.restart();

@@ -1,7 +1,7 @@
 /****************************************************************
 ****************************************************************
 *
-* Territorial - 2D RTS game with dynamic territorial borders.
+* HitIt - Top-down 2D game where the goal is NOT to hit the music.
 * Copyright (C) 2015 Mikael Hernvall (mikael.hernvall@gmail.com)
 *
 * This program is free software: you can redistribute it and/or modify
@@ -20,16 +20,21 @@
 ****************************************************************
 ****************************************************************/
 
-#include <StateStack.hpp>
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Event.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <cassert>
+// HitIt internal headers
+#include <StateStack.hpp>
 ////////////////////////////////////////////////
 
 StateStack::StateStack()
 {
 }
+
+////////////////////////////////////////////////
 
 void StateStack::update()
 {
@@ -45,7 +50,7 @@ void StateStack::update()
     applyPendingChanges();
 }
 
-
+////////////////////////////////////////////////
 
 void StateStack::draw()
 {
@@ -54,28 +59,36 @@ void StateStack::draw()
         state->draw();
 }
 
+////////////////////////////////////////////////
+
 void StateStack::push(State::Ptr& state)
 {
     mPushList.push_back(std::move(state));
     mPendingList.push_back(Push);
 }
 
+////////////////////////////////////////////////
+
 void StateStack::pop()
 {
     mPendingList.push_back(Pop);
 }
+
+////////////////////////////////////////////////
 
 void StateStack::clear()
 {
     mPendingList.push_back(Clear);
 }
 
+////////////////////////////////////////////////
 
 bool StateStack::isEmpty() const
 {
     return mStack.empty();
 }
 
+////////////////////////////////////////////////
 
 void StateStack::handleEvent(const sf::Event& event)
 {
@@ -90,6 +103,8 @@ void StateStack::handleEvent(const sf::Event& event)
     // Only apply changes after all states have handled the events.
     applyPendingChanges();
 }
+
+////////////////////////////////////////////////
 
 void StateStack::applyPendingChanges()
 {

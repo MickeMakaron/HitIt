@@ -1,7 +1,7 @@
 /****************************************************************
 ****************************************************************
 *
-* Territorial - 2D RTS game with dynamic territorial borders.
+* HitIt - Top-down 2D game where the goal is NOT to hit the music.
 * Copyright (C) 2015 Mikael Hernvall (mikael.hernvall@gmail.com)
 *
 * This program is free software: you can redistribute it and/or modify
@@ -20,29 +20,29 @@
 ****************************************************************
 ****************************************************************/
 
-#ifndef ANTGAME_STATESTACK_HPP
-#define ANTGAME_STATESTACK_HPP
+#ifndef HITIT_STATESTACK_HPP
+#define HITIT_STATESTACK_HPP
 
-//#include <State.hpp>
-#include "SFML/Window/Event.hpp"
-namespace State
-{
-    typedef int* Ptr;
-}
+
 
 ////////////////////////////////////////////////
 // C++ Standard Library
 #include <list>
-#include <utility>
-#include <functional>
-#include <map>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/System/NonCopyable.hpp"
+namespace sf
+{
+    class Event;
+}
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include <State.hpp>
+////////////////////////////////////////////////
 
 class StateStack : private sf::NonCopyable
 {
@@ -120,4 +120,4 @@ class StateStack : private sf::NonCopyable
  *
 ************************************************/
 
-#endif // ANTGAME_STATESTACK_HPP
+#endif // HITIT_STATESTACK_HPP

@@ -26,11 +26,12 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "SFML/Window/Event.hpp"
 ////////////////////////////////////////////////
 
-
+////////////////////////////////////////////////
+// HitIt internal headers
 #include "StateStack.hpp"
+////////////////////////////////////////////////
 
 class HitIt
 {
@@ -53,8 +54,6 @@ class HitIt
          * \brief Process input from input devices.
          */
         void processInput();
-
-
 
         /**
          * \brief Clear, draw and display program graphics.
