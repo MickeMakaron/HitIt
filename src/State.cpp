@@ -57,3 +57,10 @@ void State::requestStackClear()
 {
     mStack.clear();
 }
+
+////////////////////////////////////////////////
+
+StateStack& State::getStack()
+{
+    return mStack;
+}

@@ -33,6 +33,7 @@
 namespace sf
 {
     class Event;
+    class RenderWindow;
 }
 ////////////////////////////////////////////////
 
@@ -56,8 +57,10 @@ class State
 
         /**
          * \brief Draw state
+         *
+         * \param window window to draw to.
          */
-        virtual void    draw() = 0;
+        virtual void draw(sf::RenderWindow& window) = 0;
 
         /**
          * \brief Update state
@@ -66,7 +69,7 @@ class State
          * should continue updating further states
          * (true) or not (false).
          */
-        virtual bool    update() = 0;
+        virtual bool update() = 0;
 
         /**
          * \brief Handle input events.
@@ -75,7 +78,7 @@ class State
          * should allow further states to handle events
          * (true) or not (false).
          */
-        virtual bool    handleEvent(const sf::Event& event) = 0;
+        virtual bool handleEvent(const sf::Event& event) = 0;
 
 
     protected:
@@ -93,6 +96,13 @@ class State
          * \brief Clear stack.
          */
         void requestStackClear();
+
+        /**
+         * \brief Get stack.
+         *
+         * \return reference to the stack this state belongs to.
+         */
+         StateStack& getStack();
 
     private:
         StateStack& mStack; ///< State stack this state belongs to.
