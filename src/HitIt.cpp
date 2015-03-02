@@ -35,6 +35,7 @@
 #include "HitIt.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "GameState.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
@@ -44,6 +45,13 @@ HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     mStateStack.push(new GameState(mStateStack));
+}
+
+////////////////////////////////////////////////
+
+HitIt::~HitIt()
+{
+    Assets::release();
 }
 
 ////////////////////////////////////////////////
@@ -65,7 +73,7 @@ void HitIt::processInput()
 void HitIt::render()
 {
     mWindow.clear();
-    mStateStack.draw();
+    mStateStack.draw(mWindow);
     mWindow.display();
 }
 

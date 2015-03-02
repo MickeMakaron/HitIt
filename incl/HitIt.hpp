@@ -45,6 +45,11 @@ class HitIt
         HitIt(unsigned int sizeX, unsigned int sizeY);
 
         /**
+         * \brief Destructor
+         */
+        ~HitIt();
+
+        /**
          * \brief Run main loop
          */
         void run();

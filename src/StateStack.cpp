@@ -52,11 +52,11 @@ void StateStack::update()
 
 ////////////////////////////////////////////////
 
-void StateStack::draw()
+void StateStack::draw(sf::RenderWindow& window)
 {
     // Draw all active states from bottom to top
     for(State::Ptr& state : mStack)
-        state->draw();
+        state->draw(window);
 }
 
 ////////////////////////////////////////////////

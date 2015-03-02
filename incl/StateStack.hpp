@@ -36,6 +36,7 @@
 namespace sf
 {
     class Event;
+    class RenderWindow;
 }
 ////////////////////////////////////////////////
 
@@ -67,8 +68,10 @@ class StateStack : private sf::NonCopyable
 
         /**
          * \brief Draw states.
+         *
+         * \param window window to draw to.
          */
-        void draw();
+        void draw(sf::RenderWindow& window);
 
         /**
          * \brief Handle input events.
