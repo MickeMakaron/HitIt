@@ -27,51 +27,50 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 ////////////////////////////////////////////////
 
-
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "GameState.hpp"
 #include "MenuState.hpp"
+#include "GameState.hpp"
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
-GameState::GameState(StateStack& stack)
+MenuState::MenuState(StateStack& stack)
 : State(stack)
 {
-    mBackground.setTexture(Assets::load(ResourceID::Texture::GameStateBg, "assets/textures/gamestate_bg_placeholder.png"));
+    mBackground.setTexture(Assets::load(ResourceID::Texture::MenuStateBg, "assets/textures/menustate_bg_placeholder.png"));
 }
 
 ////////////////////////////////////////////////
 
-GameState::~GameState()
+MenuState::~MenuState()
 {
-    Assets::release(ResourceID::Texture::GameStateBg);
+    Assets::release(ResourceID::Texture::MenuStateBg);
 }
 
 ////////////////////////////////////////////////
 
-void GameState::draw(sf::RenderWindow& window)
+void MenuState::draw(sf::RenderWindow& window)
 {
     window.draw(mBackground);
 }
 
 ////////////////////////////////////////////////
 
-bool GameState::update()
+bool MenuState::update()
 {
 	return true;
 }
 
 ////////////////////////////////////////////////
 
-bool GameState::handleEvent(const sf::Event& event)
+bool MenuState::handleEvent(const sf::Event& event)
 {
 	// Escape pressed, trigger the pause screen
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
         requestStackPop();
-		requestStackPush(new MenuState(getStack()));
+		requestStackPush(new GameState(getStack()));
     }
 
 	return true;

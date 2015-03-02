@@ -20,8 +20,8 @@
 ****************************************************************
 ****************************************************************/
 
-#ifndef HITIT_GAMESTATE_HPP
-#define HITIT_GAMESTATE_HPP
+#ifndef HITIT_MENUSTATE_HPP
+#define HITIT_MENUSTATE_HPP
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
@@ -33,21 +33,20 @@
 #include "State.hpp"
 ////////////////////////////////////////////////
 
-class GameState : public State
+class MenuState : public State
 {
-
 	public:
         /**
          * \brief Constructor
          *
          * \param stack to insert state into at construction.
          */
-        GameState(StateStack& stack);
+        MenuState(StateStack& stack);
 
         /**
          * \brief Destructor.
          */
-        ~GameState();
+        ~MenuState();
 
         /**
          * \brief Draw state
@@ -79,11 +78,10 @@ class GameState : public State
 };
 
 /************************************************
- * \class GameState
+ * \class MenuState
  *
- * Program state for managing the "game state", i.e.
- * the gameworld, the game objects, input etc. .
+ * Program state for managing the menus.
  *
 ************************************************/
 
-#endif // HITIT_GAMESTATE_HPP
+#endif // HITIT_MENUSTATE_HPP
