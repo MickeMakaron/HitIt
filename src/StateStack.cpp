@@ -47,7 +47,7 @@ void StateStack::update()
             break;
 
     // Only apply changes after all states have been updated.
-    applyPendingChanges();
+    applyPendingRequests();
 }
 
 ////////////////////////////////////////////////
@@ -63,22 +63,22 @@ void StateStack::draw(sf::RenderWindow& window)
 
 void StateStack::push(State* state)
 {
-    mPushList.push_back(std::move(State::Ptr(state)));
-    mPendingList.push_back(Push);
+    mPushQueue.push(std::move(State::Ptr(state)));
+    mRequestQueue.push(Push);
 }
 
 ////////////////////////////////////////////////
 
 void StateStack::pop()
 {
-    mPendingList.push_back(Pop);
+    mRequestQueue.push(Pop);
 }
 
 ////////////////////////////////////////////////
 
 void StateStack::clear()
 {
-    mPendingList.push_back(Clear);
+    mRequestQueue.push(Clear);
 }
 
 ////////////////////////////////////////////////
@@ -101,31 +101,31 @@ void StateStack::handleEvent(const sf::Event& event)
             break;
 
     // Only apply changes after all states have handled the events.
-    applyPendingChanges();
+    applyPendingRequests();
 }
 
 ////////////////////////////////////////////////
 
-void StateStack::applyPendingChanges()
+void StateStack::applyPendingRequests()
 {
-    for(Action action : mPendingList)
+    while(!mRequestQueue.empty())
     {
-        switch(action)
+        switch(mRequestQueue.front())
         {
             case Push:
-                mStack.push_back(std::move(mPushList.front()));
-                mPushList.pop_front();
+                mStack.push_back(std::move(mPushQueue.front()));
+                mPushQueue.pop();
                 break;
 
             case Pop:
-                mStack.pop_back();
+                mStack.pop_front();
                 break;
 
             case Clear:
                 mStack.clear();
                 break;
         }
-    }
 
-    mPendingList.clear();
+        mRequestQueue.pop();
+    }
 }

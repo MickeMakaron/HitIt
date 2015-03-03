@@ -28,6 +28,7 @@
 ////////////////////////////////////////////////
 // C++ Standard Library
 #include <list>
+#include <queue>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -48,7 +49,7 @@ namespace sf
 class StateStack : private sf::NonCopyable
 {
     public:
-        enum Action
+        enum Request
         {
             Push,
             Pop,
@@ -112,12 +113,12 @@ class StateStack : private sf::NonCopyable
         /**
          * \brief Apply pending pushes, pops or clears.
          */
-        void                applyPendingChanges();
+        void                applyPendingRequests();
 
     private:
-        std::list<State::Ptr>     mStack;       ///< FILO-stack of unique State pointers
-        std::list<State::Ptr>     mPushList;    ///< FIFO-list of pending state pushes.
-        std::list<Action>         mPendingList; ///< FIFO-list of pending pop and clear requests.
+        std::list<State::Ptr>   mStack;         ///< FILO-stack of unique State pointers
+        std::queue<State::Ptr>  mPushQueue;     ///< FIFO-queue of pending state pushes.
+        std::queue<Request>     mRequestQueue;  ///< FIFO-queue of pending pop and clear requests.
 };
 
 
