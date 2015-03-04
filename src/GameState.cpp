@@ -36,30 +36,27 @@
 ////////////////////////////////////////////////
 
 
-GameState::GameState(StateStack& stack)
+GameState::GameState(StateStack& stack, sf::RenderWindow& window)
 : State(stack)
+, mWindow(window)
+, mWorld(mWindow)
 {
-    mBackground.setTexture(Assets::load(ResourceID::Texture::GameStateBg, "assets/textures/gamestate_bg_placeholder.png"));
 }
 
 ////////////////////////////////////////////////
 
-GameState::~GameState()
+void GameState::draw()
 {
-    Assets::release(ResourceID::Texture::GameStateBg);
-}
-
-////////////////////////////////////////////////
-
-void GameState::draw(sf::RenderWindow& window)
-{
-    window.draw(mBackground);
+    mWorld.draw();
 }
 
 ////////////////////////////////////////////////
 
 bool GameState::update()
 {
+    mWorld.update();
+
+
 	return true;
 }
 
@@ -67,11 +64,13 @@ bool GameState::update()
 
 bool GameState::handleEvent(const sf::Event& event)
 {
+    mWorld.handleEvent(event);
+
 	// Escape pressed, trigger the pause screen
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
         requestStackPop();
-		requestStackPush(new MenuState(getStack()));
+		requestStackPush(new MenuState(getStack(), mWindow));
     }
 
 	return true;

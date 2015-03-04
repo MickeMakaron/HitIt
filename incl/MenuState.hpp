@@ -31,6 +31,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "State.hpp"
+#include "AssetList.hpp"
 ////////////////////////////////////////////////
 
 class MenuState : public State
@@ -40,20 +41,14 @@ class MenuState : public State
          * \brief Constructor
          *
          * \param stack to insert state into at construction.
+         * \param window SFML RenderWindow object to draw to.
          */
-        MenuState(StateStack& stack);
-
-        /**
-         * \brief Destructor.
-         */
-        ~MenuState();
+        MenuState(StateStack& stack, sf::RenderWindow& window);
 
         /**
          * \brief Draw state
-         *
-         * \param window window to draw to.
          */
-		virtual void draw(sf::RenderWindow& window);
+		virtual void draw();
 
         /**
          * \brief Update state
@@ -74,7 +69,9 @@ class MenuState : public State
 		virtual bool handleEvent(const sf::Event& event);
 
     private:
-        sf::Sprite mBackground;
+        sf::RenderWindow&   mWindow;
+        TextureList         mTextures;
+        sf::Sprite          mBackground;
 };
 
 /************************************************

@@ -31,28 +31,29 @@
 // HitIt internal headers
 #include "MenuState.hpp"
 #include "GameState.hpp"
-#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
-MenuState::MenuState(StateStack& stack)
+MenuState::MenuState(StateStack& stack, sf::RenderWindow& window)
 : State(stack)
+, mWindow(window)
 {
-    mBackground.setTexture(Assets::load(ResourceID::Texture::MenuStateBg, "assets/textures/menustate_bg_placeholder.png"));
+    namespace ID = ResourceID::Texture;
+    mTextures.setAssets
+    ({
+        TextureList::Asset(ID::MenuStateBg, "textures/menustate_bg_placeholder.png"),
+    });
+
+    mTextures.load();
+
+    mBackground.setTexture(Assets::get(ID::MenuStateBg));
 }
 
 ////////////////////////////////////////////////
 
-MenuState::~MenuState()
+void MenuState::draw()
 {
-    Assets::release(ResourceID::Texture::MenuStateBg);
-}
-
-////////////////////////////////////////////////
-
-void MenuState::draw(sf::RenderWindow& window)
-{
-    window.draw(mBackground);
+    mWindow.draw(mBackground);
 }
 
 ////////////////////////////////////////////////
@@ -70,7 +71,7 @@ bool MenuState::handleEvent(const sf::Event& event)
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
     {
         requestStackPop();
-		requestStackPush(new GameState(getStack()));
+		requestStackPush(new GameState(getStack(), mWindow));
     }
 
 	return true;

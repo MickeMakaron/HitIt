@@ -24,13 +24,9 @@
 #define HITIT_GAMESTATE_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/Sprite.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "State.hpp"
+#include "World.hpp"
 ////////////////////////////////////////////////
 
 class GameState : public State
@@ -42,19 +38,12 @@ class GameState : public State
          *
          * \param stack to insert state into at construction.
          */
-        GameState(StateStack& stack);
-
-        /**
-         * \brief Destructor.
-         */
-        ~GameState();
+        GameState(StateStack& stack, sf::RenderWindow& window);
 
         /**
          * \brief Draw state
-         *
-         * \param window window to draw to.
          */
-		virtual void draw(sf::RenderWindow& window);
+		virtual void draw();
 
         /**
          * \brief Update state
@@ -75,7 +64,9 @@ class GameState : public State
 		virtual bool handleEvent(const sf::Event& event);
 
     private:
-        sf::Sprite mBackground;
+        sf::RenderWindow&   mWindow;
+        World               mWorld;
+
 };
 
 /************************************************

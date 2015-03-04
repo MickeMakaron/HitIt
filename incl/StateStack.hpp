@@ -69,10 +69,8 @@ class StateStack : private sf::NonCopyable
 
         /**
          * \brief Draw states.
-         *
-         * \param window window to draw to.
          */
-        void draw(sf::RenderWindow& window);
+        void draw();
 
         /**
          * \brief Handle input events.
