@@ -40,9 +40,9 @@ class ResourceHolder
          * \param id ID of resource
          * \param filePath file path to resource
          *
-         * \return const reference to loaded resource.
+         * \return reference to loaded resource.
          */
-        const ResourceT& load(IdentifierT id, const std::string& filePath);
+        ResourceT& load(IdentifierT id, const std::string& filePath);
 
         /**
          * \brief Load resource into memory by resource object.
@@ -50,9 +50,9 @@ class ResourceHolder
          * \param id ID of resource
          * \param resource resource object to load
          *
-         * \return const reference to loaded resource.
+         * \return reference to loaded resource.
          */
-        const ResourceT& load(IdentifierT id, const ResourceT& resource);
+        ResourceT& load(IdentifierT id, ResourceT& resource);
 
 
         /**
@@ -60,9 +60,9 @@ class ResourceHolder
          *
          * \param id ID of resource
          *
-         * \return const reference to resource.
+         * \return reference to resource.
          */
-        const ResourceT& get(IdentifierT id) const;
+        ResourceT& get(IdentifierT id);
 
         /**
          * \brief Check if resource is loaded into memory.
@@ -102,6 +102,16 @@ class ResourceHolder
 
         std::map<IdentifierT, Resource> mResourceMap; ///< ID-resource map.
 };
+/************************************************
+ * \class ResourceHolder
+ *
+ * Resource holder for generic SFML resource objects.
+ * A ResourceHolder object has ownership of the
+ * SFML resource object pointers. It makes sure only
+ * one instance per ID is loaded and that it is loaded
+ * until no session requests it.
+ *
+************************************************/
 
 #include "ResourceHolder.inl"
 

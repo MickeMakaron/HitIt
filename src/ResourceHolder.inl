@@ -27,7 +27,7 @@
 ////////////////////////////////////////////////
 
 template <typename ResourceT, typename IdentifierT>
-const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const std::string& filePath)
+ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const std::string& filePath)
 {
     auto inserted = mResourceMap.insert(std::make_pair(id, Resource()));
 
@@ -53,7 +53,7 @@ const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, co
 ////////////////////////////////////////////////
 
 template <typename ResourceT, typename IdentifierT>
-const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, const ResourceT& resource)
+ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, ResourceT& resource)
 {
     auto inserted = mResourceMap.insert(std::make_pair(id, Resource()));
 
@@ -73,7 +73,7 @@ const ResourceT& ResourceHolder<ResourceT, IdentifierT>::load(IdentifierT id, co
 ////////////////////////////////////////////////
 
 template <typename ResourceT, typename IdentifierT>
-const ResourceT& ResourceHolder<ResourceT, IdentifierT>::get(IdentifierT id) const
+ResourceT& ResourceHolder<ResourceT, IdentifierT>::get(IdentifierT id)
 {
     auto found = mResourceMap.find(id);
     assert(found != mResourceMap.end());
@@ -94,14 +94,19 @@ template <typename ResourceT, typename IdentifierT>
 void ResourceHolder<ResourceT, IdentifierT>::release(IdentifierT id)
 {
     auto found = mResourceMap.find(id);
-    assert(found != mResourceMap.end());
 
-    // Only decrement counter if multiple sessions need the resource.
-    if(found->second.counter > 1)
-        found->second.counter --;
-    // Else erase the resource.
-    else
-        mResourceMap.erase(found);
+    // Proceed if found.
+    if(found != mResourceMap.end())
+    {
+        // Only decrement counter if multiple sessions need the resource.
+        if(found->second.counter > 1)
+            found->second.counter --;
+        // Else erase the resource.
+        else
+            mResourceMap.erase(found);
+    }
+
+
 }
 
 ////////////////////////////////////////////////

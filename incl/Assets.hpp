@@ -122,7 +122,17 @@ class Assets
          */
         static void release();
 
+
+        /**
+         * \brief Set working directory.
+         *
+         * \param path full path to directory.
+         */
+         static void setDirectory(const std::string& path);
+
     private:
+        static std::string mWorkingDirectory;
+
         static ResourceHolder<sf::Texture, ResourceID::Texture::ID>     mTextureHolder; ///< Holder of texture resources.
         static ResourceHolder<sf::Font, ResourceID::Font::ID>           mFontHolder;    ///< Holder of font resources.
         static ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>   mSoundHolder;   ///< Holder of sound resources.

@@ -25,29 +25,31 @@
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
+std::string Assets::mWorkingDirectory;
 ResourceHolder<sf::Texture, ResourceID::Texture::ID>    Assets::mTextureHolder;
 ResourceHolder<sf::Font, ResourceID::Font::ID>          Assets::mFontHolder;
 ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>  Assets::mSoundHolder;
+
 
 ////////////////////////////////////////////////
 
 const sf::Texture& Assets::load(ResourceID::Texture::ID texture, const std::string& filePath)
 {
-    return mTextureHolder.load(texture, filePath);
+    return mTextureHolder.load(texture, mWorkingDirectory + filePath);
 }
 
 ////////////////////////////////////////////////
 
 const sf::Font& Assets::load(ResourceID::Font::ID font, const std::string& filePath)
 {
-    return mFontHolder.load(font, filePath);
+    return mFontHolder.load(font, mWorkingDirectory + filePath);
 }
 
 ////////////////////////////////////////////////
 
 const sf::SoundBuffer& Assets::load(ResourceID::Sound::ID sound, const std::string& filePath)
 {
-    return mSoundHolder.load(sound, filePath);
+    return mSoundHolder.load(sound, mWorkingDirectory + filePath);
 }
 
 ////////////////////////////////////////////////
@@ -99,4 +101,11 @@ void Assets::release()
     mTextureHolder.release();
     mFontHolder.release();
     mSoundHolder.release();
+}
+
+////////////////////////////////////////////////
+
+void Assets::setDirectory(const std::string& path)
+{
+    mWorkingDirectory = path;
 }
