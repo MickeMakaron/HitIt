@@ -32,6 +32,7 @@ namespace ResourceID
             GameStateBg,
             MenuStateBg,
             LoadingStateBg,
+            Player,
             IDCount,
         };
     }
