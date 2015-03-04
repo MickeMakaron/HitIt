@@ -39,6 +39,12 @@ State::State(StateStack& stack)
 
 ////////////////////////////////////////////////
 
+State::~State()
+{
+}
+
+////////////////////////////////////////////////
+
 void State::requestStackPush(State* state)
 {
     mStack.push(state);

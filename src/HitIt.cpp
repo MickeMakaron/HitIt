@@ -41,16 +41,19 @@
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
 : mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", sf::Style::Titlebar | sf::Style::Close)
 {
+    Assets::setDirectory("assets/");
+
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
-    mStateStack.push(new GameState(mStateStack));
+    mStateStack.push(new GameState(mStateStack, mWindow));
 }
 
 ////////////////////////////////////////////////
 
 HitIt::~HitIt()
 {
+    // Really make sure ALL resources are released.
     Assets::release();
 }
 
@@ -73,7 +76,7 @@ void HitIt::processInput()
 void HitIt::render()
 {
     mWindow.clear();
-    mStateStack.draw(mWindow);
+    mStateStack.draw();
     mWindow.display();
 }
 

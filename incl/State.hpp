@@ -56,11 +56,14 @@ class State
         State(StateStack& stack);
 
         /**
-         * \brief Draw state
-         *
-         * \param window window to draw to.
+         * \brief Destructor
          */
-        virtual void draw(sf::RenderWindow& window) = 0;
+        virtual ~State();
+
+        /**
+         * \brief Draw state
+         */
+        virtual void draw() = 0;
 
         /**
          * \brief Update state
