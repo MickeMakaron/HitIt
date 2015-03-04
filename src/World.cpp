@@ -32,10 +32,12 @@
 #include "Assets.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "SpriteNode.hpp"
+#include "Player.hpp"
 ////////////////////////////////////////////////
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
+, mPlayer(nullptr)
 {
     buildWorld();
 }
@@ -52,6 +54,7 @@ void World::draw()
 void World::update()
 {
     mScene.update();
+    mCollission.update();
 }
 
 ////////////////////////////////////////////////
@@ -69,8 +72,23 @@ void World::buildWorld()
     mTextures.setAssets
     ({
         TextureList::Asset(ID::GameStateBg, "textures/gamestate_bg_placeholder.png"),
+        TextureList::Asset(ID::Player, "textures/player_placeholder.png"),
     });
     mTextures.load();
 
-    mScene.insert(new SpriteNode(Assets::get(ResourceID::Texture::GameStateBg)), SceneGraph::Background);
+    mScene.insert(new SpriteNode(Assets::get(ID::GameStateBg)), SceneGraph::Background);
+
+    mPlayer = new Player(Assets::get(ID::Player), 5, sf::Vector2f(500.f, 500.f));
+
+    mScene.insert(mPlayer, SceneGraph::Middle);
+    mCollission.setPlayer(mPlayer);
+
+    SpriteNode* obstacle = new SpriteNode(Assets::get(ID::Player));
+    obstacle->setPosition(400.f, 400.f);
+    mScene.insert(obstacle, SceneGraph::Middle);
+
+    mCollission.insert(obstacle);
+
+
+
 }

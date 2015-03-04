@@ -52,7 +52,6 @@ class SpriteNode : public SceneNode
          */
         virtual sf::FloatRect   getBoundingRect() const;
 
-    private:
         /**
          * \brief Draw sprite.
          *
@@ -60,6 +59,7 @@ class SpriteNode : public SceneNode
          * \param states SFML RenderStates object to transform draw with.
          */
         virtual void            drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+
 
     private:
         sf::Sprite      mSprite; ///< SFML sprite object.

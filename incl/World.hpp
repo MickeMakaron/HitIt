@@ -40,6 +40,8 @@ namespace sf
 // HitIt internal headers
 #include "SceneGraph.hpp"
 #include "AssetList.hpp"
+#include "Collission.hpp"
+class Player;
 ////////////////////////////////////////////////
 
 class World
@@ -76,9 +78,11 @@ class World
         void buildWorld();
 
     private:
-        sf::RenderWindow& mWindow;  ///< SFML RenderWindow to draw to.
-        SceneGraph mScene;          ///< Scene graph of all game objects.
-        TextureList mTextures;      ///< Asset list for textures.
+        sf::RenderWindow&   mWindow;  ///< SFML RenderWindow to draw to.
+        SceneGraph          mScene;          ///< Scene graph of all game objects.
+        TextureList         mTextures;      ///< Asset list for textures.
+        Player*             mPlayer;
+        Collission          mCollission;
 };
 
 
