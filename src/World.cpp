@@ -35,7 +35,9 @@
 #include "SpriteNode.hpp"
 #include "Player.hpp"
 #include "CollissionCategory.hpp"
+#include "Midi.hpp"
 ////////////////////////////////////////////////
+
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
@@ -43,6 +45,7 @@ World::World(sf::RenderWindow& window)
 , mTextures(getTextures(), true)
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 5, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
+, mSpawner("assets/midi/chillameddippen.mid")
 {
     mView.setSize(1000.f, 1000.f);
     mView.setCenter(500.f, 500.f);
@@ -64,6 +67,14 @@ void World::update()
     mScene.update();
     mCollission.update();
     keepPlayerInBounds();
+
+    mCollission.removeWrecks();
+    mScene.removeWrecks();
+
+    mSpawner.update();
+
+    for(SceneNode* node : mSpawner.fetchNewNodes())
+        mScene.insert(node, SceneGraph::Layer::Middle);
 }
 
 ////////////////////////////////////////////////
@@ -114,19 +125,6 @@ void World::buildWorld()
     }
 }
 
-std::list<TextureList::Asset> World::getTextures() const
-{
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::GameStateBg,     "textures/gamestate_bg_placeholder.png"),
-        TextureList::Asset(ID::Player,          "textures/player_placeholder.png"),
-        TextureList::Asset(ID::AudienceTerrace, "textures/audience_terrace_placeholder.png"),
-        TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
-        TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
-    };
-}
-
 void World::keepPlayerInBounds()
 {
     sf::FloatRect playerRect = mPlayer->getBoundingRect();
@@ -138,4 +136,17 @@ void World::keepPlayerInBounds()
         if(d < 0.f)
             mPlayer->move(0.f, d);
     }
+}
+
+std::list<TextureList::Asset> World::getTextures() const
+{
+    namespace ID = ResourceID::Texture;
+    return
+    {
+        TextureList::Asset(ID::GameStateBg,     "textures/gamestate_bg_placeholder.png"),
+        TextureList::Asset(ID::Player,          "textures/player_placeholder.png"),
+        TextureList::Asset(ID::AudienceTerrace, "textures/audience_terrace_placeholder.png"),
+        TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
+        TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
+    };
 }

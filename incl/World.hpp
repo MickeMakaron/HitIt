@@ -41,6 +41,7 @@ namespace sf
 #include "SceneGraph.hpp"
 #include "AssetList.hpp"
 #include "Collission.hpp"
+#include "Spawner.hpp"
 class Player;
 ////////////////////////////////////////////////
 
@@ -78,14 +79,16 @@ class World
         void buildWorld();
 
         /**
+         * \brief Enclose the player character in the view.
+         */
+         void keepPlayerInBounds();
+
+        /**
          * \brief Get required texture list.
          */
         std::list<TextureList::Asset> getTextures() const;
 
-        /**
-         * \brief Enclose the player character in the view.
-         */
-         void keepPlayerInBounds();
+
 
     private:
         sf::RenderWindow&   mWindow;        ///< SFML RenderWindow to draw to.
@@ -94,6 +97,7 @@ class World
         TextureList         mTextures;      ///< Asset list for textures.
         Player*             mPlayer;        ///< Player controlled node.
         Collission          mCollission;    ///< Collission manager.
+        Spawner             mSpawner;       ///< Spawn new obstacles.
 };
 
 
