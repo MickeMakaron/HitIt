@@ -33,6 +33,9 @@ namespace ResourceID
             MenuStateBg,
             LoadingStateBg,
             Player,
+            AudienceTerrace,
+            Fence,
+            WorldBg,
             IDCount,
         };
     }
