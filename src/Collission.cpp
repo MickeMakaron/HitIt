@@ -113,3 +113,10 @@ Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::Floa
 
     return CollissionData(true, depth);
 }
+
+
+void Collission::removeWrecks()
+{
+	auto begin = std::remove_if(mNodes.begin(), mNodes.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+	mNodes.erase(begin, mNodes.end());
+}
