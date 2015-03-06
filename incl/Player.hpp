@@ -36,7 +36,7 @@ class Player : public SpriteNode
 
         virtual bool            isMarkedForRemoval() const;
 
-        void damage(int points);
+        void damage();
         void destroy();
         bool isDestroyed() const;
         void accelerate(float a);
