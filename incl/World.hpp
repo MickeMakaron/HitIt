@@ -77,12 +77,23 @@ class World
          */
         void buildWorld();
 
+        /**
+         * \brief Get required texture list.
+         */
+        std::list<TextureList::Asset> getTextures() const;
+
+        /**
+         * \brief Enclose the player character in the view.
+         */
+         void keepPlayerInBounds();
+
     private:
-        sf::RenderWindow&   mWindow;  ///< SFML RenderWindow to draw to.
-        SceneGraph          mScene;          ///< Scene graph of all game objects.
+        sf::RenderWindow&   mWindow;        ///< SFML RenderWindow to draw to.
+        sf::View            mView;          ///< View (what is actually shown to the player).
+        SceneGraph          mScene;         ///< Scene graph of all game objects.
         TextureList         mTextures;      ///< Asset list for textures.
-        Player*             mPlayer;
-        Collission          mCollission;
+        Player*             mPlayer;        ///< Player controlled node.
+        Collission          mCollission;    ///< Collission manager.
 };
 
 

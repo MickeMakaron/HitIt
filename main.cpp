@@ -2,6 +2,6 @@
 
 int main()
 {
-    HitIt game(1000, 1000);
+    HitIt game(800, 800);
     game.run();
 }
