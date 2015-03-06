@@ -45,7 +45,6 @@ Player::Player(const sf::Texture& texture, int hp, sf::Vector2f position)
     setPosition(position);
 }
 
-
 void Player::updateCurrent()
 {
     using namespace sf;
@@ -89,9 +88,4 @@ void Player::destroy()
 void Player::accelerate(float a)
 {
     mMovementSpeed += a;
-}
-
-bool Player::isMarkedForRemoval() const
-{
-    return isDestroyed();
 }

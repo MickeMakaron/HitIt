@@ -32,23 +32,53 @@
 class Player : public SpriteNode
 {
     public:
+        /**
+         * \brief Constructor
+         *
+         * \param texture texture to apply to sprite.
+         * \param hp hp of player
+         * \param position initial position
+         */
         Player(const sf::Texture& texture, int hp, sf::Vector2f position = sf::Vector2f(0.f, 0.f));
 
-        virtual bool            isMarkedForRemoval() const;
-
+        /**
+         * \brief Damage the player by a fixed amount.
+         */
         void damage();
+
+        /**
+         * \brief Kill player.
+         */
         void destroy();
+
+        /**
+         * \brief Check if player is dead.
+         */
         bool isDestroyed() const;
+
+        /**
+         * \brief Increase movement speed.
+         */
         void accelerate(float a);
 
     private:
+        /**
+         * \brief Draw this node.
+         *
+         * \param target SFML RenderTarget object to draw this node to.
+         * \param states SFML RenderStates object ot transform draw with.
+         */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-        virtual void updateCurrent();
+
+	    /**
+	     * \brief Update this node.
+	     */
+		virtual void updateCurrent();
 
     private:
-        int             mHp;
-        float           mMovementSpeed;
-        float           mDiagonalMovementSpeed;
+        int             mHp;                    ///< Hp of player.
+        float           mMovementSpeed;         ///< Movement speed.
+        float           mDiagonalMovementSpeed; ///< Movement speed when moving diagonally.
 };
 
 #endif // HITIT_PLAYER_HPP
