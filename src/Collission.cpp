@@ -27,12 +27,19 @@
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// HitIt internal headers
-#include "Collission.hpp"
+// SFML - Simple and Fast Media Library
+#include "SFML/System/Vector2.hpp"
 ////////////////////////////////////////////////
 
-Collission::Collission()
-: mPlayer(nullptr)
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "Collission.hpp"
+#include "CollissionCategory.hpp"
+#include "Player.hpp"
+////////////////////////////////////////////////
+
+Collission::Collission(Player& player)
+: mPlayer(player)
 {
 
 }
@@ -43,11 +50,6 @@ Collission::CollissionData::CollissionData(bool hasCollission, sf::Vector2f dept
 {
 }
 
-void Collission::setPlayer(Player* player)
-{
-    mPlayer = player;
-}
-
 void Collission::insert(SceneNode* node)
 {
     mNodes.push_back(node);
@@ -55,27 +57,39 @@ void Collission::insert(SceneNode* node)
 
 void Collission::update()
 {
-    assert(mPlayer != nullptr);
-
-    for(const SceneNode* node : mNodes)
+    sf::FloatRect playerRect = mPlayer.getBoundingRect();
+    sf::Vector2f maxPlayerPenetration;
+    for(SceneNode* node : mNodes)
     {
-        CollissionData data = checkCollission(mPlayer->getBoundingRect(), node->getBoundingRect());
+        CollissionData data = checkCollission(playerRect, node->getBoundingRect());
         if(data.hasCollission)
         {
-            if(std::fabs(data.depth.x) > std::fabs(data.depth.y))
-                data.depth.x = 0.f;
-            else
-                data.depth.y = 0.f;
-            mPlayer->move(-data.depth);
+            int category = node->getCategory();
+            using namespace CollissionCategory;
+            if(category & Collidable)
+            {
+                sf::Vector2f absDepth(std::fabs(data.depth.x), std::fabs(data.depth.y));
+
+                if(absDepth.x < absDepth.y)
+                {
+                    if(absDepth.x > std::fabs(maxPlayerPenetration.x))
+                        maxPlayerPenetration.x = data.depth.x;
+                }
+                else if(absDepth.y > std::fabs(maxPlayerPenetration.y))
+                    maxPlayerPenetration.y = data.depth.y;
+            }
+
+            if(category & Lethal)
+                mPlayer.damage();
         }
     }
+
+    mPlayer.move(-maxPlayerPenetration);
 }
 
 Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::FloatRect b) const
 {
     sf::Vector2f depth;
-    bool xIsect = false;
-    bool yIsect = false;
 
     float aRight, aBottom, bRight, bBottom;
     aRight = a.left + a.width;

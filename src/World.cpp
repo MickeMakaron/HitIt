@@ -24,6 +24,7 @@
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/Event.hpp"
+#include "SFML/System/Vector2.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -33,12 +34,19 @@
 #include "TIME_PER_FRAME.hpp"
 #include "SpriteNode.hpp"
 #include "Player.hpp"
+#include "CollissionCategory.hpp"
 ////////////////////////////////////////////////
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
-, mPlayer(nullptr)
+, mView(mWindow.getDefaultView())
+, mTextures(getTextures(), true)
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 5, sf::Vector2f(500.f, 500.f)))
+, mCollission(*mPlayer)
 {
+    mView.setSize(1000.f, 1000.f);
+    mView.setCenter(500.f, 500.f);
+    mWindow.setView(mView);
     buildWorld();
 }
 
@@ -55,6 +63,7 @@ void World::update()
 {
     mScene.update();
     mCollission.update();
+    keepPlayerInBounds();
 }
 
 ////////////////////////////////////////////////
@@ -68,27 +77,65 @@ void World::handleEvent(const sf::Event& event)
 
 void World::buildWorld()
 {
-    namespace ID = ResourceID::Texture;
-    mTextures.setAssets
-    ({
-        TextureList::Asset(ID::GameStateBg, "textures/gamestate_bg_placeholder.png"),
-        TextureList::Asset(ID::Player, "textures/player_placeholder.png"),
-    });
     mTextures.load();
 
-    mScene.insert(new SpriteNode(Assets::get(ID::GameStateBg)), SceneGraph::Background);
+    namespace ID = ResourceID::Texture;
 
-    mPlayer = new Player(Assets::get(ID::Player), 5, sf::Vector2f(500.f, 500.f));
-
+    mScene.insert(new SpriteNode(Assets::get(ID::WorldBg)), SceneGraph::Background);
     mScene.insert(mPlayer, SceneGraph::Middle);
-    mCollission.setPlayer(mPlayer);
-
-    SpriteNode* obstacle = new SpriteNode(Assets::get(ID::Player));
-    obstacle->setPosition(400.f, 400.f);
-    mScene.insert(obstacle, SceneGraph::Middle);
-
-    mCollission.insert(obstacle);
 
 
+    SpriteNode* props[4] =
+    {
+        new SpriteNode(Assets::get(ID::AudienceTerrace), CollissionCategory::Collidable),
+        new SpriteNode(Assets::get(ID::AudienceTerrace), CollissionCategory::Collidable),
+        new SpriteNode(Assets::get(ID::Fence), CollissionCategory::Collidable),
+        new SpriteNode(Assets::get(ID::Fence), CollissionCategory::Collidable),
+    };
 
+    sf::Vector2f viewSize = mView.getSize();
+
+    // Audience terraces
+    sf::FloatRect terraceRect = props[0]->getBoundingRect();
+    float terracePositionY = (viewSize.y - terraceRect.height) / 2.f;
+    props[0]->setPosition(10.f, terracePositionY);
+    props[1]->setPosition(viewSize.x - 10.f - terraceRect.width, terracePositionY);
+
+    // Fence
+    sf::FloatRect fenceRect = props[2]->getBoundingRect();
+    props[2]->setPosition(15.f + terraceRect.width, 0.f);
+    props[3]->setPosition(viewSize.x - 15.f - fenceRect.width - terraceRect.width, 0.f);
+
+
+    for(SpriteNode* prop : props)
+    {
+        mScene.insert(prop, SceneGraph::Middle);
+        mCollission.insert(prop);
+    }
+}
+
+std::list<TextureList::Asset> World::getTextures() const
+{
+    namespace ID = ResourceID::Texture;
+    return
+    {
+        TextureList::Asset(ID::GameStateBg,     "textures/gamestate_bg_placeholder.png"),
+        TextureList::Asset(ID::Player,          "textures/player_placeholder.png"),
+        TextureList::Asset(ID::AudienceTerrace, "textures/audience_terrace_placeholder.png"),
+        TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
+        TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
+    };
+}
+
+void World::keepPlayerInBounds()
+{
+    sf::FloatRect playerRect = mPlayer->getBoundingRect();
+    if(playerRect.top < 0.f)
+        mPlayer->move(0.f, -playerRect.top);
+    else
+    {
+        float d = mView.getSize().y - (playerRect.top + playerRect.height);
+        if(d < 0.f)
+            mPlayer->move(0.f, d);
+    }
 }

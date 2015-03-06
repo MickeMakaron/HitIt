@@ -31,8 +31,9 @@
 ////////////////////////////////////////////////
 
 
-SpriteNode::SpriteNode(const sf::Texture& texture)
-: mSprite(texture)
+SpriteNode::SpriteNode(const sf::Texture& texture, int category)
+: SceneNode(category)
+, mSprite(texture)
 {
 }
 

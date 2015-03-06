@@ -42,9 +42,10 @@
 ////////////////////////////////////////////////
 
 
-SceneNode::SceneNode()
+SceneNode::SceneNode(int category)
 : mChildren()
 , mParent(nullptr)
+, mCategory(category)
 {
 }
 
@@ -184,4 +185,11 @@ sf::FloatRect SceneNode::getBoundingRect() const
 {
     // By default, a node has no bounds
 	return sf::FloatRect();
+}
+
+////////////////////////////////////////////////
+
+int SceneNode::getCategory() const
+{
+    return mCategory;
 }

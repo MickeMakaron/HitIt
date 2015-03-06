@@ -76,9 +76,9 @@ bool  Player::isDestroyed() const
     return mHp <= 0;
 }
 
-void Player::damage(int points)
+void Player::damage()
 {
-    mHp -= points;
+    mHp -= 1;
 }
 
 void Player::destroy()

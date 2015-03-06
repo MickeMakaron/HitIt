@@ -22,10 +22,12 @@
 
 
 template <typename AssetIdentifierT>
-AssetList<AssetIdentifierT>::AssetList(std::list<Asset> assets)
+AssetList<AssetIdentifierT>::AssetList(std::list<Asset> assets, bool loadImmediately)
 : mAssets(assets)
 , mIsLoaded(false)
 {
+    if(loadImmediately)
+        load();
 }
 
 ////////////////////////////////////////////////

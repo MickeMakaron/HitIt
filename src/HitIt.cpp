@@ -44,7 +44,6 @@ HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
     Assets::setDirectory("assets/");
 
     mWindow.setMouseCursorVisible(false);
-    mWindow.setKeyRepeatEnabled(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     mStateStack.push(new GameState(mStateStack, mWindow));

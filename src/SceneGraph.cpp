@@ -64,4 +64,6 @@ void SceneGraph::update()
 {
     for(SceneNode& layer : mGraph)
         layer.update();
+
+    removeWrecks();
 }
