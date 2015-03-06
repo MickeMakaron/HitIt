@@ -24,17 +24,27 @@
 #define HITIT_COLLISSION_HPP
 
 ////////////////////////////////////////////////
+// C++ Standard Library
+#include <list>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/Rect.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // HitIt internal headers
-#include "Player.hpp"
+class SceneNode;
+class Player;
 ////////////////////////////////////////////////
 
 
 class Collission
 {
     public:
-        Collission();
+        Collission(Player& player);
 
-        void setPlayer(Player* player);
         void insert(SceneNode* node);
         void update();
 
@@ -49,7 +59,7 @@ class Collission
         CollissionData checkCollission(sf::FloatRect a, sf::FloatRect b) const;
 
     private:
-        Player*                 mPlayer;
+        Player&                 mPlayer;
         std::list<SceneNode*>   mNodes;
 };
 
