@@ -63,7 +63,7 @@ class AssetList
          *
          * \param assets list of assets to use
          */
-        AssetList(std::list<Asset> assets);
+        AssetList(std::list<Asset> assets, bool loadImmediately = false);
 
         /**
          * \brief Constructor
