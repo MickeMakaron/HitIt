@@ -47,14 +47,14 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 	    /**
 	     * \brief Constructor
 	     */
-		SceneNode();
+		SceneNode(int category = 0);
 
         /**
          * \brief Attach child to node.
          *
          * \param child node to attach.
          */
-		void					attachChild(SceneNode* child);
+		void attachChild(SceneNode* child);
 
 		/**
 		 * \brief Detach child from node.
@@ -63,33 +63,33 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		 *
 		 * \return detached node.
 		 */
-		Ptr						detachChild(const SceneNode& node);
+		Ptr detachChild(const SceneNode& node);
 
         /**
          * \brief Update node.
          *
          * Performs the updateCurrent and updateChildren update functions.
          */
-		void                    update();
+		void update();
 
 		/**
 		 * \brief Remove children marked for removal.
 		 */
-        void                    removeWrecks();
+        void removeWrecks();
 
         /**
          * \brief Get world position of node.
          *
          * \return absolute world position of node.
          */
-		sf::Vector2f			getWorldPosition() const;
+		sf::Vector2f getWorldPosition() const;
 
 		/**
 		 * \brief Get world transform of node.
 		 *
 		 * \return absolute world transform of node.
 		 */
-		sf::Transform           getWorldTransform() const;
+		sf::Transform getWorldTransform() const;
 
 		/**
 		 * \brief Get bounding rectangle of node.
@@ -99,11 +99,18 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		virtual sf::FloatRect	getBoundingRect() const;
 
 		/**
+         * \brief Get category of node.
+         *
+         * \return enumarable value (int) representing categories.
+         */
+        virtual int getCategory() const;
+
+		/**
 		 * \brief Indicate whether this node is marked for removal.
 		 *
 		 * \return true if marked for removal, else false.
 		 */
-        virtual bool            isMarkedForRemoval() const;
+        virtual bool isMarkedForRemoval() const;
 
         /**
          * \brief Draw bounding rectangle of node.
@@ -111,7 +118,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
          * \param target SFML RenderTarget object to draw bounding rectangle to.
          * \param states SFML RenderStates object to transform draw with.
          */
-		void					drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
+		void drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
 	    /**
@@ -154,6 +161,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 	private:
 		std::list<Ptr>		    mChildren;  ///< Children of this node.
 		SceneNode*              mParent;    ///< Parent of this node.
+		int                     mCategory;  ///< Category of node.
 };
 
 /************************************************

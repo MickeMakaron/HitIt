@@ -43,7 +43,7 @@ class SpriteNode : public SceneNode
          *
          * \param texture texture to apply to sprite.
          */
-        SpriteNode(const sf::Texture& texture);
+        SpriteNode(const sf::Texture& texture, int category = 0);
 
         /**
          * \brief Get bounding rectangle of sprite.
