@@ -39,17 +39,22 @@ class Midi
 {
     public:
         Midi(const std::string& filePath);
+        ~Midi();
 
         struct Note
         {
-            float time;
+            unsigned int    tone;
+            float           duration;
+            float           time;
         };
 
         std::list<Note> getNotes();
 
 
+        float getSpeed() const;
+
     private:
-        MidiFile mFile;
+        MidiFile    mFile;
 };
 
 /**

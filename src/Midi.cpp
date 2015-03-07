@@ -39,40 +39,41 @@ Midi::Midi(const std::string& filePath)
         std::runtime_error("Midi::Midi - Failed to load " + filePath);
 }
 
+Midi::~Midi()
+{
+    mFile.clearLinks();
+}
 
 std::list<Midi::Note> Midi::getNotes()
 {
-    int tracks = mFile.getTrackCount();
-    std::cout << "TPQ: " << mFile.getTicksPerQuarterNote() << endl;
-    if (tracks > 1)
+    mFile.doTimeInSecondsAnalysis();
+    std::list<Note> notes;
+    for (int iTrack = 0; iTrack < mFile.getTrackCount(); iTrack++)
     {
-      std::cout << "TRACKS: " << tracks << endl;
-    }
-    int TPQ = mFile.getTicksPerQuarterNote();
+        MidiEventList& track = mFile[iTrack];
+        track.linkNotePairs();
 
-    char* notes[12] = {"C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"};
-
-    //mFile.joinTracks();
-
-
-    for (int track=0; track < tracks; track++)
-    {
-      if (tracks > 1)
-      {
-         std::cout << "\nTrack " << track << endl;
-      }
-    for (int event=0; event < mFile[track].size(); event++)
-    {
-        if(mFile[track][event][0] == 0x90)
+        for(int iEvent = 0; iEvent < track.size(); iEvent++)
         {
-            std::cout << mFile[track][event].tick / TPQ << '\t' << (int)mFile[track][event][0] << '\t' << (int)mFile[track][event][1] << std::endl;
-        }
+            MidiEvent& event = track[iEvent];
 
-        if(event >= 10)
-            int flurp = 0;
-      }
+            if(event.isLinked() && event.isNoteOn() && event.getKeyNumber() != -1)
+            {
+                Note note;
+                note.duration = event.getDurationInSeconds();
+                note.time = mFile.getTimeInSeconds(event.tick);
+                note.tone = event.getKeyNumber();
+
+                notes.push_back(note);
+               // std::cout << note.time << '\t' << note.tone << std::endl;
+            }
+
+            //if(mFile[track][iEvent][0] == 0x90)
+            {
+
+            }
+        }
     }
 
-    std::list<Note> derp;
-    return derp;
+    return notes;
 }
