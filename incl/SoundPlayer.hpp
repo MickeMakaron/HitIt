@@ -25,21 +25,26 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Audio/SoundBuffer.hpp"
+namespace sf
+{
+    class SoundBuffer;
+}
 #include "SFML/Audio/Sound.hpp"
 ////////////////////////////////////////////////
 
-class SoundPlayer
+class SoundPlayer : public sf::Sound
 {
     public:
-        SoundPlayer(double frequency, unsigned int sampleRate = 44100);
+        SoundPlayer(const sf::SoundBuffer& buffer);
 
-        void play();
-        void stop();
+
+        void update(float seconds);
+        void setVolume(float volume);
+        void fade(float targetVolume, float seconds);
 
     private:
-        sf::SoundBuffer mBuffer;
-        sf::Sound       mSound;
+        float mFadeStep;
+        float mVolume;
 };
 
 

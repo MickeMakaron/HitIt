@@ -27,36 +27,55 @@
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Audio/SoundBuffer.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // HitIt internal headers
 #include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 
-SoundPlayer::SoundPlayer(double frequency, unsigned int sampleRate)
+SoundPlayer::SoundPlayer(const sf::SoundBuffer& buffer)
+: sf::Sound(buffer)
+, mVolume(getVolume())
 {
-    sf::Int16 sample[sampleRate];
 
-    const double AMPLITUDE = 1000;
-    const double TWO_PI = 6.283185307179586476925286766559;
-    const double INCREMENT = frequency / sampleRate;
+}
 
-    double x = 0;
-    for(unsigned int i = 0; i < sampleRate; i++)
+
+void SoundPlayer::update(float seconds)
+{
+    if(mFadeStep)
     {
-        sample[i] = AMPLITUDE * sin(x * TWO_PI);
-        x += INCREMENT;
+        float fade = mFadeStep * seconds;
+
+        mVolume += fade;
+
+        if(mVolume < 0.f)
+        {
+            mVolume = 0.f;;
+            mFadeStep = 0.f;
+        }
+        else if(mVolume > 100.f)
+        {
+            mVolume = 100.f;
+            mFadeStep = 0.f;
+        }
+
+        setVolume(mVolume);
     }
-
-    if(!mBuffer.loadFromSamples(sample, sampleRate, 1, sampleRate))
-        std::runtime_error("SoundPlayer::SoundPlayer - Failed to load sample.");
-
-    mSound.setBuffer(mBuffer);
-    mSound.setLoop(true);
 }
 
 
-void SoundPlayer::play()
+void SoundPlayer::fade(float targetVolume, float seconds)
 {
-    mSound.play();
+    mFadeStep = (targetVolume - mVolume) / seconds;
 }
 
+void SoundPlayer::setVolume(float volume)
+{
+    mVolume = volume;
+    sf::Sound::setVolume(mVolume);
+}
