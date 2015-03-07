@@ -42,6 +42,7 @@ class SpriteNode : public SceneNode
          * \brief Constructor
          *
          * \param texture texture to apply to sprite.
+         * \param category category of node.
          */
         SpriteNode(const sf::Texture& texture, int category = 0);
 
