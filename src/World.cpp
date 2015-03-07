@@ -41,14 +41,12 @@
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
-, mView(mWindow.getDefaultView())
+, mView()
 , mTextures(getTextures(), true)
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 5, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner("assets/midi/chillameddippen.mid")
+, mSpawner(std::string("assets/midi/35468_Circus-Galop.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
 {
-    mView.setSize(1000.f, 1000.f);
-    mView.setCenter(500.f, 500.f);
     mWindow.setView(mView);
     buildWorld();
 }
