@@ -21,6 +21,11 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
+// C++ Standard Library
+#include <cstring>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 
 ////////////////////////////////////////////////
@@ -29,15 +34,27 @@
 // HitIt internal headers
 #include "Spawner.hpp"
 #include "TIME_PER_FRAME.hpp"
-#include "SceneNode.hpp"
+#include "Obstacle.hpp"
 ////////////////////////////////////////////////
 
-Spawner::Spawner(const std::string& midiFilePath)
+Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
 : mTime(0.f)
+, mSpawnArea(spawnArea)
+, mSampler()
+, mMidi(midiFilePath)
 {
-    Midi midi(midiFilePath);
-    mSpawnQueue = midi.getNotes();
+    mSpawnQueue = mMidi.getNotes();
     mSpawnQueue.sort([](const Midi::Note& a, const Midi::Note& b){return a.time < b.time;});
+
+    auto comparator = [](const Midi::Note& a, const Midi::Note& b){return a.tone < b.tone;};
+    Midi::Note maxNote = *std::max_element(mSpawnQueue.begin(), mSpawnQueue.end(), comparator);
+    Midi::Note minNote = *std::min_element(mSpawnQueue.begin(), mSpawnQueue.end(), comparator);
+
+
+    mNoteWidth = mSpawnArea.width / (maxNote.tone - minNote.tone);
+    mMinNoteX = minNote.tone * mNoteWidth;
+
+    mScrollSpeed = 500.f;
 }
 
 void Spawner::update()
@@ -52,7 +69,10 @@ std::list<SceneNode*> Spawner::fetchNewNodes()
     {
         Midi::Note nextNote = mSpawnQueue.front();
         mSpawnQueue.pop_front();
-        newNodes.push_back(new SceneNode());
+
+        Obstacle* obstacle = new Obstacle(mSampler.getBuffer(nextNote.tone), mScrollSpeed, nextNote.duration, mNoteWidth, (mSpawnArea.height / mScrollSpeed + nextNote.duration));
+        obstacle->setPosition(mSpawnArea.left + nextNote.tone * mNoteWidth - mMinNoteX, -nextNote.duration * mScrollSpeed);
+        newNodes.push_back(obstacle);
     }
 
     return newNodes;

@@ -30,19 +30,20 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-
+#include "SFML/Graphics/Rect.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Midi.hpp"
+#include "AudioSampler.hpp"
 class SceneNode;
 ////////////////////////////////////////////////
 
 class Spawner
 {
     public:
-        Spawner(const std::string& midiFilePath);
+        Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea);
 
         void update();
 
@@ -51,6 +52,12 @@ class Spawner
     private:
         std::list<Midi::Note>   mSpawnQueue;
         float                   mTime;
+        const sf::FloatRect     mSpawnArea;
+        float                   mScrollSpeed;
+        AudioSampler            mSampler;
+        Midi                    mMidi;
+        float                   mMinNoteX;
+        float                   mNoteWidth;
 };
 
 
