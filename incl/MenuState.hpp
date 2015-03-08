@@ -32,6 +32,8 @@
 // HitIt internal headers
 #include "State.hpp"
 #include "AssetList.hpp"
+#include "GUIContainer.hpp"
+#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 class MenuState : public State
@@ -68,9 +70,18 @@ class MenuState : public State
          */
 		virtual bool handleEvent(const sf::Event& event);
 
+
+    private:
+        std::list<GUIElement*>          getButtons();
+        std::list<TextureList::Asset>   getTextures() const;
+        std::list<SoundList::Asset>   getSounds() const;
+
     private:
         sf::RenderWindow&   mWindow;
         TextureList         mTextures;
+        SoundList           mSounds;
+        SoundPlayer         mSoundPlayer;
+        GUIContainer        mMenu;
         sf::Sprite          mBackground;
 };
 
