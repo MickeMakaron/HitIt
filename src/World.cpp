@@ -46,10 +46,17 @@ World::World(sf::RenderWindow& window)
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 5, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
 , mSpawner(std::string("assets/midi/35468_Circus-Galop.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
+, mState(Running)
 {
     mWindow.setView(mView);
     buildWorld();
 }
+
+World::~World()
+{
+    mScene.clear();
+}
+
 
 ////////////////////////////////////////////////
 
@@ -72,7 +79,18 @@ void World::update()
     mSpawner.update();
 
     for(SceneNode* node : mSpawner.fetchNewNodes())
+    {
         mScene.insert(node, SceneGraph::Layer::Middle);
+        mCollission.insert(node);
+    }
+
+
+    if(mPlayer->isDestroyed())
+        mState = Defeat;
+    else if(mSpawner.isEmpty())
+    {
+        mState = Victory;
+    }
 }
 
 ////////////////////////////////////////////////
@@ -147,4 +165,10 @@ std::list<TextureList::Asset> World::getTextures() const
         TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
         TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
     };
+}
+
+
+World::State World::getState() const
+{
+    return mState;
 }

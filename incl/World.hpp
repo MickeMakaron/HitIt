@@ -48,12 +48,22 @@ class Player;
 class World
 {
     public:
+        enum State
+        {
+            Running,
+            Victory,
+            Defeat,
+            StateCount,
+        };
+
         /**
          * \brief Constructor
          *
          * \param window SFML RenderWindow object to draw to.
          */
         World(sf::RenderWindow& window);
+
+        ~World();
 
         /**
          * \brief Draw world.
@@ -71,6 +81,13 @@ class World
          * \param event event ot handle.
          */
         void handleEvent(const sf::Event& event);
+
+        /**
+         * \brief Check world state.
+         *
+         * \return current world state
+         */
+         State getState() const;
 
     private:
         /**
@@ -98,6 +115,7 @@ class World
         Player*             mPlayer;        ///< Player controlled node.
         Collission          mCollission;    ///< Collission manager.
         Spawner             mSpawner;       ///< Spawn new obstacles.
+        State               mState;         ///< Current world state.
 };
 
 
