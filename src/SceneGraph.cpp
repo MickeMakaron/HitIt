@@ -65,3 +65,10 @@ void SceneGraph::update()
     for(SceneNode& layer : mGraph)
         layer.update();
 }
+
+////////////////////////////////////////////////
+
+void SceneGraph::clear()
+{
+    mGraph.clear();
+}

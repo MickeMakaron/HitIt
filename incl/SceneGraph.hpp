@@ -91,6 +91,11 @@ class SceneGraph
          */
         void insert(SceneNode* node, Layer layer);
 
+        /**
+         * \brief Clear entire graph
+         */
+        void clear();
+
     private:
         std::vector<SceneNode> mGraph; ///< Graph of SceneNode objects. Size of vector is based on LayerCount.
 };
