@@ -32,24 +32,27 @@
 ////////////////////////////////////////////////
 
 
-Obstacle::Obstacle(const sf::SoundBuffer& buffer, float speed, float playDuration, float width, float lifeTime)
-: mShape(sf::Vector2f(width, speed * playDuration))
-, mSoundPlayer(new SoundPlayer(buffer))
+Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, int category)
+: SceneNode(category)
+, mShape(sf::Vector2f(width, speed * playDuration))
+, mSoundPlayer(buffer)
 , mSpeed(speed)
 , mPlayDuration(playDuration)
 , mLifeTime(lifeTime)
 , mTime(0.f)
+, mIsPaused(false)
 {
-    //mSoundPlayer->setVolume(0.f);
-    //mSoundPlayer->fade(100.f, 0.1f);
-    mSoundPlayer->setLoop(true);
-    mSoundPlayer->play();
+    //mSoundPlayer.setVolume(0.f);
+    //mSoundPlayer.fade(100.f, 0.1f);
+
+    mSoundPlayer.play();
 
     mShape.setFillColor(sf::Color::Black);
 }
 
 Obstacle::~Obstacle()
 {
+    mSoundPlayer.pause();
 }
 
 bool Obstacle::isMarkedForRemoval() const
@@ -68,26 +71,29 @@ void Obstacle::updateCurrent()
 
     mTime += TIME_PER_FRAME::seconds();
 
-    if(mSoundPlayer)
+
+    if(!mIsPaused)//mSoundPlayer.getStatus() == sf::Sound::Status::Playing)
     {
         if(mPlayDuration <= mTime)
         {
-            mSoundPlayer->stop();
-            mSoundPlayer->resetBuffer();
-            delete mSoundPlayer;
-            mSoundPlayer = nullptr;
+            mSoundPlayer.pause();
+            mIsPaused = true;
         }
         else
         {
             float timeLeft = mPlayDuration - mTime;
-            if(timeLeft < 0.2f)
-               mSoundPlayer->fade(0.f, timeLeft);
+            //if(timeLeft < 0.2f)
+               //mSoundPlayer.fade(0.f, timeLeft);
 
-            mSoundPlayer->update(TIME_PER_FRAME::seconds());
+            mSoundPlayer.update(TIME_PER_FRAME::seconds());
         }
-
-
     }
 
+
     move(0.f, mSpeed * TIME_PER_FRAME::seconds());
+}
+
+sf::FloatRect Obstacle::getBoundingRect() const
+{
+    return getWorldTransform().transformRect(mShape.getGlobalBounds());
 }

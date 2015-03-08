@@ -52,7 +52,7 @@ class Obstacle : public SceneNode
          * \param texture texture to apply to sprite.
          * \param buffer sound buffer that contains sound to be played.
          */
-        Obstacle(const sf::SoundBuffer& buffer, float speed, float playDuration, float width, float lifeTime);
+        Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, int category = 0);
 
         ~Obstacle();
 
@@ -62,6 +62,14 @@ class Obstacle : public SceneNode
 		 * \return true if marked for removal, else false.
 		 */
 		 virtual bool isMarkedForRemoval() const;
+
+
+        /**
+		 * \brief Get bounding rectangle of node.
+		 *
+		 * \return bounding rectangle of node.
+		 */
+		virtual sf::FloatRect	getBoundingRect() const;
 
     private:
         /**
@@ -79,11 +87,12 @@ class Obstacle : public SceneNode
 
     private:
         sf::RectangleShape  mShape;         ///< Rectangular drawing shape.
-        SoundPlayer*        mSoundPlayer;   ///< Use this to play sounds.
+        SoundPlayer&        mSoundPlayer;   ///< Use this to play sounds.
         float               mSpeed;         ///< How fast the node moves.
         float               mPlayDuration;  ///< How long to play the sound.
         float               mLifeTime;      ///< How long until marked for removal.
         float               mTime;          ///< Elapsed time.
+        bool mIsPaused;
 };
 
 
