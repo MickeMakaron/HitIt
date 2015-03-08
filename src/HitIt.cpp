@@ -35,18 +35,27 @@
 #include "HitIt.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "GameState.hpp"
+#include "MenuState.hpp"
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
 : mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", sf::Style::Titlebar | sf::Style::Close)
 {
-    Assets::setDirectory("assets/");
+    mWindow.setView(sf::View());
 
+    Assets::setDirectory("assets/");
+    mFonts.setAssets({FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf")});
+    mFonts.load();
+
+
+    //mWindow.setVerticalSyncEnabled(true);
+    //mWindow.setFramerateLimit(60);
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
-    mStateStack.push(new GameState(mStateStack, mWindow));
+    //mStateStack.push(new GameState(mStateStack, mWindow));
+    mStateStack.push(new MenuState(mStateStack, mWindow));
 }
 
 ////////////////////////////////////////////////
