@@ -77,6 +77,8 @@ class State
         /**
          * \brief Handle input events.
          *
+         * \param event event to handle
+         *
          * \return indicate whether the state stack
          * should allow further states to handle events
          * (true) or not (false).
