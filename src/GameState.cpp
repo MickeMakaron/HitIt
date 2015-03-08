@@ -56,6 +56,23 @@ bool GameState::update()
 {
     mWorld.update();
 
+    switch(mWorld.getState())
+    {
+        case World::Running:
+            // Do nothing.
+            break;
+
+        case World::Victory:
+            //requestStackPush(new VictoryState(getStack(), mWindow));
+            break;
+
+        case World::Defeat:
+            //requestStackPush(new DefeatState(getStack(), mWindow));
+            break;
+
+        default:
+            break;
+    }
 
 	return true;
 }
@@ -67,10 +84,7 @@ bool GameState::handleEvent(const sf::Event& event)
     mWorld.handleEvent(event);
 
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-    {
-        requestStackPop();
-		requestStackPush(new MenuState(getStack(), mWindow));
-    }
+		requestStackClear();//requestStackPush(new PauseState(getStack(), mWindow));
 
 	return true;
 }
