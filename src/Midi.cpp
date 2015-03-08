@@ -39,11 +39,6 @@ Midi::Midi(const std::string& filePath)
         std::runtime_error("Midi::Midi - Failed to load " + filePath);
 }
 
-Midi::~Midi()
-{
-    mFile.clearLinks();
-}
-
 std::list<Midi::Note> Midi::getNotes()
 {
     mFile.doTimeInSecondsAnalysis();
@@ -65,12 +60,6 @@ std::list<Midi::Note> Midi::getNotes()
                 note.tone = event.getKeyNumber();
 
                 notes.push_back(note);
-               // std::cout << note.time << '\t' << note.tone << std::endl;
-            }
-
-            //if(mFile[track][iEvent][0] == 0x90)
-            {
-
             }
         }
     }

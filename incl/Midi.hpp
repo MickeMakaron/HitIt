@@ -39,7 +39,6 @@ class Midi
 {
     public:
         Midi(const std::string& filePath);
-        ~Midi();
 
         struct Note
         {
