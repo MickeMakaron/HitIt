@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////
 AudioSampler::AudioSampler(unsigned int sampleRate, double volume)
 : mBuffers(BOTTOM_C * 2)
+, mSoundPlayers(BOTTOM_C * 2)
 {
     for(unsigned int iTone = 0; iTone < mBuffers.size(); iTone++)
     {
@@ -20,9 +21,21 @@ AudioSampler::AudioSampler(unsigned int sampleRate, double volume)
 
         if(!mBuffers[iTone].loadFromSamples(samples, numSamples, 1, sampleRate))
             std::runtime_error("AudioSampler::AudioSampler - Failed to load samples of tone " + iTone);
+
+        mSoundPlayers[iTone].setBuffer(mBuffers[iTone]);
+        mSoundPlayers[iTone].setLoop(true);
+        delete[] samples;
     }
 }
 
+AudioSampler::~AudioSampler()
+{
+    for(SoundPlayer& player : mSoundPlayers)
+        player.stop();
+
+    mSoundPlayers.clear();
+    mBuffers.clear();
+}
 
 void AudioSampler::createSamples(sf::Int16*& samples, unsigned int tone, unsigned int& numSamples, unsigned int sampleRate, double volume) const
 {
@@ -44,4 +57,9 @@ void AudioSampler::createSamples(sf::Int16*& samples, unsigned int tone, unsigne
 sf::SoundBuffer& AudioSampler::getBuffer(unsigned int iTone)
 {
     return mBuffers[iTone];
+}
+
+SoundPlayer& AudioSampler::getSoundPlayer(unsigned int iTone)
+{
+    return mSoundPlayers[iTone];
 }
