@@ -79,6 +79,13 @@ class Player : public SpriteNode
         int             mHp;                    ///< Hp of player.
         float           mMovementSpeed;         ///< Movement speed.
         float           mDiagonalMovementSpeed; ///< Movement speed when moving diagonally.
+        bool            mIsImmortal;            ///< Indicator whether player is immortal.
+        const float     mImmortalTime = 2.f;    ///< Time to remain immortal in seconds.
+        float           mImmortalCounter;       ///< Time accumulator for immortality.
+        bool            mIsJumping;             ///< Indicator whether player is jumping.
+        const float     mJumpingTime = 1.f;      ///< Time airborne in seconds.
+        float           mJumpingCounter;        ///< Time accumulator for jumping.
+
 };
 
 #endif // HITIT_PLAYER_HPP

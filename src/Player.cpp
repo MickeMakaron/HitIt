@@ -41,12 +41,21 @@ Player::Player(const sf::Texture& texture, int hp, sf::Vector2f position)
 , mHp(hp)
 , mMovementSpeed(200.f)
 , mDiagonalMovementSpeed(sqrtf(0.5f * mMovementSpeed * 0.5f * mMovementSpeed * 2))
+, mIsImmortal(false)
+, mImmortalCounter(0.f)
 {
     setPosition(position);
 }
 
 void Player::updateCurrent()
 {
+    if(mIsImmortal)
+    {
+        mImmortalCounter += TIME_PER_FRAME::seconds();
+        if(mImmortalCounter >= mImmortalTime)
+            mIsImmortal = false;
+    }
+
     using namespace sf;
 
     Vector2f direction(0.f, 0.f);
@@ -67,7 +76,9 @@ void Player::updateCurrent()
 void Player::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     SpriteNode::drawCurrent(target, states);
-    drawBoundingRect(target, states);
+
+    if(mIsImmortal)
+        drawBoundingRect(target, states);
 }
 
 bool  Player::isDestroyed() const
@@ -77,7 +88,12 @@ bool  Player::isDestroyed() const
 
 void Player::damage()
 {
-    mHp -= 1;
+    if(!mIsImmortal)
+    {
+        mHp -= 1;
+        mIsImmortal = true;
+        mImmortalCounter = 0.f;
+    }
 }
 
 void Player::destroy()
