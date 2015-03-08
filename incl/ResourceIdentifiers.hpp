@@ -36,6 +36,7 @@ namespace ResourceID
             AudienceTerrace,
             Fence,
             WorldBg,
+            Button,
             IDCount,
         };
     }
@@ -44,6 +45,7 @@ namespace ResourceID
     {
         enum ID
         {
+            OldGateLaneNF,
             IDCount,
         };
     }
@@ -60,6 +62,7 @@ namespace ResourceID
     {
         enum ID
         {
+            Button,
             IDCount,
         };
     }
