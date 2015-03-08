@@ -51,6 +51,13 @@ SceneNode::SceneNode(int category)
 
 ////////////////////////////////////////////////
 
+SceneNode::~SceneNode()
+{
+
+}
+
+////////////////////////////////////////////////
+
 void SceneNode::attachChild(SceneNode* child)
 {
     child->mParent = this;

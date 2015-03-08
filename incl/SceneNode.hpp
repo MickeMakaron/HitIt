@@ -50,6 +50,11 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 		SceneNode(int category = 0);
 
         /**
+         * \brief Destructor
+         */
+        virtual ~SceneNode();
+
+        /**
          * \brief Attach child to node.
          *
          * \param child node to attach.
