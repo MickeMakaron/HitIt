@@ -35,16 +35,20 @@ namespace sf
 class SoundPlayer : public sf::Sound
 {
     public:
+        SoundPlayer();
         SoundPlayer(const sf::SoundBuffer& buffer);
-
 
         void update(float seconds);
         void setVolume(float volume);
         void fade(float targetVolume, float seconds);
 
+        void play();
+        void pause();
+
     private:
-        float mFadeStep;
-        float mVolume;
+        float       mFadeStep;
+        float       mVolume;
+        unsigned    mSessionCount;
 };
 
 

@@ -37,9 +37,19 @@
 ////////////////////////////////////////////////
 
 
+SoundPlayer::SoundPlayer()
+: mVolume(100.f)
+, mFadeStep(0.f)
+, mSessionCount(0)
+{
+
+}
+
 SoundPlayer::SoundPlayer(const sf::SoundBuffer& buffer)
 : sf::Sound(buffer)
 , mVolume(getVolume())
+, mFadeStep(0.f)
+, mSessionCount(0)
 {
 
 }
@@ -47,7 +57,7 @@ SoundPlayer::SoundPlayer(const sf::SoundBuffer& buffer)
 
 void SoundPlayer::update(float seconds)
 {
-    if(mFadeStep)
+    if(mFadeStep != 0.f)
     {
         float fade = mFadeStep * seconds;
 
@@ -78,4 +88,23 @@ void SoundPlayer::setVolume(float volume)
 {
     mVolume = volume;
     sf::Sound::setVolume(mVolume);
+}
+
+void SoundPlayer::play()
+{
+    if(mSessionCount == 0)
+        sf::Sound::play();
+
+    mSessionCount++;
+}
+
+void SoundPlayer::pause()
+{
+    if(mSessionCount <= 1)
+    {
+        sf::Sound::pause();
+        mSessionCount = 0;
+    }
+    else
+        mSessionCount--;
 }
