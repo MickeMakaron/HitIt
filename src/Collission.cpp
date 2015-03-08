@@ -62,10 +62,15 @@ void Collission::update()
     for(SceneNode* node : mNodes)
     {
         CollissionData data = checkCollission(playerRect, node->getBoundingRect());
+        if(!data.hasCollission)
+            data = checkCollission(node->getBoundingRect(), playerRect);
         if(data.hasCollission)
         {
             int category = node->getCategory();
             using namespace CollissionCategory;
+
+            if(category == Lethal)
+                int flurp = 0;
             if(category & Collidable)
             {
                 sf::Vector2f absDepth(std::fabs(data.depth.x), std::fabs(data.depth.y));
@@ -97,13 +102,6 @@ Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::Floa
     bRight = b.left + b.width;
     bBottom = b.top + b.height;
 
-    if(a.left >= b.left && a.left <= bRight)
-        depth.x = a.left - bRight;
-    else if(aRight <= bRight && aRight >= b.left)
-        depth.x = aRight - b.left;
-    else
-        return CollissionData();
-
     if(a.top >= b.top && a.top <= bBottom)
         depth.y = a.top - bBottom;
     else if(aBottom <= bBottom && aBottom >= b.top)
@@ -111,7 +109,18 @@ Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::Floa
     else
         return CollissionData();
 
-    return CollissionData(true, depth);
+    if(a.left >= b.left && a.left <= bRight)
+        depth.x = a.left - bRight;
+    else if(aRight <= bRight && aRight >= b.left)
+        depth.x = aRight - b.left;
+    else
+        return CollissionData();
+
+
+    if(depth.x && depth.y)
+        return CollissionData(true, depth);
+    else
+        return CollissionData();
 }
 
 
