@@ -35,15 +35,17 @@
 #include "Spawner.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "Obstacle.hpp"
+#include "CollissionCategory.hpp"
+#include "Midi.hpp"
 ////////////////////////////////////////////////
 
 Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
 : mTime(0.f)
 , mSpawnArea(spawnArea)
 , mSampler()
-, mMidi(midiFilePath)
 {
-    mSpawnQueue = mMidi.getNotes();
+    Midi midi(midiFilePath);
+    mSpawnQueue = midi.getNotes();
     mSpawnQueue.sort([](const Midi::Note& a, const Midi::Note& b){return a.time < b.time;});
 
     auto comparator = [](const Midi::Note& a, const Midi::Note& b){return a.tone < b.tone;};
@@ -70,10 +72,16 @@ std::list<SceneNode*> Spawner::fetchNewNodes()
         Midi::Note nextNote = mSpawnQueue.front();
         mSpawnQueue.pop_front();
 
-        Obstacle* obstacle = new Obstacle(mSampler.getBuffer(nextNote.tone), mScrollSpeed, nextNote.duration, mNoteWidth, (mSpawnArea.height / mScrollSpeed + nextNote.duration));
+        Obstacle* obstacle = new Obstacle(/*mSampler.getBuffer(nextNote.tone)*/mSampler.getSoundPlayer(nextNote.tone), mScrollSpeed, nextNote.duration, mNoteWidth, (mSpawnArea.height / mScrollSpeed + nextNote.duration), CollissionCategory::Lethal);
         obstacle->setPosition(mSpawnArea.left + nextNote.tone * mNoteWidth - mMinNoteX, -nextNote.duration * mScrollSpeed);
         newNodes.push_back(obstacle);
     }
 
     return newNodes;
+}
+
+
+bool Spawner::isEmpty() const
+{
+    return mSpawnQueue.empty();
 }

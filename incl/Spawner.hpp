@@ -49,13 +49,14 @@ class Spawner
 
         std::list<SceneNode*> fetchNewNodes();
 
+        bool isEmpty() const;
+
     private:
         std::list<Midi::Note>   mSpawnQueue;
         float                   mTime;
         const sf::FloatRect     mSpawnArea;
         float                   mScrollSpeed;
         AudioSampler            mSampler;
-        Midi                    mMidi;
         float                   mMinNoteX;
         float                   mNoteWidth;
 };
