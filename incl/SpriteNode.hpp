@@ -61,6 +61,12 @@ class SpriteNode : public SceneNode
          */
         virtual void            drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        /**
+         * \brief Get local bounds of sprite.
+         *
+         * \return local bounds of sprite.
+         */
+        sf::FloatRect getLocalBounds() const;
 
     private:
         sf::Sprite      mSprite; ///< SFML sprite object.

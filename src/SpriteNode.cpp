@@ -50,3 +50,10 @@ sf::FloatRect SpriteNode::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
+
+////////////////////////////////////////////////
+
+sf::FloatRect SpriteNode::getLocalBounds() const
+{
+    return mSprite.getLocalBounds();
+}
