@@ -22,19 +22,16 @@
 
 
 template <typename AssetIdentifierT>
-AssetList<AssetIdentifierT>::AssetList(std::list<Asset> assets, bool loadImmediately)
+AssetList<AssetIdentifierT>::AssetList(std::list<Asset> assets)
 : mAssets(assets)
-, mIsLoaded(false)
 {
-    if(loadImmediately)
-        load();
+    load();
 }
 
 ////////////////////////////////////////////////
 
 template <typename AssetIdentifierT>
 AssetList<AssetIdentifierT>::AssetList()
-: mIsLoaded(false)
 {
 }
 
@@ -53,6 +50,18 @@ void AssetList<AssetIdentifierT>::setAssets(std::list<Asset> assets)
 {
     release();
     mAssets = assets;
+    load();
+}
+
+////////////////////////////////////////////////
+
+template <typename AssetIdentifierT>
+void AssetList<AssetIdentifierT>::insert(std::list<Asset> assets)
+{
+    mAssets.insert(mAssets.end(), assets.begin(), assets.end());
+
+    for(Asset a : assets)
+        Assets::load(a.id, a.filePath);
 }
 
 ////////////////////////////////////////////////
@@ -60,11 +69,8 @@ void AssetList<AssetIdentifierT>::setAssets(std::list<Asset> assets)
 template <typename AssetIdentifierT>
 void AssetList<AssetIdentifierT>::load()
 {
-    if(!mIsLoaded)
-        for(Asset a : mAssets)
-            Assets::load(a.id, a.filePath);
-
-    mIsLoaded = true;
+    for(Asset a : mAssets)
+        Assets::load(a.id, a.filePath);
 }
 
 ////////////////////////////////////////////////
@@ -72,9 +78,8 @@ void AssetList<AssetIdentifierT>::load()
 template <typename AssetIdentifierT>
 void AssetList<AssetIdentifierT>::release()
 {
-    if(mIsLoaded)
-        for(Asset a : mAssets)
-            Assets::release(a.id);
+    for(Asset a : mAssets)
+        Assets::release(a.id);
 
-    mIsLoaded = false;
+    mAssets.clear();
 }

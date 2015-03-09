@@ -63,7 +63,7 @@ class AssetList
          *
          * \param assets list of assets to use
          */
-        AssetList(std::list<Asset> assets, bool loadImmediately = false);
+        AssetList(std::list<Asset> assets);
 
         /**
          * \brief Constructor
@@ -79,9 +79,20 @@ class AssetList
          * \brief Set list of assets to use
          *
          * \param assets list of assets to use
+         * \param loadImmediately if set to true, AssetList will load the resources
+         * to memory immediately.
          */
         void setAssets(std::list<Asset> assets);
 
+        /**
+         * \brief Add multiple assets.
+         *
+         * \param assets list of assets to insert.
+         */
+        void insert(std::list<Asset> assets);
+
+
+    private:
         /**
          * \brief Load assets into memory.
          */
@@ -94,7 +105,6 @@ class AssetList
 
     private:
         std::list<Asset>    mAssets;    ///< Assets to use.
-        bool                mIsLoaded;  ///< Indicates whether current assets are loaded or not.
 };
 
 
