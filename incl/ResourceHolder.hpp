@@ -54,7 +54,6 @@ class ResourceHolder
          */
         ResourceT& load(IdentifierT id, ResourceT& resource);
 
-
         /**
          * \brief Get resource from memory.
          *

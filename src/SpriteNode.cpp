@@ -39,6 +39,13 @@ SpriteNode::SpriteNode(const sf::Texture& texture, int category)
 
 ////////////////////////////////////////////////
 
+SpriteNode::~SpriteNode()
+{
+
+}
+
+////////////////////////////////////////////////
+
 void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);

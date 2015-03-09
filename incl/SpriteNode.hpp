@@ -46,6 +46,8 @@ class SpriteNode : public SceneNode
          */
         SpriteNode(const sf::Texture& texture, int category = 0);
 
+        virtual ~SpriteNode();
+
         /**
          * \brief Get bounding rectangle of sprite.
          *

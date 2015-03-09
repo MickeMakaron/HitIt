@@ -37,7 +37,7 @@
 #include "SFML/Graphics/Drawable.hpp"
 ////////////////////////////////////////////////
 
-class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
+class SceneNode : public sf::Transformable, virtual public sf::Drawable, private sf::NonCopyable
 {
 	public:
 		typedef std::unique_ptr<SceneNode> Ptr;
