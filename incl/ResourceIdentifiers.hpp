@@ -37,6 +37,8 @@ namespace ResourceID
             Fence,
             WorldBg,
             Button,
+            Hp,
+            BlackOverlay,
             IDCount,
         };
     }
