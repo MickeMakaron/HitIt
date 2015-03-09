@@ -41,8 +41,10 @@ class Button : public GUIElement
 
         Button(const sf::Texture& texture, const sf::Text& text, SoundPlayer& soundPlayer, Callback callback);
 
+        virtual void select();
         virtual void deselect();
         virtual void activate();
+
 
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;

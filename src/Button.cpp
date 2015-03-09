@@ -41,12 +41,20 @@ Button::Button(const sf::Texture& texture, const sf::Text& text, SoundPlayer& so
     sf::FloatRect bounds = getLocalBounds();
     sf::FloatRect textBounds = mText.getLocalBounds();
     mText.setPosition((bounds.width - textBounds.width) / 2.f, (bounds.height - textBounds.height) / 2.f);
+    mText.setColor(sf::Color::Black);
+}
 
+void Button::select()
+{
+    GUIElement::select();
+    mText.setColor(sf::Color::White);
 }
 
 void Button::deselect()
 {
+    GUIElement::deselect();
     mSoundPlayer.play();
+    mText.setColor(sf::Color::Black);
 }
 
 void Button::activate()
