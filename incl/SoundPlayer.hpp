@@ -38,12 +38,15 @@ class SoundPlayer : public sf::Sound
         SoundPlayer();
         SoundPlayer(const sf::SoundBuffer& buffer);
 
+
         void update(float seconds);
         void setVolume(float volume);
         void fade(float targetVolume, float seconds);
 
         void play();
+        void stop();
         void pause();
+        void resume();
 
     private:
         float       mFadeStep;
