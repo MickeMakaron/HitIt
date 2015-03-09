@@ -63,3 +63,16 @@ SoundPlayer& AudioSampler::getSoundPlayer(unsigned int iTone)
 {
     return mSoundPlayers[iTone];
 }
+
+void AudioSampler::pause()
+{
+    for(SoundPlayer& player : mSoundPlayers)
+        player.pause();
+}
+
+
+void AudioSampler::resume()
+{
+    for(SoundPlayer& player : mSoundPlayers)
+        player.resume();
+}

@@ -63,10 +63,13 @@ class GameState : public State
          */
 		virtual bool handleEvent(const sf::Event& event);
 
+
+		void pause();
+		void resume();
+
     private:
         sf::RenderWindow&   mWindow;
         World               mWorld;
-
 };
 
 /************************************************

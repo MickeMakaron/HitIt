@@ -85,3 +85,14 @@ bool Spawner::isEmpty() const
 {
     return mSpawnQueue.empty();
 }
+
+
+void Spawner::pause()
+{
+    mSampler.pause();
+}
+
+void Spawner::resume()
+{
+    mSampler.resume();
+}

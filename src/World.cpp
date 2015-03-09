@@ -36,16 +36,17 @@
 #include "Player.hpp"
 #include "CollissionCategory.hpp"
 #include "Midi.hpp"
+#include "HealthBar.hpp"
 ////////////////////////////////////////////////
 
 
 World::World(sf::RenderWindow& window)
 : mWindow(window)
 , mView()
-, mTextures(getTextures(), true)
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 5, sf::Vector2f(500.f, 500.f)))
+, mTextures(getTextures())
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 10, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string("assets/midi/35468_Circus-Galop.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
+, mSpawner(std::string("assets/midi/Soviet March from Command and Conquer Red Alert 3.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
 , mState(Running)
 {
     mWindow.setView(mView);
@@ -104,8 +105,6 @@ void World::handleEvent(const sf::Event& event)
 
 void World::buildWorld()
 {
-    mTextures.load();
-
     namespace ID = ResourceID::Texture;
 
     mScene.insert(new SpriteNode(Assets::get(ID::WorldBg)), SceneGraph::Background);
@@ -139,6 +138,10 @@ void World::buildWorld()
         mScene.insert(prop, SceneGraph::Middle);
         mCollission.insert(prop);
     }
+
+    Assets::get(ID::Hp).setRepeated(true);
+    HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
+    mScene.insert(hpBar, SceneGraph::Foreground);
 }
 
 void World::keepPlayerInBounds()
@@ -164,6 +167,7 @@ std::list<TextureList::Asset> World::getTextures() const
         TextureList::Asset(ID::AudienceTerrace, "textures/audience_terrace_placeholder.png"),
         TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
         TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
+        TextureList::Asset(ID::Hp,              "textures/hp_placeholder.png"),
     };
 }
 
@@ -171,4 +175,16 @@ std::list<TextureList::Asset> World::getTextures() const
 World::State World::getState() const
 {
     return mState;
+}
+
+void World::pause()
+{
+    mSpawner.pause();
+    mState = Paused;
+}
+
+void World::resume()
+{
+    mSpawner.resume();
+    mState = Running;
 }

@@ -31,7 +31,9 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "GameState.hpp"
-#include "MenuState.hpp"
+#include "VictoryMenu.hpp"
+#include "PauseMenu.hpp"
+#include "DefeatMenu.hpp"
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
@@ -63,11 +65,13 @@ bool GameState::update()
             break;
 
         case World::Victory:
-            //requestStackPush(new VictoryState(getStack(), mWindow));
+            mWorld.pause();
+            requestStackPush(new VictoryMenu(getStack(), mWindow));
             break;
 
         case World::Defeat:
-            //requestStackPush(new DefeatState(getStack(), mWindow));
+            mWorld.pause();
+            requestStackPush(new DefeatMenu(getStack(), mWindow));
             break;
 
         default:
@@ -83,8 +87,19 @@ bool GameState::handleEvent(const sf::Event& event)
 {
     mWorld.handleEvent(event);
 
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-		requestStackClear();//requestStackPush(new PauseState(getStack(), mWindow));
+	if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+        requestStackPush(new PauseMenu(getStack(), mWindow, *this));//requestStackPush(new VictoryMenu(getStack(), mWindow));//requestStackClear();//requestStackPush(new PauseState(getStack(), mWindow));
 
 	return true;
+}
+
+
+void GameState::pause()
+{
+    mWorld.pause();
+}
+
+void GameState::resume()
+{
+    mWorld.resume();
 }

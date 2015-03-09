@@ -51,6 +51,21 @@ class Spawner
 
         bool isEmpty() const;
 
+        /**
+         * \brief Pause spawner.
+         *
+         * Force pauses all sound players.
+         */
+        void pause();
+
+        /**
+         * \brief Resume spawner
+         *.
+         * Resumes sound players.
+         */
+        void resume();
+
+
     private:
         std::list<Midi::Note>   mSpawnQueue;
         float                   mTime;

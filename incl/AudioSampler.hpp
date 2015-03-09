@@ -47,6 +47,23 @@ class AudioSampler
 
         sf::SoundBuffer& getBuffer(unsigned int iTone);
         SoundPlayer& getSoundPlayer(unsigned int iTone);
+
+
+        /**
+         * \brief Pause sound players.
+         *
+         * Force pauses all sound players.
+         */
+        void pause();
+
+        /**
+         * \brief Resume sound players
+         *.
+         * Resumes sound players.
+         */
+        void resume();
+
+
     private:
         void createSamples(sf::Int16*& samples, unsigned int tone, unsigned int& numSamples, unsigned int sampleRate, double volume) const;
 

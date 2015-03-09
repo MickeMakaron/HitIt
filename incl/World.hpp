@@ -51,6 +51,7 @@ class World
         enum State
         {
             Running,
+            Paused,
             Victory,
             Defeat,
             StateCount,
@@ -88,6 +89,18 @@ class World
          * \return current world state
          */
          State getState() const;
+
+        /**
+         * \brief Pause world.
+         *
+         * Must be used when putting a state above this one.
+         */
+        void pause();
+
+        /**
+         * \brief Resume world.
+         */
+        void resume();
 
     private:
         /**

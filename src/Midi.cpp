@@ -24,6 +24,7 @@
 // C++ Standard Library
 #include <stdexcept>
 #include <iostream>
+#include <cassert>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -41,28 +42,30 @@ Midi::Midi(const std::string& filePath)
 
 std::list<Midi::Note> Midi::getNotes()
 {
+    mFile.joinTracks();
+    mFile.linkNotePairs();
     mFile.doTimeInSecondsAnalysis();
+
     std::list<Note> notes;
-    for (int iTrack = 0; iTrack < mFile.getTrackCount(); iTrack++)
+    assert(mFile.size() > 0);
+    MidiEventList& track = mFile[0];
+
+    for(int iEvent = 0; iEvent < track.size(); iEvent++)
     {
-        MidiEventList& track = mFile[iTrack];
-        track.linkNotePairs();
+        MidiEvent& event = track[iEvent];
 
-        for(int iEvent = 0; iEvent < track.size(); iEvent++)
+        if(event.isLinked() && event.isNoteOn() && event.getKeyNumber() != -1)
         {
-            MidiEvent& event = track[iEvent];
+            Note note;
+            note.duration = event.getDurationInSeconds();
+            note.time = mFile.getTimeInSeconds(event.tick);
+            note.tone = event.getKeyNumber();
 
-            if(event.isLinked() && event.isNoteOn() && event.getKeyNumber() != -1)
-            {
-                Note note;
-                note.duration = event.getDurationInSeconds();
-                note.time = mFile.getTimeInSeconds(event.tick);
-                note.tone = event.getKeyNumber();
-
-                notes.push_back(note);
-            }
+            notes.push_back(note);
         }
     }
+    mFile.splitTracks();
+    mFile.clearLinks();
 
     return notes;
 }
