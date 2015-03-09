@@ -54,21 +54,21 @@ const sf::SoundBuffer& Assets::load(ResourceID::Sound::ID sound, const std::stri
 
 ////////////////////////////////////////////////
 
-const sf::Texture& Assets::get(ResourceID::Texture::ID texture)
+sf::Texture& Assets::get(ResourceID::Texture::ID texture)
 {
     return mTextureHolder.get(texture);
 }
 
 ////////////////////////////////////////////////
 
-const sf::Font& Assets::get(ResourceID::Font::ID font)
+sf::Font& Assets::get(ResourceID::Font::ID font)
 {
     return mFontHolder.get(font);
 }
 
 ////////////////////////////////////////////////
 
-const sf::SoundBuffer& Assets::get(ResourceID::Sound::ID sound)
+sf::SoundBuffer& Assets::get(ResourceID::Sound::ID sound)
 {
     return mSoundHolder.get(sound);
 }

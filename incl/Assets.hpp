@@ -76,7 +76,7 @@ class Assets
          *
          * \return reference to texture
          */
-        static const sf::Texture& get(ResourceID::Texture::ID texture);
+        static sf::Texture& get(ResourceID::Texture::ID texture);
 
         /**
          * \brief Get font
@@ -85,7 +85,7 @@ class Assets
          *
          * \return reference to font
          */
-        static const sf::Font& get(ResourceID::Font::ID font);
+        static sf::Font& get(ResourceID::Font::ID font);
 
         /**
          * \brief Get sound
@@ -94,7 +94,7 @@ class Assets
          *
          * \return reference to sound
          */
-        static const sf::SoundBuffer& get(ResourceID::Sound::ID sound);
+        static sf::SoundBuffer& get(ResourceID::Sound::ID sound);
 
         /**
          * \brief Release texture.
