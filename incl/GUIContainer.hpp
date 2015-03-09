@@ -89,6 +89,13 @@ class GUIContainer
          */
         void insert(GUIElement* element);
 
+        /**
+         * \brief Set GUI elements.
+         *
+         * \param elements GUI elements.
+         */
+        void setElements(std::list<GUIElement*> elements);
+
     private:
         std::list<ElementPtr>           mElements;  ///< GUI elements.
         std::list<ElementPtr>::iterator mSelection; ///< Current selection.

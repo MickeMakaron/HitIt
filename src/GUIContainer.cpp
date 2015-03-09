@@ -20,6 +20,12 @@
 ****************************************************************
 ****************************************************************/
 
+
+////////////////////////////////////////////////
+// C++ Standard Library
+#include <cassert>
+////////////////////////////////////////////////
+
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
@@ -34,11 +40,7 @@
 
 GUIContainer::GUIContainer(std::list<GUIElement*> elements)
 {
-    for(GUIElement* element : elements)
-        insert(element);
-
-    mSelection = mElements.begin();
-    (*mSelection)->select();
+    setElements(elements);
 }
 
 ////////////////////////////////////////////////
@@ -63,24 +65,24 @@ void GUIContainer::handleEvent(const sf::Event& event)
 {
     if(event.type == sf::Event::KeyPressed)
     {
-        switch(event.key.code)
-        {
-            case sf::Keyboard::Return:
-                if(!mElements.empty())
+        if(!mElements.empty())
+            switch(event.key.code)
+            {
+                case sf::Keyboard::Return:
                     (*mSelection)->activate();
-                break;
+                    break;
 
-            case sf::Keyboard::Down:
-                selectNext();
-                break;
+                case sf::Keyboard::Down:
+                    selectNext();
+                    break;
 
-            case sf::Keyboard::Up:
-                selectPrevious();
-                break;
+                case sf::Keyboard::Up:
+                    selectPrevious();
+                    break;
 
-            default:
-                break;
-        }
+                default:
+                    break;
+            }
 
 
     }
@@ -124,4 +126,16 @@ void GUIContainer::selectPrevious()
 void GUIContainer::insert(GUIElement* element)
 {
     mElements.push_back(ElementPtr(element));
+}
+
+////////////////////////////////////////////////
+
+void GUIContainer::setElements(std::list<GUIElement*> elements)
+{
+    for(GUIElement* element : elements)
+        insert(element);
+
+    mSelection = mElements.begin();
+    if(!mElements.empty())
+        (*mSelection)->select();
 }

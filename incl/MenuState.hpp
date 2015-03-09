@@ -25,7 +25,7 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -45,7 +45,7 @@ class MenuState : public State
          * \param stack to insert state into at construction.
          * \param window SFML RenderWindow object to draw to.
          */
-        MenuState(StateStack& stack, sf::RenderWindow& window);
+        MenuState(StateStack& stack, sf::RenderWindow& window, std::list<GUIElement*> elements = std::list<GUIElement*>(0));
 
         /**
          * \brief Draw state
@@ -70,19 +70,41 @@ class MenuState : public State
          */
 		virtual bool handleEvent(const sf::Event& event);
 
+        /**
+         * \brief Set background texture.
+         *
+         * \param texture background texture.
+         */
+        void setBackground(const sf::Texture& texture);
+
+        /**
+         * \brief Set background color.
+         *
+         * \param color background color.
+         */
+        void setBackground(sf::Color color);
+
+        /**
+         * \brief Set GUI elements.
+         *
+         * \param elements GUI elements.
+         */
+        void setElements(std::list<GUIElement*> elements);
+
 
     private:
-        std::list<GUIElement*>          getButtons();
         std::list<TextureList::Asset>   getTextures() const;
-        std::list<SoundList::Asset>   getSounds() const;
+        std::list<SoundList::Asset>     getSounds() const;
 
-    private:
+    protected:
         sf::RenderWindow&   mWindow;
         TextureList         mTextures;
         SoundList           mSounds;
         SoundPlayer         mSoundPlayer;
+
+    private:
         GUIContainer        mMenu;
-        sf::Sprite          mBackground;
+        sf::RectangleShape  mBackground;
 };
 
 /************************************************
