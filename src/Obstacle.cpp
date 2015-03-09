@@ -52,7 +52,6 @@ Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float w
 
 Obstacle::~Obstacle()
 {
-    mSoundPlayer.pause();
 }
 
 bool Obstacle::isMarkedForRemoval() const
@@ -67,6 +66,13 @@ void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 
 void Obstacle::updateCurrent()
 {
+    if(mSoundPlayer.getStatus() == sf::Sound::Status::Playing)
+    {
+        mShape.setFillColor(sf::Color::Blue);
+    }
+    else
+        mShape.setFillColor(sf::Color::Black);
+
     sf::Vector2f pos = 	getWorldTransform() * sf::Vector2f(mShape.getPosition());
 
     mTime += TIME_PER_FRAME::seconds();
@@ -76,7 +82,7 @@ void Obstacle::updateCurrent()
     {
         if(mPlayDuration <= mTime)
         {
-            mSoundPlayer.pause();
+            mSoundPlayer.SoundPlayer::stop();
             mIsPaused = true;
         }
         else
@@ -85,7 +91,7 @@ void Obstacle::updateCurrent()
             //if(timeLeft < 0.2f)
                //mSoundPlayer.fade(0.f, timeLeft);
 
-            mSoundPlayer.update(TIME_PER_FRAME::seconds());
+            //mSoundPlayer.update(TIME_PER_FRAME::seconds());
         }
     }
 
