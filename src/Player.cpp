@@ -105,3 +105,8 @@ void Player::accelerate(float a)
 {
     mMovementSpeed += a;
 }
+
+int Player::getHp() const
+{
+    return mHp;
+}

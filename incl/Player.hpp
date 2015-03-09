@@ -61,6 +61,13 @@ class Player : public SpriteNode
          */
         void accelerate(float a);
 
+        /**
+         * \brief Get current HP.
+         *
+         * \return current HP of player node.
+         */
+         int getHp() const;
+
     private:
         /**
          * \brief Draw this node.
