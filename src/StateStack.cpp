@@ -118,7 +118,7 @@ void StateStack::applyPendingRequests()
                 break;
 
             case Pop:
-                mStack.pop_front();
+                mStack.pop_back();
                 break;
 
             case Clear:
