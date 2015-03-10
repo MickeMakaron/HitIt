@@ -39,13 +39,14 @@ class Button : public GUIElement
     public:
         typedef std::function<void()> Callback;
 
-        Button(const sf::Texture& texture, const sf::Text& text, SoundPlayer& soundPlayer, Callback callback);
+        Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback);
 
+        virtual bool isSelectable() const;
         virtual void select();
         virtual void deselect();
         virtual void activate();
 
-
+        virtual sf::FloatRect getBoundingRect() const;
     private:
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

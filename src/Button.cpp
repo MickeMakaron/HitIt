@@ -32,15 +32,13 @@
 #include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
-Button::Button(const sf::Texture& texture, const sf::Text& text, SoundPlayer& soundPlayer, Callback callback)
-: GUIElement(texture)
-, mText(text)
+Button::Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback)
+: mText(text)
 , mSoundPlayer(soundPlayer)
 , mCallback(callback)
 {
-    sf::FloatRect bounds = getLocalBounds();
-    sf::FloatRect textBounds = mText.getLocalBounds();
-    mText.setPosition((bounds.width - textBounds.width) / 2.f, (bounds.height - textBounds.height) / 2.f);
+    sf::FloatRect textBounds = mText.getGlobalBounds();
+    setOrigin(textBounds.width / 2.f, textBounds.height / 2.f);
     mText.setColor(sf::Color::Black);
 }
 
@@ -66,7 +64,15 @@ void Button::activate()
 void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-    auto derp = states.transform.transformRect(mText.getGlobalBounds());
-    //SpriteNode::drawCurrent(target, states);
     target.draw(mText, states);
+}
+
+bool Button::isSelectable() const
+{
+    return true;
+}
+
+sf::FloatRect Button::getBoundingRect() const
+{
+    return getWorldTransform().transformRect(mText.getGlobalBounds());
 }
