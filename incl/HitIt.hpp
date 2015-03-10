@@ -39,11 +39,8 @@ class HitIt
     public:
         /**
          * \brief Constructor
-         *
-         * \param sizeX width of window in pixels.
-         * \param sizeY height of window in pixels.
          */
-        HitIt(unsigned int sizeX, unsigned int sizeY);
+        HitIt();
 
         /**
          * \brief Destructor
@@ -56,6 +53,22 @@ class HitIt
         void run();
 
     private:
+        struct WindowSettings
+        {
+            WindowSettings(sf::VideoMode mode, std::string title, unsigned int style) : mode(mode), title(title), style(style){};
+            sf::VideoMode   mode;
+            std::string     title;
+            unsigned int    style;
+        };
+
+        /**
+         * \brief Get optimal window configuration for this computer.
+         *
+         * \return window configuration.
+         */
+        WindowSettings getWindowSettings() const;
+
+
         /**
          * \brief Process input from input devices.
          */
@@ -67,8 +80,9 @@ class HitIt
         void render();
 
     private:
+        const sf::Vector2f  M_DRAW_SIZE = sf::Vector2f(1000.f, 1000.f);
+        WindowSettings      mWindowSettings;
         sf::RenderWindow    mWindow;    ///< SFML window object.
-        sf::RenderTarget&   mTarget;    ///< SFML target object within window.
         StateStack          mStateStack;      ///< State stack for program states.
         FontList            mFonts;
 };

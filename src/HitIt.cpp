@@ -38,12 +38,16 @@
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
-HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
-: mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", /*sf::Style::Titlebar | sf::Style::Close | */sf::Style::Fullscreen)
-, mTarget(mWindow)
+HitIt::HitIt()
+: mWindowSettings(getWindowSettings())
+, mWindow(mWindowSettings.mode, mWindowSettings.title, mWindowSettings.style)
 {
-    mWindow.setView(sf::View());
-    mTarget.setView(sf::View());
+    sf::View view;
+    float width = M_DRAW_SIZE.x / mWindowSettings.mode.width;
+    float left = width / 2.f;
+    view.setViewport(sf::FloatRect(left, 0.f, width, 1.f));
+    mWindow.setView(view);
+
     Assets::setDirectory("assets/");
     mFonts.setAssets({FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf")});
 
@@ -62,6 +66,31 @@ HitIt::~HitIt()
 {
     // Really make sure ALL resources are released.
     Assets::release();
+}
+
+
+HitIt::WindowSettings HitIt::getWindowSettings() const
+{
+    /*
+     * First set to desktop mode (not fullscreen)
+     */
+    sf::VideoMode mode = sf::VideoMode::getDesktopMode();
+    std::string title = "Hit it!";
+    unsigned int style = sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize;
+
+    /*
+     * Then search for valid fullscreen mode. If
+     * found, set our configuration to that mode.
+     */
+    for(const sf::VideoMode& fullscreenMode : sf::VideoMode::getFullscreenModes())
+        if(fullscreenMode.isValid())
+        {
+            mode = fullscreenMode;
+            style = sf::Style::Fullscreen;
+            break;
+        }
+
+    return WindowSettings(mode, title, style);
 }
 
 ////////////////////////////////////////////////
