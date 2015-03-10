@@ -24,6 +24,7 @@
 ////////////////////////////////////////////////
 // C++ Standard Library
 #include <cassert>
+#include <limits>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -40,7 +41,7 @@
 
 GUIContainer::GUIContainer(std::list<GUIElement*> elements)
 {
-    setElements(elements);
+    insert(elements);
 }
 
 ////////////////////////////////////////////////
@@ -53,10 +54,12 @@ void GUIContainer::update()
 
 ////////////////////////////////////////////////
 
-void GUIContainer::draw(sf::RenderTarget& target) const
+void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    states.transform *= getTransform();
+
     for(const ElementPtr& element : mElements)
-        target.draw(*element);
+        target.draw(*element, states);
 }
 
 ////////////////////////////////////////////////
@@ -69,13 +72,11 @@ void GUIContainer::handleEvent(const sf::Event& event)
             switch(event.key.code)
             {
                 case sf::Keyboard::Return:
-                    (*mSelection)->activate();
+                    activate();
                     break;
-
                 case sf::Keyboard::Down:
                     selectNext();
                     break;
-
                 case sf::Keyboard::Up:
                     selectPrevious();
                     break;
@@ -91,34 +92,59 @@ void GUIContainer::handleEvent(const sf::Event& event)
         element->handleEvent(event);
 }
 
+void GUIContainer::activate()
+{
+    if(!mElements.empty() && (*mSelection)->isSelectable())
+        (*mSelection)->activate();
+}
+
 ////////////////////////////////////////////////
 
 void GUIContainer::selectNext()
 {
-    (*mSelection)->deselect();
+    if(!mElements.empty())
+    {
+        if(mSelection != mElements.end())
+            (*mSelection)->deselect();
 
-    mSelection++;
-    if(mSelection == mElements.end())
-        mSelection = mElements.begin();
+        int iteration = 1;
+        do
+        {
+            mSelection++;
+            if(mSelection == mElements.end())
+                mSelection = mElements.begin();
+        } while(!(*mSelection)->isSelectable() && iteration < mElements.size());
 
-    (*mSelection)->select();
+        (*mSelection)->select();
+    }
 }
+
+
 
 ////////////////////////////////////////////////
 
 void GUIContainer::selectPrevious()
 {
-    (*mSelection)->deselect();
-
-    if(mSelection == mElements.begin())
+    if(!mElements.empty())
     {
-        mSelection = mElements.end();
-        mSelection--;
-    }
-    else
-        mSelection--;
+        if(mSelection != mElements.end())
+            (*mSelection)->deselect();
 
-    (*mSelection)->select();
+        int iteration = 1;
+        do
+        {
+            if(mSelection == mElements.begin())
+            {
+                mSelection = mElements.end();
+                mSelection--;
+            }
+            else
+                mSelection--;
+        } while(!(*mSelection)->isSelectable() && iteration < mElements.size());
+
+
+        (*mSelection)->select();
+    }
 }
 
 ////////////////////////////////////////////////
@@ -126,16 +152,51 @@ void GUIContainer::selectPrevious()
 void GUIContainer::insert(GUIElement* element)
 {
     mElements.push_back(ElementPtr(element));
+
+    mSelection = mElements.end();
+    selectNext();
+    updateSize();
 }
 
 ////////////////////////////////////////////////
 
-void GUIContainer::setElements(std::list<GUIElement*> elements)
+void GUIContainer::insert(std::list<GUIElement*> elements)
 {
-    for(GUIElement* element : elements)
-        insert(element);
+    if(!elements.empty())
+    {
+        for(GUIElement* element : elements)
+            mElements.push_back(ElementPtr(element));
 
-    mSelection = mElements.begin();
-    if(!mElements.empty())
-        (*mSelection)->select();
+        mSelection = mElements.end();
+        selectNext();
+        updateSize();
+    }
+
+}
+
+void GUIContainer::updateSize()
+{
+    sf::Vector2f min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
+    sf::Vector2f max(std::numeric_limits<float>::min(), std::numeric_limits<float>::min());
+
+    for(ElementPtr& element : mElements)
+    {
+        sf::FloatRect bounds = element->getBoundingRect();
+
+
+        min.x = std::min(min.x, bounds.left);
+        min.y = std::min(min.y, bounds.top);
+
+        max.x = std::max(max.x, bounds.left + bounds.width);
+        max.y = std::max(max.y, bounds.top + bounds.height);
+    }
+
+    mSize = max - min;
+    setOrigin(mSize / 2.f);
+}
+
+
+sf::FloatRect GUIContainer::getGlobalBounds() const
+{
+    return getTransform().transformRect(sf::FloatRect(0.f, 0.f, mSize.x, mSize.y));
 }

@@ -30,6 +30,8 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
+#include "SFML/Graphics/Transformable.hpp"
+#include "SFML/Graphics/Drawable.hpp"
 namespace sf
 {
     class RenderTarget;
@@ -41,7 +43,7 @@ namespace sf
 #include "GUIElement.hpp"
 ////////////////////////////////////////////////
 
-class GUIContainer
+class GUIContainer : public sf::Transformable, public sf::Drawable
 {
     public:
         typedef std::unique_ptr<GUIElement> ElementPtr;
@@ -62,8 +64,9 @@ class GUIContainer
          * \brief Draw container to target.
          *
          * \param target SFML RenderTarget object to draw to.
+         * \param target SFML RenderStates object to draw with.
          */
-        void draw(sf::RenderTarget& target) const;
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
         /**
          * \brief Handle input events.
@@ -72,6 +75,29 @@ class GUIContainer
          */
         void handleEvent(const sf::Event& event);
 
+        /**
+         * \brief Insert element into container.
+         *
+         * \param element element to insert.
+         */
+        void insert(GUIElement* element);
+
+        /**
+         * \brief Insert GUI elements.
+         *
+         * \param elements GUI elements.
+         */
+        void insert(std::list<GUIElement*> elements);
+
+        virtual sf::FloatRect getGlobalBounds() const;
+
+    private:
+        /**
+         * \brief Update size by checking bounds of elements.
+         */
+         void updateSize();
+
+    private:
         /**
          * \brief Select next element in array.
          */
@@ -82,23 +108,12 @@ class GUIContainer
          */
         void selectPrevious();
 
-        /**
-         * \brief Insert element into container.
-         *
-         * \param element element to insert.
-         */
-        void insert(GUIElement* element);
-
-        /**
-         * \brief Set GUI elements.
-         *
-         * \param elements GUI elements.
-         */
-        void setElements(std::list<GUIElement*> elements);
+        void activate();
 
     private:
         std::list<ElementPtr>           mElements;  ///< GUI elements.
         std::list<ElementPtr>::iterator mSelection; ///< Current selection.
+        sf::Vector2f                    mSize;      ///< Size of container to fit all elements.
 };
 
 /************************************************
