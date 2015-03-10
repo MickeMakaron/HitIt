@@ -44,6 +44,7 @@ Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
 , mSpawnArea(spawnArea)
 , mSampler()
 , mObstacles(sf::Quads)
+, mScrollSpeed(500.f)
 {
     Midi midi(midiFilePath);
     mSpawnQueue = midi.getNotes();
@@ -56,8 +57,6 @@ Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
 
     mNoteWidth = mSpawnArea.width / (maxNote.tone - minNote.tone);
     mMinNoteX = minNote.tone * mNoteWidth;
-
-    mScrollSpeed = 500.f;
 }
 
 void Spawner::draw(sf::RenderTarget& target) const
