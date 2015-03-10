@@ -42,14 +42,13 @@
 
 World::World(sf::RenderTarget& target)
 : mTarget(target)
-, mView()
+, mView(mTarget.getView())
 , mTextures(getTextures())
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 10, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string("assets/midi/chillameddippen.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
+, mSpawner(std::string("assets/midi/35468_Circus-Galop.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
 , mState(Running)
 {
-    mTarget.setView(mView);
     buildWorld();
 }
 
