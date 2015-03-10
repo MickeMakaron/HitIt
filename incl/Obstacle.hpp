@@ -52,7 +52,7 @@ class Obstacle : public SceneNode
          * \param texture texture to apply to sprite.
          * \param buffer sound buffer that contains sound to be played.
          */
-        Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, int category = 0);
+        Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, unsigned int iVertexArray, int category = 0);
 
         ~Obstacle();
 
@@ -70,6 +70,13 @@ class Obstacle : public SceneNode
 		 * \return bounding rectangle of node.
 		 */
 		virtual sf::FloatRect	getBoundingRect() const;
+
+		/**
+		 * \brief Get index in vertex array.
+		 *
+		 * \return index in vertex array.
+		 */
+		unsigned int getVertexArrayIndex() const;
 
     private:
         /**
@@ -93,6 +100,7 @@ class Obstacle : public SceneNode
         float               mLifeTime;      ///< How long until marked for removal.
         float               mTime;          ///< Elapsed time.
         bool mIsPaused;
+        unsigned int        mIVertexArray;
 };
 
 

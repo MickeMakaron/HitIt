@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -35,14 +35,14 @@
 ////////////////////////////////////////////////
 
 
-MenuState::MenuState(StateStack& stack, sf::RenderWindow& window, std::list<GUIElement*> elements)
+MenuState::MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIElement*> elements)
 : State(stack)
-, mWindow(window)
+, mTarget(target)
 , mTextures(getTextures())
 , mSounds(getSounds())
 , mSoundPlayer(Assets::get(ResourceID::Sound::Button))
 , mMenu(elements)
-, mBackground(mWindow.getView().getSize())
+, mBackground(mTarget.getView().getSize())
 {
 }
 
@@ -50,8 +50,8 @@ MenuState::MenuState(StateStack& stack, sf::RenderWindow& window, std::list<GUIE
 
 void MenuState::draw()
 {
-    mWindow.draw(mBackground);
-    mMenu.draw(mWindow);
+    mTarget.draw(mBackground);
+    mMenu.draw(mTarget);
 }
 
 ////////////////////////////////////////////////

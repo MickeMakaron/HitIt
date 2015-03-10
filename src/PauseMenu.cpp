@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -35,8 +35,8 @@
 ////////////////////////////////////////////////
 
 
-PauseMenu::PauseMenu(StateStack& stack, sf::RenderWindow& window, GameState& game)
-: MenuState(stack, window)
+PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& game)
+: MenuState(stack, target)
 , mGame(game)
 {
     setElements(getButtons());
@@ -66,7 +66,7 @@ std::list<GUIElement*> PauseMenu::getButtons()
 {
     namespace Tex = ResourceID::Texture;
     namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mWindow.getView().getSize() / 2.f;
+    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
     pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
 
     Button* resume = new Button
@@ -82,7 +82,7 @@ std::list<GUIElement*> PauseMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("Exit", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mWindow));}
+        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
     );
 
     resume->setPosition(pos);

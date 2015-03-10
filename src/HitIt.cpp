@@ -39,15 +39,16 @@
 ////////////////////////////////////////////////
 
 HitIt::HitIt(unsigned int sizeX, unsigned int sizeY)
-: mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", sf::Style::Titlebar | sf::Style::Close)
+: mWindow(sf::VideoMode(sizeX, sizeY), "Hit it!", /*sf::Style::Titlebar | sf::Style::Close | */sf::Style::Fullscreen)
+, mTarget(mWindow)
 {
     mWindow.setView(sf::View());
-
+    mTarget.setView(sf::View());
     Assets::setDirectory("assets/");
     mFonts.setAssets({FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf")});
 
 
-    //mWindow.setVerticalSyncEnabled(true);
+    mWindow.setVerticalSyncEnabled(true);
     //mWindow.setFramerateLimit(60);
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);

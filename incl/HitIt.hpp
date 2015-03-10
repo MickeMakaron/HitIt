@@ -68,6 +68,7 @@ class HitIt
 
     private:
         sf::RenderWindow    mWindow;    ///< SFML window object.
+        sf::RenderTarget&   mTarget;    ///< SFML target object within window.
         StateStack          mStateStack;      ///< State stack for program states.
         FontList            mFonts;
 };

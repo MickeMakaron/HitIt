@@ -23,7 +23,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -34,8 +34,8 @@
 ////////////////////////////////////////////////
 
 
-MainMenu::MainMenu(StateStack& stack, sf::RenderWindow& window)
-: MenuState(stack, window)
+MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
+: MenuState(stack, target)
 {
     setElements(getButtons());
     mTextures.insert(getTextures());
@@ -48,7 +48,7 @@ std::list<GUIElement*> MainMenu::getButtons()
 {
     namespace Tex = ResourceID::Texture;
     namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mWindow.getView().getSize() / 2.f;
+    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
     pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
 
     Button* play = new Button
@@ -56,7 +56,7 @@ std::list<GUIElement*> MainMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("Play", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mWindow));}
+        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
     );
 
     Button* about = new Button
@@ -64,7 +64,7 @@ std::list<GUIElement*> MainMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("About", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mWindow));}
+        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
     );
     Button* exit = new Button
     (

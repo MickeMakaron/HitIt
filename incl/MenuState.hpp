@@ -43,9 +43,9 @@ class MenuState : public State
          * \brief Constructor
          *
          * \param stack to insert state into at construction.
-         * \param window SFML RenderWindow object to draw to.
+         * \param target SFML RenderTarget object to draw to.
          */
-        MenuState(StateStack& stack, sf::RenderWindow& window, std::list<GUIElement*> elements = std::list<GUIElement*>(0));
+        MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIElement*> elements = std::list<GUIElement*>(0));
 
         /**
          * \brief Draw state
@@ -97,7 +97,7 @@ class MenuState : public State
         std::list<SoundList::Asset>     getSounds() const;
 
     protected:
-        sf::RenderWindow&   mWindow;
+        sf::RenderTarget&   mTarget;
         TextureList         mTextures;
         SoundList           mSounds;
         SoundPlayer         mSoundPlayer;

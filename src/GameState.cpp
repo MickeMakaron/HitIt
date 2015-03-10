@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 
@@ -38,10 +38,10 @@
 ////////////////////////////////////////////////
 
 
-GameState::GameState(StateStack& stack, sf::RenderWindow& window)
+GameState::GameState(StateStack& stack, sf::RenderTarget& target)
 : State(stack)
-, mWindow(window)
-, mWorld(mWindow)
+, mTarget(target)
+, mWorld(mTarget)
 {
 }
 
@@ -66,12 +66,12 @@ bool GameState::update()
 
         case World::Victory:
             mWorld.pause();
-            requestStackPush(new VictoryMenu(getStack(), mWindow));
+            requestStackPush(new VictoryMenu(getStack(), mTarget));
             break;
 
         case World::Defeat:
             mWorld.pause();
-            requestStackPush(new DefeatMenu(getStack(), mWindow));
+            requestStackPush(new DefeatMenu(getStack(), mTarget));
             break;
 
         default:
@@ -88,7 +88,7 @@ bool GameState::handleEvent(const sf::Event& event)
     mWorld.handleEvent(event);
 
 	if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-        requestStackPush(new PauseMenu(getStack(), mWindow, *this));//requestStackPush(new VictoryMenu(getStack(), mWindow));//requestStackClear();//requestStackPush(new PauseState(getStack(), mWindow));
+        requestStackPush(new PauseMenu(getStack(), mTarget, *this));//requestStackPush(new VictoryMenu(getStack(), mTarget));//requestStackClear();//requestStackPush(new PauseState(getStack(), mTarget));
 
 	return true;
 }

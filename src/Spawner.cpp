@@ -27,7 +27,7 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -43,6 +43,7 @@ Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
 : mTime(0.f)
 , mSpawnArea(spawnArea)
 , mSampler()
+, mObstacles(sf::Quads)
 {
     Midi midi(midiFilePath);
     mSpawnQueue = midi.getNotes();
@@ -59,9 +60,15 @@ Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
     mScrollSpeed = 500.f;
 }
 
+void Spawner::draw(sf::RenderTarget& target) const
+{
+    target.draw(mObstacles, mObstaclesState);
+}
+
 void Spawner::update()
 {
     mTime += TIME_PER_FRAME::seconds();
+    mObstaclesState.transform.translate(0.f, mScrollSpeed * TIME_PER_FRAME::seconds());
 }
 
 std::list<SceneNode*> Spawner::fetchNewNodes()
@@ -72,12 +79,45 @@ std::list<SceneNode*> Spawner::fetchNewNodes()
         Midi::Note nextNote = mSpawnQueue.front();
         mSpawnQueue.pop_front();
 
-        Obstacle* obstacle = new Obstacle(/*mSampler.getBuffer(nextNote.tone)*/mSampler.getSoundPlayer(nextNote.tone), mScrollSpeed, nextNote.duration, mNoteWidth, (mSpawnArea.height / mScrollSpeed + nextNote.duration), CollissionCategory::Lethal);
+        sf::Vertex points[4];
+        float left = mSpawnArea.left + nextNote.tone * mNoteWidth - mMinNoteX;
+        float top = -(nextNote.duration + nextNote.time) * mScrollSpeed;
+        float right = left + mNoteWidth;
+        float bot = top + nextNote.duration * mScrollSpeed;
+        points[0].position = sf::Vector2f(left, top);
+        points[1].position = sf::Vector2f(right, top);
+        points[2].position = sf::Vector2f(right, bot);
+        points[3].position = sf::Vector2f(left, bot);
+
+        unsigned int numObstacles = mObstacles.getVertexCount();
+        mObstacles.resize(numObstacles + 4);
+        for(unsigned int i = 0; i < 4; i++)
+        {
+            points[i].color = sf::Color::Black;
+            mObstacles[numObstacles + i] = points[i];
+        }
+
+        Obstacle* obstacle = new Obstacle(/*mSampler.getBuffer(nextNote.tone)*/mSampler.getSoundPlayer(nextNote.tone), mScrollSpeed, nextNote.duration, mNoteWidth, (mSpawnArea.height / mScrollSpeed + nextNote.duration), numObstacles, CollissionCategory::Lethal);
         obstacle->setPosition(mSpawnArea.left + nextNote.tone * mNoteWidth - mMinNoteX, -nextNote.duration * mScrollSpeed);
         newNodes.push_back(obstacle);
+        mObstacleNodes.push_back(obstacle);
+
     }
 
     return newNodes;
+}
+
+void Spawner::removeWrecks()
+{
+    for(const Obstacle* o : mObstacleNodes)
+    {
+        unsigned int iVertex = o->getVertexArrayIndex();
+        for(unsigned int i = iVertex; i < iVertex + 4; i++)
+            mObstacles[i] = sf::Vertex();
+    }
+
+    mObstacleNodes.remove_if([](Obstacle* o){return o->isMarkedForRemoval();});
+
 }
 
 

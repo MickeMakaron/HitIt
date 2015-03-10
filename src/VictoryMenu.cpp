@@ -24,7 +24,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -36,8 +36,8 @@
 ////////////////////////////////////////////////
 
 
-VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderWindow& window)
-: MenuState(stack, window)
+VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target)
+: MenuState(stack, target)
 {
     setElements(getButtons());
 
@@ -57,7 +57,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
 {
     namespace Tex = ResourceID::Texture;
     namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mWindow.getView().getSize() / 2.f;
+    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
     pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
 
     Button* playSame = new Button
@@ -65,7 +65,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("Play again", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mWindow));}
+        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget));}
     );
 
     Button* playOther = new Button
@@ -73,7 +73,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("Play another track", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mWindow));}
+        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
     };
 
     Button* mainMenu = new Button
@@ -81,7 +81,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
         Assets::get(Tex::Button),
         sf::Text("Go to main menu", Assets::get(Font::OldGateLaneNF)),
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mWindow));}
+        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
     );
 
 

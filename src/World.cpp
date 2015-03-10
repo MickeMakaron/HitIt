@@ -22,7 +22,7 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/System/Vector2.hpp"
 ////////////////////////////////////////////////
@@ -40,16 +40,16 @@
 ////////////////////////////////////////////////
 
 
-World::World(sf::RenderWindow& window)
-: mWindow(window)
+World::World(sf::RenderTarget& target)
+: mTarget(target)
 , mView()
 , mTextures(getTextures())
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 10, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string("assets/midi/Soviet March from Command and Conquer Red Alert 3.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
+, mSpawner(std::string("assets/midi/chillameddippen.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
 , mState(Running)
 {
-    mWindow.setView(mView);
+    mTarget.setView(mView);
     buildWorld();
 }
 
@@ -63,7 +63,8 @@ World::~World()
 
 void World::draw()
 {
-    mScene.draw(mWindow);
+    mScene.draw(mTarget);
+    mSpawner.draw(mTarget);
 }
 
 ////////////////////////////////////////////////

@@ -28,7 +28,7 @@
 namespace sf
 {
     class Event;
-    class RenderWindow;
+    class RenderTarget;
 }
 ////////////////////////////////////////////////
 

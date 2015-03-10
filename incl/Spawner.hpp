@@ -31,6 +31,12 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/Rect.hpp"
+#include "SFML/Graphics/VertexArray.hpp"
+#include "SFML/Graphics/RenderStates.hpp"
+namespace sf
+{
+    class RenderTarget;
+}
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -38,6 +44,7 @@
 #include "Midi.hpp"
 #include "AudioSampler.hpp"
 class SceneNode;
+class Obstacle;
 ////////////////////////////////////////////////
 
 class Spawner
@@ -46,6 +53,7 @@ class Spawner
         Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea);
 
         void update();
+        void draw(sf::RenderTarget& target) const;
 
         std::list<SceneNode*> fetchNewNodes();
 
@@ -65,6 +73,7 @@ class Spawner
          */
         void resume();
 
+        void removeWrecks();
 
     private:
         std::list<Midi::Note>   mSpawnQueue;
@@ -74,6 +83,9 @@ class Spawner
         AudioSampler            mSampler;
         float                   mMinNoteX;
         float                   mNoteWidth;
+        sf::VertexArray         mObstacles;
+        sf::RenderStates        mObstaclesState;
+        std::list<Obstacle*>    mObstacleNodes;
 };
 
 

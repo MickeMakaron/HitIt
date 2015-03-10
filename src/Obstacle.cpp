@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////
 
 
-Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, int category)
+Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, unsigned int iVertexArray, int category)
 : SceneNode(category)
 , mShape(sf::Vector2f(width, speed * playDuration))
 , mSoundPlayer(buffer)
@@ -41,6 +41,7 @@ Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float w
 , mLifeTime(lifeTime)
 , mTime(0.f)
 , mIsPaused(false)
+, mIVertexArray(iVertexArray)
 {
     //mSoundPlayer.setVolume(0.f);
     //mSoundPlayer.fade(100.f, 0.1f);
@@ -61,7 +62,7 @@ bool Obstacle::isMarkedForRemoval() const
 
 void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mShape, states);
+    //target.draw(mShape, states);
 }
 
 void Obstacle::updateCurrent()
@@ -102,4 +103,9 @@ void Obstacle::updateCurrent()
 sf::FloatRect Obstacle::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mShape.getGlobalBounds());
+}
+
+unsigned int Obstacle::getVertexArrayIndex() const
+{
+    return mIVertexArray;
 }

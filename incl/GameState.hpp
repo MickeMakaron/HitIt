@@ -38,7 +38,7 @@ class GameState : public State
          *
          * \param stack to insert state into at construction.
          */
-        GameState(StateStack& stack, sf::RenderWindow& window);
+        GameState(StateStack& stack, sf::RenderTarget& target);
 
         /**
          * \brief Draw state
@@ -68,7 +68,7 @@ class GameState : public State
 		void resume();
 
     private:
-        sf::RenderWindow&   mWindow;
+        sf::RenderTarget&   mTarget;
         World               mWorld;
 };
 

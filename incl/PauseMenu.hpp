@@ -36,9 +36,9 @@ class PauseMenu : public MenuState
          * \brief Constructor
          *
          * \param stack to insert state into at construction.
-         * \param window SFML RenderWindow object to draw to.
+         * \param target SFML RenderTarget object to draw to.
          */
-        PauseMenu(StateStack& stack, sf::RenderWindow& window, GameState& game);
+        PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& game);
 
         /**
          * \brief Handle input events.

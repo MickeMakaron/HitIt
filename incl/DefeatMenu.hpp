@@ -35,9 +35,9 @@ class DefeatMenu : public MenuState
          * \brief Constructor
          *
          * \param stack to insert state into at construction.
-         * \param window SFML RenderWindow object to draw to.
+         * \param target SFML RenderTarget object to draw to.
          */
-        DefeatMenu(StateStack& stack, sf::RenderWindow& window);
+        DefeatMenu(StateStack& stack, sf::RenderTarget& target);
 
 
         /**

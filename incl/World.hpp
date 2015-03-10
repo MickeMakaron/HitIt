@@ -32,7 +32,7 @@
 // SFML - Simple and Fast Media Library
 namespace sf
 {
-    class RenderWindow;
+    class RenderTarget;
 }
 ////////////////////////////////////////////////
 
@@ -60,9 +60,9 @@ class World
         /**
          * \brief Constructor
          *
-         * \param window SFML RenderWindow object to draw to.
+         * \param target SFML RenderTarget object to draw to.
          */
-        World(sf::RenderWindow& window);
+        World(sf::RenderTarget& target);
 
         ~World();
 
@@ -121,7 +121,7 @@ class World
 
 
     private:
-        sf::RenderWindow&   mWindow;        ///< SFML RenderWindow to draw to.
+        sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to.
         sf::View            mView;          ///< View (what is actually shown to the player).
         SceneGraph          mScene;         ///< Scene graph of all game objects.
         TextureList         mTextures;      ///< Asset list for textures.
