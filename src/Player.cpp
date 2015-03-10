@@ -33,6 +33,7 @@
 // HitIt internal headers
 #include "Player.hpp"
 #include "TIME_PER_FRAME.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
@@ -43,6 +44,7 @@ Player::Player(const sf::Texture& texture, int hp, sf::Vector2f position)
 , mDiagonalMovementSpeed(sqrtf(0.5f * mMovementSpeed * 0.5f * mMovementSpeed * 2))
 , mIsImmortal(false)
 , mImmortalCounter(0.f)
+, mDamagedSound(Assets::get(ResourceID::Sound::PlayerDamaged))
 {
     setPosition(position);
 }
@@ -75,10 +77,30 @@ void Player::updateCurrent()
 
 void Player::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    SpriteNode::drawCurrent(target, states);
-
     if(mIsImmortal)
-        drawBoundingRect(target, states);
+    {
+        // Lol at this fix, but time is running out :P
+        bool doDraw = false;
+        if(mImmortalCounter < 0.2f)
+            doDraw = false;
+        else if(mImmortalCounter < 0.3f)
+            doDraw = true;
+        else if(mImmortalCounter < 0.4f)
+            doDraw = false;
+        else if(mImmortalCounter < 0.5f)
+            doDraw = true;
+        else if(mImmortalCounter < 0.6)
+            doDraw = false;
+        else
+            doDraw = true;
+
+        if(doDraw)
+            SpriteNode::drawCurrent(target, states);
+    }
+    else
+        SpriteNode::drawCurrent(target, states);
+
+
 }
 
 bool  Player::isDestroyed() const
@@ -93,6 +115,8 @@ void Player::damage()
         mHp -= 1;
         mIsImmortal = true;
         mImmortalCounter = 0.f;
+
+        mDamagedSound.play();
     }
 }
 
@@ -109,4 +133,9 @@ void Player::accelerate(float a)
 int Player::getHp() const
 {
     return mHp;
+}
+
+bool Player::isDamaged() const
+{
+    return mIsImmortal;
 }

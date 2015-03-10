@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "SpriteNode.hpp"
+#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 
@@ -68,6 +69,8 @@ class Player : public SpriteNode
          */
          int getHp() const;
 
+        bool isDamaged() const;
+
     private:
         /**
          * \brief Draw this node.
@@ -87,11 +90,12 @@ class Player : public SpriteNode
         float           mMovementSpeed;         ///< Movement speed.
         float           mDiagonalMovementSpeed; ///< Movement speed when moving diagonally.
         bool            mIsImmortal;            ///< Indicator whether player is immortal.
-        const float     mImmortalTime = 2.f;    ///< Time to remain immortal in seconds.
+        const float     mImmortalTime = 1.f;    ///< Time to remain immortal in seconds.
         float           mImmortalCounter;       ///< Time accumulator for immortality.
         bool            mIsJumping;             ///< Indicator whether player is jumping.
-        const float     mJumpingTime = 1.f;      ///< Time airborne in seconds.
+        const float     mJumpingTime = 1.f;     ///< Time airborne in seconds.
         float           mJumpingCounter;        ///< Time accumulator for jumping.
+        SoundPlayer     mDamagedSound;          ///< Sound played when damaged.
 
 };
 
