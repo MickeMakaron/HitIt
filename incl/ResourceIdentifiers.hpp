@@ -48,6 +48,8 @@ namespace ResourceID
         enum ID
         {
             OldGateLaneNF,
+            CircusOrnate,
+            Arial,
             IDCount,
         };
     }
