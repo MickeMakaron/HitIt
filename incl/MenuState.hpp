@@ -84,13 +84,6 @@ class MenuState : public State
          */
         void setBackground(sf::Color color);
 
-        /**
-         * \brief Set GUI elements.
-         *
-         * \param elements GUI elements.
-         */
-        void setElements(std::list<GUIElement*> elements);
-
 
     private:
         std::list<TextureList::Asset>   getTextures() const;
@@ -101,10 +94,11 @@ class MenuState : public State
         TextureList         mTextures;
         SoundList           mSounds;
         SoundPlayer         mSoundPlayer;
+        GUIContainer        mMenu;
 
     private:
-        GUIContainer        mMenu;
         sf::RectangleShape  mBackground;
+
 };
 
 /************************************************

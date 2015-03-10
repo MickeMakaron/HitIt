@@ -51,7 +51,7 @@ MenuState::MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIE
 void MenuState::draw()
 {
     mTarget.draw(mBackground);
-    mMenu.draw(mTarget);
+    mTarget.draw(mMenu);
 }
 
 ////////////////////////////////////////////////
@@ -78,11 +78,6 @@ void MenuState::setBackground(const sf::Texture& background)
 void MenuState::setBackground(sf::Color color)
 {
     mBackground.setFillColor(color);
-}
-
-void MenuState::setElements(std::list<GUIElement*> elements)
-{
-    mMenu.setElements(elements);
 }
 
 std::list<TextureList::Asset> MenuState::getTextures() const
