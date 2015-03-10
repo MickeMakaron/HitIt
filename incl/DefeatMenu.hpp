@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
+#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 class DefeatMenu : public MenuState
@@ -52,6 +53,9 @@ class DefeatMenu : public MenuState
 
     private:
         std::list<GUIElement*> getButtons();
+
+    private:
+        SoundPlayer mTaunt; ///< Taunt the player for losing with this annoying sound.
 };
 
 /************************************************

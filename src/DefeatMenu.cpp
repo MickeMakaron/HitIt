@@ -39,6 +39,10 @@
 DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
 {
+    mSounds.insert({SoundList::Asset(ResourceID::Sound::Defeat, "sounds/defeat.ogg")});
+    mTaunt.setBuffer(Assets::get(ResourceID::Sound::Defeat));
+    mTaunt.play();
+
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
     text.setCharacterSize(300);
