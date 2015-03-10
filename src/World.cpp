@@ -42,12 +42,12 @@
 
 World::World(sf::RenderTarget& target)
 : mTarget(target)
-, mView(mTarget.getView())
 , mTextures(getTextures())
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 10, sf::Vector2f(500.f, 500.f)))
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 100, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string("assets/midi/35468_Circus-Galop.mid"), sf::FloatRect(mView.getSize().x / 5.f, 0.f, 3.f * mView.getSize().x / 5.f, mView.getSize().y))
-, mState(Running)
+, mSpawner(std::string("assets/midi/go therese!!.mid"), sf::FloatRect(mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y))
+, mState(Starting)
+, mTimer(0.f)
 {
     buildWorld();
 }
@@ -77,6 +77,29 @@ void World::update()
     mCollission.removeWrecks();
     mScene.removeWrecks();
 
+    if(mState == Starting)
+        updateStart();
+    else
+        updateRun();
+
+    if(mPlayer->isDestroyed())
+        updateDefeat();
+    else if(mSpawner.isEmpty())
+        updateVictory();
+}
+
+void World::updateStart()
+{
+    mTimer += TIME_PER_FRAME::seconds();
+    if(mTimer >= 3.f)
+    {
+        mState = Running;
+        mTimer = 0.f;
+    }
+}
+
+void World::updateRun()
+{
     mSpawner.update();
 
     for(SceneNode* node : mSpawner.fetchNewNodes())
@@ -84,15 +107,31 @@ void World::update()
         mScene.insert(node, SceneGraph::Layer::Middle);
         mCollission.insert(node);
     }
+}
 
-
-    if(mPlayer->isDestroyed())
+void World::updateDefeat()
+{
+    mTimer += TIME_PER_FRAME::seconds();
+    if(mTimer >= 3.f)
+    {
         mState = Defeat;
-    else if(mSpawner.isEmpty())
+        mTimer = 0.f;
+    }
+
+}
+
+
+void World::updateVictory()
+{
+    mTimer += TIME_PER_FRAME::seconds();
+
+    if(mTimer >= 3.f)
     {
         mState = Victory;
+        mTimer = 0.f;
     }
 }
+
 
 ////////////////////////////////////////////////
 
@@ -119,7 +158,7 @@ void World::buildWorld()
         new SpriteNode(Assets::get(ID::Fence), CollissionCategory::Collidable),
     };
 
-    sf::Vector2f viewSize = mView.getSize();
+    sf::Vector2f viewSize = mTarget.getView().getSize();
 
     // Audience terraces
     sf::FloatRect terraceRect = props[0]->getBoundingRect();
@@ -151,7 +190,7 @@ void World::keepPlayerInBounds()
         mPlayer->move(0.f, -playerRect.top);
     else
     {
-        float d = mView.getSize().y - (playerRect.top + playerRect.height);
+        float d = mTarget.getView().getSize().y - (playerRect.top + playerRect.height);
         if(d < 0.f)
             mPlayer->move(0.f, d);
     }

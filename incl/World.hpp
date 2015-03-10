@@ -50,6 +50,7 @@ class World
     public:
         enum State
         {
+            Starting,
             Running,
             Paused,
             Victory,
@@ -108,6 +109,11 @@ class World
          */
         void buildWorld();
 
+        void updateStart();
+        void updateRun();
+        void updateDefeat();
+        void updateVictory();
+
         /**
          * \brief Enclose the player character in the view.
          */
@@ -122,13 +128,13 @@ class World
 
     private:
         sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to.
-        sf::View            mView;          ///< View (what is actually shown to the player).
         SceneGraph          mScene;         ///< Scene graph of all game objects.
         TextureList         mTextures;      ///< Asset list for textures.
         Player*             mPlayer;        ///< Player controlled node.
         Collission          mCollission;    ///< Collission manager.
         Spawner             mSpawner;       ///< Spawn new obstacles.
         State               mState;         ///< Current world state.
+        float               mTimer;
 };
 
 
