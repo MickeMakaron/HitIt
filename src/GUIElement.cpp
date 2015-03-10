@@ -25,8 +25,8 @@
 #include "GUIElement.hpp"
 ////////////////////////////////////////////////
 
-GUIElement::GUIElement(const sf::Texture& texture)
-: SpriteNode(texture)
+GUIElement::GUIElement()
+: SceneNode()
 , mIsSelected(false)
 {
 
@@ -40,7 +40,13 @@ GUIElement::~GUIElement()
 
 ////////////////////////////////////////////////
 
-bool GUIElement::isSelected()
+bool GUIElement::isSelectable() const
+{
+    // False by default.
+    return false;
+}
+
+bool GUIElement::isSelected() const
 {
     return mIsSelected;
 }
@@ -71,4 +77,10 @@ void GUIElement::update()
 void GUIElement::handleEvent(const sf::Event& event)
 {
     // Do nothing by default.
+}
+
+
+void GUIElement::activate()
+{
+
 }

@@ -34,16 +34,17 @@ namespace sf
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "SpriteNode.hpp"
+#include "SceneNode.hpp"
 ////////////////////////////////////////////////
 
-class GUIElement : public SpriteNode
+class GUIElement : public SceneNode
 {
     public:
-        GUIElement(const sf::Texture& texture);
+        GUIElement();
         virtual ~GUIElement();
 
-        bool isSelected();
+        virtual bool isSelectable() const;
+        bool isSelected() const;
 
         virtual void select();
         virtual void deselect();
@@ -51,7 +52,7 @@ class GUIElement : public SpriteNode
         virtual void update();
         virtual void handleEvent(const sf::Event& event);
 
-        virtual void activate() = 0;
+        virtual void activate();
 
     private:
         bool mIsSelected;
