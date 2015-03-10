@@ -67,6 +67,8 @@ namespace ResourceID
         enum ID
         {
             Button,
+            PlayerDamaged,
+            Defeat,
             IDCount,
         };
     }

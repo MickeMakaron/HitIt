@@ -43,11 +43,13 @@
 World::World(sf::RenderTarget& target)
 : mTarget(target)
 , mTextures(getTextures())
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 100, sf::Vector2f(500.f, 500.f)))
+, mSounds(getSounds())
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 1, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
 , mSpawner(std::string("assets/midi/go therese!!.mid"), sf::FloatRect(mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y))
 , mState(Starting)
 , mTimer(0.f)
+, mPlayerIsDamaged(false)
 {
     buildWorld();
 }
@@ -72,6 +74,22 @@ void World::update()
 {
     mScene.update();
     mCollission.update();
+
+    if(mPlayerIsDamaged)
+    {
+        if(!mPlayer->isDamaged())
+        {
+            mPlayerIsDamaged = false;
+            mSpawner.setVolume(100.f);
+        }
+
+    }
+    else if(mPlayer->isDamaged())
+    {
+        mPlayerIsDamaged = true;
+        mSpawner.setVolume(30.f);
+    }
+
     keepPlayerInBounds();
 
     mCollission.removeWrecks();
@@ -83,7 +101,7 @@ void World::update()
         updateRun();
 
     if(mPlayer->isDestroyed())
-        updateDefeat();
+        mState = Defeat;
     else if(mSpawner.isEmpty())
         updateVictory();
 }
@@ -108,18 +126,6 @@ void World::updateRun()
         mCollission.insert(node);
     }
 }
-
-void World::updateDefeat()
-{
-    mTimer += TIME_PER_FRAME::seconds();
-    if(mTimer >= 3.f)
-    {
-        mState = Defeat;
-        mTimer = 0.f;
-    }
-
-}
-
 
 void World::updateVictory()
 {
@@ -210,6 +216,14 @@ std::list<TextureList::Asset> World::getTextures() const
     };
 }
 
+std::list<SoundList::Asset> World::getSounds() const
+{
+    namespace ID = ResourceID::Sound;
+    return
+    {
+        SoundList::Asset(ID::PlayerDamaged,     "sounds/player_damaged.ogg"),
+    };
+}
 
 World::State World::getState() const
 {

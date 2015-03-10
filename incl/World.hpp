@@ -111,7 +111,6 @@ class World
 
         void updateStart();
         void updateRun();
-        void updateDefeat();
         void updateVictory();
 
         /**
@@ -121,8 +120,17 @@ class World
 
         /**
          * \brief Get required texture list.
+         *
+         * \return list of texture assets.
          */
         std::list<TextureList::Asset> getTextures() const;
+
+        /**
+         * \brief Get required sound list.
+         *
+         * \return list of sound assets.
+         */
+        std::list<SoundList::Asset> getSounds() const;
 
 
 
@@ -130,11 +138,13 @@ class World
         sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to.
         SceneGraph          mScene;         ///< Scene graph of all game objects.
         TextureList         mTextures;      ///< Asset list for textures.
+        SoundList           mSounds;        ///< Asset list for sounds.
         Player*             mPlayer;        ///< Player controlled node.
         Collission          mCollission;    ///< Collission manager.
         Spawner             mSpawner;       ///< Spawn new obstacles.
         State               mState;         ///< Current world state.
         float               mTimer;
+        bool                mPlayerIsDamaged; ///< Player state.
 };
 
 
