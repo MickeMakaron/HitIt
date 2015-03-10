@@ -49,7 +49,11 @@ HitIt::HitIt()
     mWindow.setView(view);
 
     Assets::setDirectory("assets/");
-    mFonts.setAssets({FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf")});
+    mFonts.setAssets
+    ({
+        FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf"),
+        FontList::Asset(ResourceID::Font::CircusOrnate, "fonts/CircusOrnate.ttf")
+    });
 
 
     mWindow.setVerticalSyncEnabled(true);
