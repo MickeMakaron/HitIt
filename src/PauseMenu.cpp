@@ -32,6 +32,7 @@
 #include "Button.hpp"
 #include "GameState.hpp"
 #include "MainMenu.hpp"
+#include "Text.hpp"
 ////////////////////////////////////////////////
 
 
@@ -39,7 +40,15 @@ PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& gam
 : MenuState(stack, target)
 , mGame(game)
 {
-    setElements(getButtons());
+    sf::Text text;
+    text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
+    text.setCharacterSize(350);
+    text.setString("Paused");
+
+    mMenu.insert(new Text(text));
+    mMenu.insert(getButtons());
+    mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
+
     mGame.pause();
 
     sf::Color background = sf::Color::Black;
@@ -64,29 +73,33 @@ bool PauseMenu::handleEvent(const sf::Event& event)
 
 std::list<GUIElement*> PauseMenu::getButtons()
 {
-    namespace Tex = ResourceID::Texture;
-    namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
-    pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
+    sf::Text buttonText;
+    buttonText.setCharacterSize(100);
+    buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
 
+    buttonText.setString("Resume");
     Button* resume = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Resume", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackPop();}
     );
 
+    buttonText.setString("Quit to main menu");
     Button* exit = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Exit", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
     );
 
+
+    sf::FloatRect titleRect = mMenu.getGlobalBounds();
+    sf::Vector2f pos(titleRect.width / 2.f, titleRect.height * 2.f);
+
+    float yIncrement = buttonText.getGlobalBounds().height * 1.5f;
     resume->setPosition(pos);
-    pos.y += 50.f;
+    pos.y += yIncrement;
     exit->setPosition(pos);
     return
     {

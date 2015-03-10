@@ -31,54 +31,69 @@
 #include "MainMenu.hpp"
 #include "Button.hpp"
 #include "GameState.hpp"
+#include "Text.hpp"
 ////////////////////////////////////////////////
 
 
 MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
 {
-    setElements(getButtons());
+    sf::Text text;
+    text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
+    text.setCharacterSize(350);
+    text.setString("Hit it!");
+
+    mMenu.insert(new Text(text));
+    mMenu.insert(getButtons());
+
     mTextures.insert(getTextures());
-    setBackground(Assets::get(ResourceID::Texture::MenuStateBg));
 
+    sf::Color gray(100, 100, 100);
+    setBackground(gray);
 
+    mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 }
 
 std::list<GUIElement*> MainMenu::getButtons()
 {
-    namespace Tex = ResourceID::Texture;
-    namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
-    pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
+    sf::Text buttonText;
+    buttonText.setCharacterSize(100);
+    buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
 
+    buttonText.setString("Play");
     Button* play = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Play", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
     );
 
+    buttonText.setString("About");
     Button* about = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("About", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
     );
+
+    buttonText.setString("Exit");
     Button* exit = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Exit", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackClear();}
     );
 
+
+    sf::FloatRect titleRect = mMenu.getGlobalBounds();
+    sf::Vector2f pos(titleRect.width / 2.f, titleRect.height * 1.75f);
+
+    float yIncrement = buttonText.getGlobalBounds().height * 1.25f;
     play->setPosition(pos);
-    pos.y += 50.f;
+    pos.y += yIncrement;
 
     about->setPosition(pos);
-    pos.y += 50.f;
+    pos.y += yIncrement;
 
     exit->setPosition(pos);
     return

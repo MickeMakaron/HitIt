@@ -32,16 +32,24 @@
 #include "MainMenu.hpp"
 #include "GameState.hpp"
 #include "Button.hpp"
+#include "Text.hpp"
 ////////////////////////////////////////////////
 
 
 DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
 {
-    setElements(getButtons());
+    sf::Text text;
+    text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
+    text.setCharacterSize(300);
+    text.setString("Dangit!");
+
+    mMenu.insert(new Text(text));
+    mMenu.insert(getButtons());
+    mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 
     sf::Color background = sf::Color::Black;
-    background.a = 200;
+    background.a = 120;
     setBackground(background);
 }
 
@@ -53,41 +61,45 @@ bool DefeatMenu::handleEvent(const sf::Event& event)
 
 std::list<GUIElement*> DefeatMenu::getButtons()
 {
-    namespace Tex = ResourceID::Texture;
-    namespace Font = ResourceID::Font;
-    sf::Vector2f pos = mTarget.getView().getSize() / 2.f;
-    pos.x -= Assets::get(Tex::Button).getSize().x / 2.f;
+    sf::Text buttonText;
+    buttonText.setCharacterSize(100);
+    buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
 
+    buttonText.setString("Try again");
     Button* tryAgain = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Try again", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget));}
     );
 
+    buttonText.setString("Try another track");
     Button* tryAnother = new Button
-    (
-        Assets::get(Tex::Button),
-        sf::Text("Try another track", Assets::get(Font::OldGateLaneNF)),
+    {
+        buttonText,
         mSoundPlayer,
         [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
-    );
+    };
+
+    buttonText.setString("Go to main menu");
     Button* mainMenu = new Button
     (
-        Assets::get(Tex::Button),
-        sf::Text("Go to main menu", Assets::get(Font::OldGateLaneNF)),
+        buttonText,
         mSoundPlayer,
         [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
     );
 
+
+    sf::FloatRect titleRect = mMenu.getGlobalBounds();
+    sf::Vector2f pos(titleRect.width / 2.f, titleRect.height * 2.f);
+
+    float yIncrement = buttonText.getGlobalBounds().height * 1.5f;
     tryAgain->setPosition(pos);
-    pos.y += 50.f;
-
+    pos.y += yIncrement;
     tryAnother->setPosition(pos);
-    pos.y += 50.f;
-
+    pos.y += yIncrement;
     mainMenu->setPosition(pos);
+
     return
     {
         tryAgain,
