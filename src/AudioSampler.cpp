@@ -76,3 +76,10 @@ void AudioSampler::resume()
     for(SoundPlayer& player : mSoundPlayers)
         player.resume();
 }
+
+
+void AudioSampler::setVolume(float volume)
+{
+    for(SoundPlayer& player : mSoundPlayers)
+        player.setVolume(volume);
+}

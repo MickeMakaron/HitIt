@@ -63,6 +63,8 @@ class AudioSampler
          */
         void resume();
 
+        void setVolume(float volume);
+
 
     private:
         void createSamples(sf::Int16*& samples, unsigned int tone, unsigned int& numSamples, unsigned int sampleRate, double volume) const;

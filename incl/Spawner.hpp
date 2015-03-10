@@ -75,6 +75,8 @@ class Spawner
 
         void removeWrecks();
 
+        void setVolume(float volume);
+
     private:
         std::list<Midi::Note>   mSpawnQueue;
         float                   mTime;

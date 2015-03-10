@@ -135,3 +135,8 @@ void Spawner::resume()
 {
     mSampler.resume();
 }
+
+void Spawner::setVolume(float volume)
+{
+    mSampler.setVolume(volume);
+}
