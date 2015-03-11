@@ -25,6 +25,7 @@
 #include <sstream>
 ////////////////////////////////////////////////
 
+
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Window/Event.hpp"
@@ -51,8 +52,9 @@ HitIt::HitIt()
     Assets::setDirectory("assets/");
     mFonts.setAssets
     ({
-        FontList::Asset(ResourceID::Font::OldGateLaneNF, "fonts/OldGateLaneNF.ttf"),
-        FontList::Asset(ResourceID::Font::CircusOrnate, "fonts/CircusOrnate.ttf")
+        FontList::Asset(ResourceID::Font::OldGateLaneNF,    "fonts/OldGateLaneNF.ttf"),
+        FontList::Asset(ResourceID::Font::CircusOrnate,     "fonts/CircusOrnate.ttf"),
+        FontList::Asset(ResourceID::Font::Arial,            "fonts/arial.ttf"),
     });
 
 
@@ -62,6 +64,8 @@ HitIt::HitIt()
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     mStateStack.push(new MainMenu(mStateStack, mWindow));
+
+
 }
 
 ////////////////////////////////////////////////

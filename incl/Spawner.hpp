@@ -50,7 +50,7 @@ class Obstacle;
 class Spawner
 {
     public:
-        Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea);
+        Spawner(std::string midiFilePath, sf::FloatRect spawnArea);
 
         void update();
         void draw(sf::RenderTarget& target) const;

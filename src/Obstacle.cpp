@@ -91,8 +91,6 @@ void Obstacle::updateCurrent()
             float timeLeft = mPlayDuration - mTime;
             //if(timeLeft < 0.2f)
                //mSoundPlayer.fade(0.f, timeLeft);
-
-            //mSoundPlayer.update(TIME_PER_FRAME::seconds());
         }
     }
 

@@ -39,7 +39,7 @@
 #include "Midi.hpp"
 ////////////////////////////////////////////////
 
-Spawner::Spawner(const std::string& midiFilePath, sf::FloatRect spawnArea)
+Spawner::Spawner(std::string midiFilePath, sf::FloatRect spawnArea)
 : mTime(0.f)
 , mSpawnArea(spawnArea)
 , mSampler()
