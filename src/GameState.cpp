@@ -38,10 +38,11 @@
 ////////////////////////////////////////////////
 
 
-GameState::GameState(StateStack& stack, sf::RenderTarget& target)
+GameState::GameState(StateStack& stack, sf::RenderTarget& target, std::string midiFile)
 : State(stack)
 , mTarget(target)
-, mWorld(mTarget)
+, mWorld(mTarget, midiFile)
+, mMidiFile(midiFile)
 {
 }
 
@@ -66,12 +67,12 @@ bool GameState::update()
 
         case World::Victory:
             mWorld.pause();
-            requestStackPush(new VictoryMenu(getStack(), mTarget));
+            requestStackPush(new VictoryMenu(getStack(), mTarget, mMidiFile));
             break;
 
         case World::Defeat:
             mWorld.pause();
-            requestStackPush(new DefeatMenu(getStack(), mTarget));
+            requestStackPush(new DefeatMenu(getStack(), mTarget, mMidiFile));
             break;
 
         default:

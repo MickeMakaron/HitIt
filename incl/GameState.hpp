@@ -38,7 +38,7 @@ class GameState : public State
          *
          * \param stack to insert state into at construction.
          */
-        GameState(StateStack& stack, sf::RenderTarget& target);
+        GameState(StateStack& stack, sf::RenderTarget& target, std::string midiFile);
 
         /**
          * \brief Draw state
@@ -70,6 +70,7 @@ class GameState : public State
     private:
         sf::RenderTarget&   mTarget;
         World               mWorld;
+        std::string         mMidiFile;
 };
 
 /************************************************

@@ -38,7 +38,7 @@ class DefeatMenu : public MenuState
          * \param stack to insert state into at construction.
          * \param target SFML RenderTarget object to draw to.
          */
-        DefeatMenu(StateStack& stack, sf::RenderTarget& target);
+        DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
 
         /**
@@ -56,6 +56,7 @@ class DefeatMenu : public MenuState
 
     private:
         SoundPlayer mTaunt; ///< Taunt the player for losing with this annoying sound.
+        std::string mMidiFile;
 };
 
 /************************************************

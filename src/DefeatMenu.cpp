@@ -33,11 +33,13 @@
 #include "GameState.hpp"
 #include "Button.hpp"
 #include "Text.hpp"
+#include "TrackMenu.hpp"
 ////////////////////////////////////////////////
 
 
-DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target)
+DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile)
 : MenuState(stack, target)
+, mMidiFile(midiFile)
 {
     mSounds.insert({SoundList::Asset(ResourceID::Sound::Defeat, "sounds/defeat.ogg")});
     mTaunt.setBuffer(Assets::get(ResourceID::Sound::Defeat));
@@ -74,7 +76,7 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget));}
+        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget, mMidiFile));}
     );
 
     buttonText.setString("Try another track");
@@ -82,7 +84,7 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     {
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
+        [this](){requestStackClear(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     };
 
     buttonText.setString("Go to main menu");

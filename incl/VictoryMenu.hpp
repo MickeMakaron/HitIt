@@ -37,7 +37,7 @@ class VictoryMenu : public MenuState
          * \param stack to insert state into at construction.
          * \param target SFML RenderTarget object to draw to.
          */
-        VictoryMenu(StateStack& stack, sf::RenderTarget& target);
+        VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
 
         /**
@@ -51,6 +51,9 @@ class VictoryMenu : public MenuState
 
     private:
         std::list<GUIElement*>          getButtons();
+
+    private:
+        std::string             mMidiFile;
 
 };
 

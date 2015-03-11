@@ -34,11 +34,13 @@
 #include "MainMenu.hpp"
 #include "Button.hpp"
 #include "Text.hpp"
+#include "TrackMenu.hpp"
 ////////////////////////////////////////////////
 
 
-VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target)
+VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile)
 : MenuState(stack, target)
+, mMidiFile(midiFile)
 {
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
@@ -71,7 +73,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget));}
+        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget, mMidiFile));}
     );
 
     buttonText.setString("Play another track");
@@ -79,7 +81,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     {
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
+        [this](){requestStackClear(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     };
 
     buttonText.setString("Go to main menu");

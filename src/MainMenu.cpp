@@ -30,7 +30,7 @@
 // HitIt internal headers
 #include "MainMenu.hpp"
 #include "Button.hpp"
-#include "GameState.hpp"
+#include "TrackMenu.hpp"
 #include "Text.hpp"
 ////////////////////////////////////////////////
 
@@ -65,7 +65,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
+        [this](){requestStackPop(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     );
 
     buttonText.setString("About");
@@ -73,7 +73,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget));}
+        [this](){requestStackPop(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     );
 
     buttonText.setString("Exit");

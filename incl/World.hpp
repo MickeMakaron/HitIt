@@ -63,7 +63,7 @@ class World
          *
          * \param target SFML RenderTarget object to draw to.
          */
-        World(sf::RenderTarget& target);
+        World(sf::RenderTarget& target, std::string midiFile);
 
         ~World();
 

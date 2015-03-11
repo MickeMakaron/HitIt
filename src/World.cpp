@@ -40,13 +40,13 @@
 ////////////////////////////////////////////////
 
 
-World::World(sf::RenderTarget& target)
+World::World(sf::RenderTarget& target, std::string midiFile)
 : mTarget(target)
 , mTextures(getTextures())
 , mSounds(getSounds())
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 1, sf::Vector2f(500.f, 500.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string("assets/midi/go therese!!.mid"), sf::FloatRect(mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y))
+, mSpawner(std::string(midiFile), sf::FloatRect(mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y))
 , mState(Starting)
 , mTimer(0.f)
 , mPlayerIsDamaged(false)
@@ -109,7 +109,7 @@ void World::update()
 void World::updateStart()
 {
     mTimer += TIME_PER_FRAME::seconds();
-    if(mTimer >= 3.f)
+    if(mTimer >= 1.f)
     {
         mState = Running;
         mTimer = 0.f;
