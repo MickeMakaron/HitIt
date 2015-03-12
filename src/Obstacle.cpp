@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
+#include "SFML/Graphics/VertexArray.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -32,53 +33,57 @@
 ////////////////////////////////////////////////
 
 
-Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, unsigned int iVertexArray, int category)
+Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playLine, sf::Vector2f size, float deathLine, unsigned int iVertexArray, sf::VertexArray& array, int category)
 : SceneNode(category)
-, mShape(sf::Vector2f(width, speed * playDuration))
+, mShape(size)
 , mSoundPlayer(buffer)
 , mSpeed(speed)
-, mPlayDuration(playDuration)
-, mLifeTime(lifeTime)
-, mTime(0.f)
-, mIsPaused(false)
+, mPlayLine(playLine)
+, mDeathLine(deathLine)
+, mState(Waiting)
 , mIVertexArray(iVertexArray)
-{
-    //mSoundPlayer.setVolume(0.f);
-    //mSoundPlayer.fade(100.f, 0.1f);
-
-    mSoundPlayer.play();
-
-    mShape.setFillColor(sf::Color::Black);
-}
-
-Obstacle::~Obstacle()
+, mArray(array)
 {
 }
+
 
 bool Obstacle::isMarkedForRemoval() const
 {
-    return mLifeTime <= mTime;
-}
-
-void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    //target.draw(mShape, states);
+    return mState == Dead;
 }
 
 void Obstacle::updateCurrent()
 {
-    if(mSoundPlayer.getStatus() == sf::Sound::Status::Playing)
+    switch(mState)
     {
-        mShape.setFillColor(sf::Color::Blue);
+        case Waiting:
+            if(getWorldPosition().y + getBoundingRect().height >= mPlayLine)
+            {
+                mState = Playing;
+                mSoundPlayer.play();
+                mArray[mIVertexArray + 2].color = mArray[mIVertexArray + 3].color = sf::Color(150, 150, 150);
+            }
+            else
+                break;
+        case Playing:
+            if(getWorldPosition().y >= mPlayLine)
+            {
+                mState = Silent;
+                mSoundPlayer.stop();
+                mArray[mIVertexArray + 2].color = mArray[mIVertexArray + 3].color = sf::Color::Black;
+            }
+            else
+                break;
+        case Silent:
+            if(getWorldPosition().y >= mDeathLine)
+                mState = Dead;
+            else
+                break;
+        default:
+            break;
     }
-    else
-        mShape.setFillColor(sf::Color::Black);
 
-    sf::Vector2f pos = 	getWorldTransform() * sf::Vector2f(mShape.getPosition());
-
-    mTime += TIME_PER_FRAME::seconds();
-
-
+/*
     if(!mIsPaused)//mSoundPlayer.getStatus() == sf::Sound::Status::Playing)
     {
         if(mPlayDuration <= mTime)
@@ -93,7 +98,7 @@ void Obstacle::updateCurrent()
                //mSoundPlayer.fade(0.f, timeLeft);
         }
     }
-
+*/
 
     move(0.f, mSpeed * TIME_PER_FRAME::seconds());
 }

@@ -33,6 +33,7 @@
 namespace sf
 {
     class SoundBuffer;
+    class VertexArray;
 }
 #include "SFML/Graphics/RectangleShape.hpp"
 ////////////////////////////////////////////////
@@ -46,15 +47,21 @@ namespace sf
 class Obstacle : public SceneNode
 {
     public:
+        enum State
+        {
+            Waiting,
+            Playing,
+            Silent,
+            Dead,
+        };
         /**
          * \brief Constructor
          *
          * \param texture texture to apply to sprite.
          * \param buffer sound buffer that contains sound to be played.
          */
-        Obstacle(SoundPlayer& buffer, float speed, float playDuration, float width, float lifeTime, unsigned int iVertexArray, int category = 0);
+        Obstacle(SoundPlayer& buffer, float speed, float playLine, sf::Vector2f size, float deathLine, unsigned int iVertexArray, sf::VertexArray& array, int category = 0);
 
-        ~Obstacle();
 
 		/**
 		 * \brief Indicate whether this node is marked for removal.
@@ -79,14 +86,6 @@ class Obstacle : public SceneNode
 		unsigned int getVertexArrayIndex() const;
 
     private:
-        /**
-         * \brief Draw this node.
-         *
-         * \param target SFML RenderTarget object to draw this node to.
-         * \param states SFML RenderStates object ot transform draw with.
-         */
-        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-
 	    /**
 	     * \brief Update this node.
 	     */
@@ -96,11 +95,11 @@ class Obstacle : public SceneNode
         sf::RectangleShape  mShape;         ///< Rectangular drawing shape.
         SoundPlayer&        mSoundPlayer;   ///< Use this to play sounds.
         float               mSpeed;         ///< How fast the node moves.
-        float               mPlayDuration;  ///< How long to play the sound.
-        float               mLifeTime;      ///< How long until marked for removal.
-        float               mTime;          ///< Elapsed time.
-        bool mIsPaused;
+        float               mPlayLine;
+        float               mDeathLine;
+        State               mState;
         unsigned int        mIVertexArray;
+        sf::VertexArray&    mArray;
 };
 
 
