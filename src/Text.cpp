@@ -41,6 +41,11 @@ Text::Text(sf::Text text)
     mText.setColor(sf::Color::Black);
 }
 
+void Text::setText(std::string text)
+{
+    mText.setString(text);
+}
+
 
 void Text::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
