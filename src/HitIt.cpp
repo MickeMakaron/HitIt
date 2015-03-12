@@ -60,6 +60,7 @@ HitIt::HitIt()
 
     mWindow.setVerticalSyncEnabled(true);
     //mWindow.setFramerateLimit(60);
+
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
