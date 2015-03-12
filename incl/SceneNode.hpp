@@ -35,6 +35,10 @@
 #include "SFML/System/NonCopyable.hpp"
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/Graphics/Drawable.hpp"
+namespace sf
+{
+    class Event;
+}
 ////////////////////////////////////////////////
 
 class SceneNode : public sf::Transformable, virtual public sf::Drawable, private sf::NonCopyable
@@ -125,7 +129,30 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
          */
 		void drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
 
+		/**
+		 * \brief Handle device input.
+		 *
+		 * \param event event to handle
+		 */
+        void handleEvent(const sf::Event& event);
+
 	private:
+		/**
+		 * \brief Handle device input for this node.
+		 *
+		 * \param event event to handle
+		 */
+        virtual void handleEventCurrent(const sf::Event& event);
+
+
+		/**
+		 * \brief Handle device input for children.
+		 *
+		 * \param event event to handle
+		 */
+        void handleEventChildren(const sf::Event& event);
+
+
 	    /**
 	     * \brief Update this node.
 	     */

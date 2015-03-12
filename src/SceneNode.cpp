@@ -102,6 +102,26 @@ void SceneNode::updateChildren()
 
 ////////////////////////////////////////////////
 
+
+void SceneNode::handleEvent(const sf::Event& event)
+{
+    handleEventCurrent(event);
+    handleEventChildren(event);
+}
+
+
+void SceneNode::handleEventCurrent(const sf::Event& event)
+{
+    // Nothing by default.
+}
+
+void SceneNode::handleEventChildren(const sf::Event& event)
+{
+    for(Ptr& child : mChildren)
+        child->handleEvent(event);
+}
+
+
 void SceneNode::removeWrecks()
 {
 	// Remove all children which request so
