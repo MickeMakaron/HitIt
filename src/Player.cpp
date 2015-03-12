@@ -27,6 +27,7 @@
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "SFML/Window/Event.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -37,15 +38,17 @@
 ////////////////////////////////////////////////
 
 
-Player::Player(const sf::Texture& texture, int hp, sf::Vector2f position)
-: SpriteNode(texture)
+Player::Player(const sf::Texture& texture, float width, int hp, sf::Vector2f position)
+: RectangleNode(texture)
 , mHp(hp)
-, mMovementSpeed(200.f)
-, mDiagonalMovementSpeed(sqrtf(0.5f * mMovementSpeed * 0.5f * mMovementSpeed * 2))
+, mMovementSpeed(300.f)
 , mIsImmortal(false)
 , mImmortalCounter(0.f)
 , mDamagedSound(Assets::get(ResourceID::Sound::PlayerDamaged))
+, mMoveCounter(0.f)
+, mStepSize(width)
 {
+    setSize(width - 2.f, width);
     setPosition(position);
 }
 
@@ -59,20 +62,50 @@ void Player::updateCurrent()
     }
 
     using namespace sf;
-
-    Vector2f direction(0.f, 0.f);
-    if(Keyboard::isKeyPressed(Keyboard::Left))
-        direction.x = -1.f;
-    else if(Keyboard::isKeyPressed(Keyboard::Right))
-        direction.x = 1.f;
-
     if(Keyboard::isKeyPressed(Keyboard::Up))
-        direction.y = -1.f;
+        mDirection.y = -1.f;
     else if(Keyboard::isKeyPressed(Keyboard::Down))
-        direction.y = 1.f;
+        mDirection.y = 1.f;
 
-    float velocity = direction.x && direction.y ? mDiagonalMovementSpeed : mMovementSpeed;
-    move(direction * velocity * TIME_PER_FRAME::seconds());
+    bool isLeftPressed = Keyboard::isKeyPressed(Keyboard::Left);
+    bool isRightPressed = Keyboard::isKeyPressed(Keyboard::Right);
+    if(isLeftPressed || isRightPressed)
+    {
+        mMoveCounter += TIME_PER_FRAME::seconds();
+        if(mMoveCounter >= mMoveCooldown)
+        {
+            mMoveCounter = 0.f;
+
+            if(isLeftPressed)
+                mDirection.x = -1.f;
+            else if(isRightPressed)
+                mDirection.x = 1.f;
+        }
+    }
+    mPreviousPosition = getWorldPosition();
+    move(mDirection.x * mStepSize, mDirection.y * mMovementSpeed * TIME_PER_FRAME::seconds());
+    mDirection.x = mDirection.y = 0.f;
+}
+
+
+void Player::handleEventCurrent(const sf::Event& event)
+{
+    if(event.type == sf::Event::KeyPressed)
+    {
+        switch(event.key.code)
+        {
+            case sf::Keyboard::Left:
+                mMoveCounter = 0.f;
+                mDirection.x = -1.f;
+                break;
+            case sf::Keyboard::Right:
+                mMoveCounter = 0.f;
+                mDirection.x = 1.f;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void Player::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -95,10 +128,10 @@ void Player::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
             doDraw = true;
 
         if(doDraw)
-            SpriteNode::drawCurrent(target, states);
+            RectangleNode::drawCurrent(target, states);
     }
     else
-        SpriteNode::drawCurrent(target, states);
+        RectangleNode::drawCurrent(target, states);
 
 
 }
@@ -138,4 +171,9 @@ int Player::getHp() const
 bool Player::isDamaged() const
 {
     return mIsImmortal;
+}
+
+sf::Vector2f Player::getPreviousPosition() const
+{
+    return mPreviousPosition;
 }

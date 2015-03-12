@@ -23,24 +23,34 @@
 #ifndef HITIT_PLAYER_HPP
 #define HITIT_PLAYER_HPP
 
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+namespace sf
+{
+    class Event;
+}
+////////////////////////////////////////////////
+
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "SpriteNode.hpp"
+#include "RectangleNode.hpp"
 #include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 
-class Player : public SpriteNode
+class Player : public RectangleNode
 {
     public:
         /**
          * \brief Constructor
          *
-         * \param texture texture to apply to sprite.
+         * \param texture texture to apply to shape.
+         * \param width width of player shape.
          * \param hp hp of player
          * \param position initial position
          */
-        Player(const sf::Texture& texture, int hp, sf::Vector2f position = sf::Vector2f(0.f, 0.f));
+        Player(const sf::Texture& texture, float width, int hp, sf::Vector2f position = sf::Vector2f(0.f, 0.f));
 
         /**
          * \brief Damage the player by a fixed amount.
@@ -71,6 +81,8 @@ class Player : public SpriteNode
 
         bool isDamaged() const;
 
+        sf::Vector2f getPreviousPosition() const;
+
     private:
         /**
          * \brief Draw this node.
@@ -80,15 +92,23 @@ class Player : public SpriteNode
          */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
+		/**
+		 * \brief Handle device input for this node.
+		 *
+		 * \param event event to handle
+		 */
+        virtual void handleEventCurrent(const sf::Event& event);
+
 	    /**
 	     * \brief Update this node.
 	     */
 		virtual void updateCurrent();
 
+
+
     private:
         int             mHp;                    ///< Hp of player.
         float           mMovementSpeed;         ///< Movement speed.
-        float           mDiagonalMovementSpeed; ///< Movement speed when moving diagonally.
         bool            mIsImmortal;            ///< Indicator whether player is immortal.
         const float     mImmortalTime = 1.f;    ///< Time to remain immortal in seconds.
         float           mImmortalCounter;       ///< Time accumulator for immortality.
@@ -96,6 +116,12 @@ class Player : public SpriteNode
         const float     mJumpingTime = 1.f;     ///< Time airborne in seconds.
         float           mJumpingCounter;        ///< Time accumulator for jumping.
         SoundPlayer     mDamagedSound;          ///< Sound played when damaged.
+        float           mMoveCounter;
+        const float     mMoveCooldown = 0.15f;
+        sf::Vector2f    mDirection;
+        sf::Vector2f    mPreviousPosition;
+        float           mStepSize;
+
 
 };
 
