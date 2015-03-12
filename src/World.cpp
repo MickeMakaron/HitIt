@@ -37,6 +37,8 @@
 #include "CollissionCategory.hpp"
 #include "Midi.hpp"
 #include "HealthBar.hpp"
+#include "ScoreDisplay.hpp"
+#include "VertexArrayNode.hpp"
 ////////////////////////////////////////////////
 
 
@@ -44,12 +46,15 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 : mTarget(target)
 , mTextures(getTextures())
 , mSounds(getSounds())
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), 1, sf::Vector2f(500.f, 500.f)))
+, mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)//mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y)
+, mSpawner(std::string(midiFile), mBounds)
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
 , mCollission(*mPlayer)
-, mSpawner(std::string(midiFile), sf::FloatRect(mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y))
 , mState(Starting)
 , mTimer(0.f)
 , mPlayerIsDamaged(false)
+, mBusiestPositionIndicator()
+, mBusiestPositionIndicatorSpeed(0.f)
 {
     buildWorld();
 }
@@ -74,6 +79,7 @@ void World::update()
 {
     mScene.update();
     mCollission.update();
+    keepPlayerInBounds();
 
     if(mPlayerIsDamaged)
     {
@@ -90,20 +96,28 @@ void World::update()
         mSpawner.setVolume(30.f);
     }
 
-    keepPlayerInBounds();
 
-    mCollission.removeWrecks();
-    mScene.removeWrecks();
+
+
 
     if(mState == Starting)
         updateStart();
-    else
-        updateRun();
-
-    if(mPlayer->isDestroyed())
+    else if(mPlayer->isDestroyed())
         mState = Defeat;
-    else if(mSpawner.isEmpty())
-        updateVictory();
+    else
+    {
+        mSpawner.update();
+
+        if(mSpawner.isEmpty())
+            updateVictory();
+        else
+            updateRun();
+
+        mSpawner.removeWrecks();
+    }
+
+    mCollission.removeWrecks();
+    mScene.removeWrecks();
 }
 
 void World::updateStart()
@@ -118,20 +132,28 @@ void World::updateStart()
 
 void World::updateRun()
 {
-    mSpawner.update();
-
     for(SceneNode* node : mSpawner.fetchNewNodes())
     {
         mScene.insert(node, SceneGraph::Layer::Middle);
         mCollission.insert(node);
     }
+
+    mTimer += TIME_PER_FRAME::seconds();
+    if(mTimer >= 0.5f)
+    {
+        mTimer = 0.f;
+
+        mBusiestPositionIndicatorSpeed = (mSpawner.getBusiestPosition() - mBusiestPositionIndicator->getWorldPosition().x - mBusiestPositionIndicator->getOrigin().x) / 0.5f;
+    }
+
+    mBusiestPositionIndicator->move(mBusiestPositionIndicatorSpeed * TIME_PER_FRAME::seconds(), 0.f);
 }
 
 void World::updateVictory()
 {
     mTimer += TIME_PER_FRAME::seconds();
 
-    if(mTimer >= 3.f)
+    if(mTimer >= 6.f)
     {
         mState = Victory;
         mTimer = 0.f;
@@ -143,7 +165,7 @@ void World::updateVictory()
 
 void World::handleEvent(const sf::Event& event)
 {
-
+    mScene.handleEvent(event);
 }
 
 ////////////////////////////////////////////////
@@ -152,54 +174,99 @@ void World::buildWorld()
 {
     namespace ID = ResourceID::Texture;
 
-    mScene.insert(new SpriteNode(Assets::get(ID::WorldBg)), SceneGraph::Background);
+    RectangleNode* background = new RectangleNode(mTarget.getView().getSize());
+    sf::Color gray(150, 150, 150);
+    background->setFillColor(gray);
+    mScene.insert(background, SceneGraph::Background);
     mScene.insert(mPlayer, SceneGraph::Middle);
 
-
-    SpriteNode* props[4] =
+    for(float x = mSpawner.getNoteWidth(); x < mBounds.width; x += mSpawner.getNoteWidth())
     {
-        new SpriteNode(Assets::get(ID::AudienceTerrace), CollissionCategory::Collidable),
-        new SpriteNode(Assets::get(ID::AudienceTerrace), CollissionCategory::Collidable),
-        new SpriteNode(Assets::get(ID::Fence), CollissionCategory::Collidable),
-        new SpriteNode(Assets::get(ID::Fence), CollissionCategory::Collidable),
+        RectangleNode* line = new RectangleNode(sf::Vector2f(1.5f, mBounds.height));
+        line->setPosition(mBounds.left + x, 0.f);
+
+        line->setFillColor(sf::Color::Black);
+        mScene.insert(line, SceneGraph::Middle);
+    }
+
+
+    sf::Vector2f indicatorSize(mBounds.width / 4.f, mBounds.height);
+    float greenWidth = indicatorSize.x * 3.f / 4.f;
+    float redWidth = indicatorSize.x - greenWidth;
+    const unsigned int ARRAY_SIZE = 16;
+    sf::Vertex v[ARRAY_SIZE / 2] =
+    {
+        sf::Vertex(sf::Vector2f(0.f, 0.f)),
+        sf::Vertex(sf::Vector2f(indicatorSize.x, 0.f)),
+        sf::Vertex(sf::Vector2f(indicatorSize.x, indicatorSize.y)),
+        sf::Vertex(sf::Vector2f(0.f, indicatorSize.y)),
+        sf::Vertex(sf::Vector2f(greenWidth, 0.f)),
+        sf::Vertex(sf::Vector2f(greenWidth + redWidth, 0.f)),
+        sf::Vertex(sf::Vector2f(greenWidth + redWidth, indicatorSize.y)),
+        sf::Vertex(sf::Vector2f(greenWidth, indicatorSize.y)),
     };
 
-    sf::Vector2f viewSize = mTarget.getView().getSize();
-
-    // Audience terraces
-    sf::FloatRect terraceRect = props[0]->getBoundingRect();
-    float terracePositionY = (viewSize.y - terraceRect.height) / 2.f;
-    props[0]->setPosition(10.f, terracePositionY);
-    props[1]->setPosition(viewSize.x - 10.f - terraceRect.width, terracePositionY);
-
-    // Fence
-    sf::FloatRect fenceRect = props[2]->getBoundingRect();
-    props[2]->setPosition(15.f + terraceRect.width, 0.f);
-    props[3]->setPosition(viewSize.x - 15.f - fenceRect.width - terraceRect.width, 0.f);
 
 
-    for(SpriteNode* prop : props)
+    v[0].color = v[1].color = v[2].color = v[3].color = sf::Color::Black;
+    v[4].color = v[5].color = v[6].color = v[7].color = sf::Color::White;
+
+    v[0].color.a = v[3].color.a = v[4].color.a = v[7].color.a = 0;
+
+
+    sf::VertexArray indicatorArray(sf::Quads, ARRAY_SIZE);
+    for(unsigned int i = 0; i < ARRAY_SIZE / 2; i++)
     {
-        mScene.insert(prop, SceneGraph::Middle);
-        mCollission.insert(prop);
+        indicatorArray[i] = v[i];
+        if(i < ARRAY_SIZE / 4)
+            v[i].position.x += indicatorSize.x;
+        else
+            v[i].position.x += redWidth;
     }
+
+    v[0].color.a = v[3].color.a = v[4].color.a = v[7].color.a = 255;
+    v[1].color.a = v[2].color.a = v[5].color.a = v[6].color.a = 0;
+
+
+    for(unsigned int i = 0; i < ARRAY_SIZE / 2; i++)
+        indicatorArray[i + ARRAY_SIZE / 2] = v[i];
+
+    mBusiestPositionIndicator = new VertexArrayNode(indicatorArray);
+    mBusiestPositionIndicator->setOrigin(indicatorSize.x, 0.f);
+    mBusiestPositionIndicator->setPosition(mBounds.width / 2.f, 0.f);
+    mScene.insert(mBusiestPositionIndicator, SceneGraph::Background);
+
+
+    RectangleNode* playLine = new RectangleNode(sf::Vector2f(mBounds.width, 2.f));
+    playLine->setFillColor(sf::Color::Black);
+    playLine->setPosition(0.f, mBounds.height / 3.f);
+    mScene.insert(playLine, SceneGraph::High);
+
 
     Assets::get(ID::Hp).setRepeated(true);
     HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
     mScene.insert(hpBar, SceneGraph::Foreground);
+
+    sf::Text text;
+    text.setCharacterSize(80);
+    text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
+    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, *mBusiestPositionIndicator);
+    score->setPosition(10.f, 30.f);
+    mScene.insert(score, SceneGraph::Foreground);
 }
 
 void World::keepPlayerInBounds()
 {
     sf::FloatRect playerRect = mPlayer->getBoundingRect();
-    if(playerRect.top < 0.f)
+    if(playerRect.top < mBounds.top)
         mPlayer->move(0.f, -playerRect.top);
-    else
-    {
-        float d = mTarget.getView().getSize().y - (playerRect.top + playerRect.height);
-        if(d < 0.f)
-            mPlayer->move(0.f, d);
-    }
+    else if(playerRect.top + playerRect.height > mBounds.height)
+        mPlayer->move(0.f,  mBounds.height - (playerRect.top + playerRect.height));
+
+    if(playerRect.left < mBounds.left)
+        mPlayer->move(mSpawner.getNoteWidth() * 2.f, 0.f);
+    else if(playerRect.left + playerRect.width > mBounds.width)
+        mPlayer->move(-mSpawner.getNoteWidth() * 2.f, 0.f);
 }
 
 std::list<TextureList::Asset> World::getTextures() const
