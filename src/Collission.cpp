@@ -58,7 +58,7 @@ void Collission::insert(SceneNode* node)
 void Collission::update()
 {
     sf::FloatRect playerRect = mPlayer.getBoundingRect();
-    sf::Vector2f maxPlayerPenetration;
+    sf::Vector2f maxPlayerPenetration(0.f, 0.f);
     for(SceneNode* node : mNodes)
     {
         CollissionData data = checkCollission(playerRect, node->getBoundingRect());
@@ -69,8 +69,6 @@ void Collission::update()
             int category = node->getCategory();
             using namespace CollissionCategory;
 
-            if(category == Lethal)
-                int flurp = 0;
             if(category & Collidable)
             {
                 sf::Vector2f absDepth(std::fabs(data.depth.x), std::fabs(data.depth.y));
@@ -88,8 +86,6 @@ void Collission::update()
                 mPlayer.damage();
         }
     }
-
-    mPlayer.move(-maxPlayerPenetration);
 }
 
 Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::FloatRect b) const
