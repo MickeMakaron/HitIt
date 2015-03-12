@@ -83,6 +83,8 @@ class SceneGraph
          */
         void removeWrecks();
 
+        void handleEvent(const sf::Event& event);
+
         /**
          * \brief Insert node into scene graph.
          *

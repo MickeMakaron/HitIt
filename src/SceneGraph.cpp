@@ -58,6 +58,13 @@ void SceneGraph::removeWrecks()
         layer.removeWrecks();
 }
 
+
+void SceneGraph::handleEvent(const sf::Event& event)
+{
+    for(SceneNode& layer : mGraph)
+        layer.handleEvent(event);
+}
+
 ////////////////////////////////////////////////
 
 void SceneGraph::update()
