@@ -77,6 +77,10 @@ class Spawner
 
         void setVolume(float volume);
 
+        float getNoteWidth() const;
+
+        float getBusiestPosition() const;
+
     private:
         std::list<Midi::Note>   mSpawnQueue;
         float                   mTime;
@@ -88,6 +92,8 @@ class Spawner
         sf::VertexArray         mObstacles;
         sf::RenderStates        mObstaclesState;
         std::list<Obstacle*>    mObstacleNodes;
+        float                   mBusiestPosition;
+        sf::Vector2f            mTextureCoords[4];
 };
 
 
