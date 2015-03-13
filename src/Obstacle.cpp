@@ -42,11 +42,38 @@ Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, 
 , M_PLAYLINE(playLine)
 , M_DEATHLINE(deathLine)
 , mState(Waiting)
+, mStateFuncs(StateCount)
 {
     std::vector<sf::Vertex> points(4, sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Black));
     points[0].color = points[1].color = sf::Color(140, 140, 140);
 
     M_VERTEX_ARRAY_INDEX = mArray.insert(points);
+
+    mStateFuncs[Waiting] = [this]()
+    {
+        if(getWorldPosition().y + getBoundingRect().height >= M_PLAYLINE)
+        {
+            mState = Playing;
+            mSoundPlayer.play();
+            mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color(150, 150, 150);
+        }
+    };
+
+    mStateFuncs[Playing] = [this]()
+    {
+        if(getWorldPosition().y >= M_PLAYLINE)
+        {
+            mState = Silent;
+            mSoundPlayer.stop();
+            mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color::Black;
+        }
+    };
+
+    mStateFuncs[Silent] = [this]()
+    {
+        if(getWorldPosition().y >= M_DEATHLINE)
+            mState = Dead;
+    };
 }
 
 Obstacle::~Obstacle()
@@ -92,34 +119,7 @@ bool Obstacle::isMarkedForRemoval() const
 
 void Obstacle::updateCurrent()
 {
-    switch(mState)
-    {
-        case Waiting:
-            if(getWorldPosition().y + getBoundingRect().height >= M_PLAYLINE)
-            {
-                mState = Playing;
-                mSoundPlayer.play();
-                mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color(150, 150, 150);
-            }
-            else
-                break;
-        case Playing:
-            if(getWorldPosition().y >= M_PLAYLINE)
-            {
-                mState = Silent;
-                mSoundPlayer.stop();
-                mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color::Black;
-            }
-            else
-                break;
-        case Silent:
-            if(getWorldPosition().y >= M_DEATHLINE)
-                mState = Dead;
-            else
-                break;
-        default:
-            break;
-    }
+    mStateFuncs[mState]();
 }
 
 sf::Vector2f Obstacle::getWorldPosition() const

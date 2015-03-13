@@ -44,6 +44,7 @@ class Obstacle : public SceneNode
             Playing,
             Silent,
             Dead,
+            StateCount,
         };
         /**
          * \brief Constructor
@@ -95,6 +96,7 @@ class Obstacle : public SceneNode
         const float         M_PLAYLINE;
         const float         M_DEATHLINE;
         State               mState;
+        std::vector<std::function<void()>> mStateFuncs;
 
 
 };
