@@ -46,8 +46,9 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 : mTarget(target)
 , mTextures(getTextures())
 , mSounds(getSounds())
+, mSampler()
 , mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)//mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y)
-, mSpawner(std::string(midiFile), mBounds)
+, mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
 , mCollission(*mPlayer)
 , mState(Starting)
@@ -70,7 +71,6 @@ World::~World()
 void World::draw()
 {
     mScene.draw(mTarget);
-    mSpawner.draw(mTarget);
 }
 
 ////////////////////////////////////////////////
@@ -86,14 +86,14 @@ void World::update()
         if(!mPlayer->isDamaged())
         {
             mPlayerIsDamaged = false;
-            mSpawner.setVolume(100.f);
+            mSampler.setVolume(100.f);
         }
 
     }
     else if(mPlayer->isDamaged())
     {
         mPlayerIsDamaged = true;
-        mSpawner.setVolume(30.f);
+        mSampler.setVolume(30.f);
     }
 
 
@@ -112,8 +112,6 @@ void World::update()
             updateVictory();
         else
             updateRun();
-
-        mSpawner.removeWrecks();
     }
 
     mCollission.removeWrecks();
@@ -132,11 +130,8 @@ void World::updateStart()
 
 void World::updateRun()
 {
-    for(SceneNode* node : mSpawner.fetchNewNodes())
-    {
-        mScene.insert(node, SceneGraph::Layer::Middle);
+    for(SceneNode* node : mSpawner.spawn())
         mCollission.insert(node);
-    }
 
     mTimer += TIME_PER_FRAME::seconds();
     if(mTimer >= 0.5f)
@@ -299,12 +294,12 @@ World::State World::getState() const
 
 void World::pause()
 {
-    mSpawner.pause();
+    mSampler.pause();
     mState = Paused;
 }
 
 void World::resume()
 {
-    mSpawner.resume();
+    mSampler.resume();
     mState = Running;
 }

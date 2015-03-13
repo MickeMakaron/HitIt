@@ -42,8 +42,8 @@ namespace sf
 #include "AssetList.hpp"
 #include "Collission.hpp"
 #include "Spawner.hpp"
+#include "AudioSampler.hpp"
 class Player;
-class RectangleNode;
 ////////////////////////////////////////////////
 
 class World
@@ -140,6 +140,7 @@ class World
         SceneGraph          mScene;         ///< Scene graph of all game objects.
         TextureList         mTextures;      ///< Asset list for textures.
         SoundList           mSounds;        ///< Asset list for sounds.
+        AudioSampler        mSampler;
         sf::FloatRect       mBounds;        ///< Area where player is allowed to reside.
         Spawner             mSpawner;       ///< Spawn new obstacles.
         Player*             mPlayer;        ///< Player controlled node.
