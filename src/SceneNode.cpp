@@ -53,7 +53,6 @@ SceneNode::SceneNode(int category)
 
 SceneNode::~SceneNode()
 {
-
 }
 
 ////////////////////////////////////////////////
@@ -75,6 +74,11 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	result->mParent = nullptr;
 	mChildren.erase(found);
 	return result;
+}
+
+void SceneNode::clearChildren()
+{
+    mChildren.clear();
 }
 
 ////////////////////////////////////////////////
