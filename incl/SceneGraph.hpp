@@ -93,6 +93,9 @@ class SceneGraph
          */
         void insert(SceneNode* node, Layer layer);
 
+        SceneNode* getLayer(SceneGraph::Layer layer);
+
+
         /**
          * \brief Clear entire graph
          */

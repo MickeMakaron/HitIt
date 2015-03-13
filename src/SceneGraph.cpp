@@ -79,3 +79,8 @@ void SceneGraph::clear()
 {
     mGraph.clear();
 }
+
+SceneNode* SceneGraph::getLayer(SceneGraph::Layer layer)
+{
+    return &mGraph[layer];
+}
