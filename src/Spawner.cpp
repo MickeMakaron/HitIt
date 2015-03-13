@@ -50,8 +50,8 @@ Spawner::Spawner(std::string midiFilePath, AudioSampler& sampler, sf::FloatRect 
     Midi::Note maxNote = *std::max_element(mSpawnQueue.begin(), mSpawnQueue.end(), comparator);
     Midi::Note minNote = *std::min_element(mSpawnQueue.begin(), mSpawnQueue.end(), comparator);
 
-    mNoteWidth = M_SPAWN_AREA.width / (maxNote.tone - minNote.tone);
-    mMinNoteX = minNote.tone * mNoteWidth;
+    mNoteWidth = M_SPAWN_AREA.width / (maxNote.tone - minNote.tone + 1);
+    mMinNote = minNote.tone;
 
     layer->attachChild(mObstacles);
 }
@@ -72,7 +72,7 @@ std::list<SceneNode*> Spawner::spawn()
         mSpawnQueue.pop_front();
 
         Obstacle* obstacle = new Obstacle(mSampler.getSoundPlayer(nextNote.tone), *mObstacles, M_SPAWN_AREA.height / 3.f, M_SPAWN_AREA.height, CollissionCategory::Lethal);
-        obstacle->setPosition(M_SPAWN_AREA.left + nextNote.tone * mNoteWidth - mMinNoteX, -(nextNote.duration + mTime) * mScrollSpeed);
+        obstacle->setPosition(M_SPAWN_AREA.left + (nextNote.tone - mMinNote) * mNoteWidth, -(nextNote.duration + mTime) * mScrollSpeed);
         obstacle->setSize(mNoteWidth, nextNote.duration * mScrollSpeed);
         spawns.push_back(obstacle);
 

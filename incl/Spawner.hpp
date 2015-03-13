@@ -63,7 +63,7 @@ class Spawner
         std::list<Midi::Note>   mSpawnQueue;
         float                   mScrollSpeed;
         float                   mTime;
-        float                   mMinNoteX;
+        unsigned int            mMinNote;
         float                   mNoteWidth;
 
 };

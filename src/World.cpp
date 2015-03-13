@@ -56,8 +56,13 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mPlayerIsDamaged(false)
 , mBusiestPositionIndicator()
 , mBusiestPositionIndicatorSpeed(0.f)
+, mStateFuncs(StateCount)
 {
     buildWorld();
+
+    mStateFuncs[Starting]   = [this](){updateStart();};
+    mStateFuncs[Running]    = [this](){updateRun();};
+    mStateFuncs[Victory]    = [this](){updateVictory();};
 }
 
 World::~World()
@@ -97,22 +102,7 @@ void World::update()
     }
 
 
-
-
-
-    if(mState == Starting)
-        updateStart();
-    else if(mPlayer->isDestroyed())
-        mState = Defeat;
-    else
-    {
-        mSpawner.update();
-
-        if(mSpawner.isEmpty())
-            updateVictory();
-        else
-            updateRun();
-    }
+    mStateFuncs[mState]();
 
     mCollission.removeWrecks();
     mScene.removeWrecks();
@@ -130,18 +120,27 @@ void World::updateStart()
 
 void World::updateRun()
 {
-    for(SceneNode* node : mSpawner.spawn())
-        mCollission.insert(node);
+    if(mPlayer->isDestroyed())
+        mState = Defeat;
 
-    mTimer += TIME_PER_FRAME::seconds();
-    if(mTimer >= 0.5f)
+    mSpawner.update();
+
+    if(mSpawner.isEmpty())
+        mStateFuncs[Victory]();
+    else
     {
-        mTimer = 0.f;
+        for(SceneNode* node : mSpawner.spawn())
+            mCollission.insert(node);
 
-        mBusiestPositionIndicatorSpeed = (mSpawner.getBusiestPosition() - mBusiestPositionIndicator->getWorldPosition().x - mBusiestPositionIndicator->getOrigin().x) / 0.5f;
+        mTimer += TIME_PER_FRAME::seconds();
+        if(mTimer >= 0.5f)
+        {
+            mTimer = 0.f;
+            mBusiestPositionIndicatorSpeed = (mSpawner.getBusiestPosition() - mBusiestPositionIndicator->getWorldPosition().x - mBusiestPositionIndicator->getOrigin().x) / 0.5f;
+        }
+
+        mBusiestPositionIndicator->move(mBusiestPositionIndicatorSpeed * TIME_PER_FRAME::seconds(), 0.f);
     }
-
-    mBusiestPositionIndicator->move(mBusiestPositionIndicatorSpeed * TIME_PER_FRAME::seconds(), 0.f);
 }
 
 void World::updateVictory()
@@ -259,9 +258,9 @@ void World::keepPlayerInBounds()
         mPlayer->move(0.f,  mBounds.height - (playerRect.top + playerRect.height));
 
     if(playerRect.left < mBounds.left)
-        mPlayer->move(mSpawner.getNoteWidth() * 2.f, 0.f);
+        mPlayer->move(mSpawner.getNoteWidth(), 0.f);
     else if(playerRect.left + playerRect.width > mBounds.width)
-        mPlayer->move(-mSpawner.getNoteWidth() * 2.f, 0.f);
+        mPlayer->move(-mSpawner.getNoteWidth(), 0.f);
 }
 
 std::list<TextureList::Asset> World::getTextures() const
