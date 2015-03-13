@@ -31,69 +31,41 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/Rect.hpp"
-#include "SFML/Graphics/VertexArray.hpp"
-#include "SFML/Graphics/RenderStates.hpp"
-namespace sf
-{
-    class RenderTarget;
-}
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Midi.hpp"
-#include "AudioSampler.hpp"
+class AudioSampler;
 class SceneNode;
-class Obstacle;
+class VertexArrayNode;
 ////////////////////////////////////////////////
 
 class Spawner
 {
     public:
-        Spawner(std::string midiFilePath, sf::FloatRect spawnArea);
+        Spawner(std::string midiFilePath, AudioSampler& sampler, sf::FloatRect spawnArea, SceneNode* layer);
 
         void update();
-        void draw(sf::RenderTarget& target) const;
 
-        std::list<SceneNode*> fetchNewNodes();
+        std::list<SceneNode*> spawn();
 
         bool isEmpty() const;
-
-        /**
-         * \brief Pause spawner.
-         *
-         * Force pauses all sound players.
-         */
-        void pause();
-
-        /**
-         * \brief Resume spawner
-         *.
-         * Resumes sound players.
-         */
-        void resume();
-
-        void removeWrecks();
-
-        void setVolume(float volume);
 
         float getNoteWidth() const;
 
         float getBusiestPosition() const;
 
     private:
+        AudioSampler&           mSampler;
+        const sf::FloatRect     M_SPAWN_AREA;
+        VertexArrayNode*        mObstacles;
         std::list<Midi::Note>   mSpawnQueue;
-        float                   mTime;
-        const sf::FloatRect     mSpawnArea;
         float                   mScrollSpeed;
-        AudioSampler            mSampler;
+        float                   mTime;
         float                   mMinNoteX;
         float                   mNoteWidth;
-        sf::VertexArray         mObstacles;
-        sf::RenderStates        mObstaclesState;
-        std::list<Obstacle*>    mObstacleNodes;
-        float                   mBusiestPosition;
-        sf::Vector2f            mTextureCoords[4];
+
 };
 
 
