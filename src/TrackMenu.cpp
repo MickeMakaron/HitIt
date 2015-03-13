@@ -102,6 +102,7 @@ std::list<GUIElement*> TrackMenu::getButtons()
         buttons.push_back(button);
         entry = readdir(dir);
     }
+    closedir(dir);
 
     buttonText.setCharacterSize(75);
     buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
