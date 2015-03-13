@@ -24,6 +24,12 @@
 #define HITIT_VERTEXARRAYNODE_HPP
 
 
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <queue>
+////////////////////////////////////////////////
+
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/VertexArray.hpp"
@@ -46,6 +52,15 @@ class VertexArrayNode : public SceneNode
          */
         VertexArrayNode(sf::VertexArray array, int category = 0);
 
+        /**
+         * \brief Constructor
+         *
+         * \param type primitive type of vertex array.
+         * \param category category of node.
+         */
+        VertexArrayNode(sf::PrimitiveType type, int category = 0);
+
+        virtual ~VertexArrayNode();
 
         virtual sf::Vector2f getWorldPosition() const;
 
@@ -65,8 +80,21 @@ class VertexArrayNode : public SceneNode
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 
+        unsigned int getSize() const;
+
+        unsigned int insert(std::vector<sf::Vertex> primitive);
+        void free(unsigned int index);
+
+        sf::Vertex& operator[](unsigned int index);
+
     private:
-        sf::VertexArray mArray;
+        void updatePrimitiveSize();
+
+    private:
+        sf::VertexArray             mArray;
+        unsigned int                mPrimitiveSize;
+
+        std::queue<unsigned int>    mFreeIndices;
 };
 
 /************************************************

@@ -21,6 +21,11 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <cassert>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
@@ -35,6 +40,49 @@ VertexArrayNode::VertexArrayNode(sf::VertexArray array, int category)
 : SceneNode(category)
 , mArray(array)
 {
+    updatePrimitiveSize();
+}
+
+VertexArrayNode::VertexArrayNode(sf::PrimitiveType type, int category)
+: SceneNode(category)
+, mArray(type)
+{
+    updatePrimitiveSize();
+}
+
+VertexArrayNode::~VertexArrayNode()
+{
+    clearChildren();
+}
+
+
+void VertexArrayNode::updatePrimitiveSize()
+{
+    switch(mArray.getPrimitiveType())
+    {
+        case sf::PrimitiveType::Points:
+        case sf::PrimitiveType::LinesStrip:
+        case sf::PrimitiveType::TrianglesStrip:
+        case sf::PrimitiveType::TrianglesFan:
+            mPrimitiveSize = 1;
+            break;
+
+        case sf::PrimitiveType::Lines:
+            mPrimitiveSize = 2;
+            break;
+
+        case sf::PrimitiveType::Triangles:
+            mPrimitiveSize = 3;
+            break;
+
+        case sf::PrimitiveType::Quads:
+            mPrimitiveSize = 4;
+            break;
+
+        default:
+            mPrimitiveSize = 0;
+            break;
+    }
 }
 
 ////////////////////////////////////////////////
@@ -51,7 +99,57 @@ sf::Vector2f VertexArrayNode::getWorldPosition() const
     return getWorldTransform().transformPoint(mArray.getBounds().left, mArray.getBounds().top);
 }
 
+////////////////////////////////////////////////
+
 sf::FloatRect VertexArrayNode::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mArray.getBounds());
+}
+
+unsigned int VertexArrayNode::insert(std::vector<sf::Vertex> primitive)
+{
+    // Make sure we are inserting ONE primitive.
+    assert(primitive.size() == mPrimitiveSize);
+
+
+    unsigned int index;
+    if(mFreeIndices.empty())
+    {
+        index = mArray.getVertexCount();
+        mArray.resize(index + mPrimitiveSize);
+    }
+    else
+    {
+        index = mFreeIndices.front();
+        mFreeIndices.pop();
+    }
+
+    for(unsigned int i = 0; i < mPrimitiveSize; i++)
+        mArray[index + i] = primitive[i];
+
+    return index;
+}
+
+void VertexArrayNode::free(unsigned int index)
+{
+    // Make sure index is not out of bounds.
+    assert(index <= mArray.getVertexCount() - mPrimitiveSize);
+
+    // Make sure the index is at the start of a primitive.
+    assert(index % mPrimitiveSize == 0);
+
+    for(unsigned int i = index; i < index + mPrimitiveSize; i++)
+        mArray[i] = sf::Vertex();
+
+    mFreeIndices.push(index);
+}
+
+sf::Vertex& VertexArrayNode::operator[](unsigned int index)
+{
+    return mArray[index];
+}
+
+unsigned int VertexArrayNode::getSize() const
+{
+    return mArray.getVertexCount();
 }
