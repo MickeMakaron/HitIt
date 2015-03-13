@@ -70,13 +70,15 @@ void ScoreDisplay::updateCurrent()
     else
         mTimeInRedZone += TIME_PER_FRAME::seconds();
 
+
     std::string bonus;
     switch(mState)
     {
         case Outside:
-            mScore += 100.f / distanceToIndicator * TIME_PER_FRAME::seconds();
             if(isInRedZone)
                 mState = Red;
+            else
+                mScore += 100.f / distanceToIndicator * TIME_PER_FRAME::seconds();
             break;
         case Red:
             mScore += 6.f * TIME_PER_FRAME::seconds();
