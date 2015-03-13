@@ -23,27 +23,65 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Graphics/VertexArray.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Obstacle.hpp"
 #include "TIME_PER_FRAME.hpp"
+#include "SoundPlayer.hpp"
+#include "VertexArrayNode.hpp"
 ////////////////////////////////////////////////
 
 
-Obstacle::Obstacle(SoundPlayer& buffer, float speed, float playLine, sf::Vector2f size, float deathLine, unsigned int iVertexArray, sf::VertexArray& array, int category)
+Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, float deathLine, int category)
 : SceneNode(category)
-, mShape(size)
 , mSoundPlayer(buffer)
-, mSpeed(speed)
-, mPlayLine(playLine)
-, mDeathLine(deathLine)
-, mState(Waiting)
-, mIVertexArray(iVertexArray)
 , mArray(array)
+, mRect(0.f, 0.f, 0.f, 0.f)
+, M_PLAYLINE(playLine)
+, M_DEATHLINE(deathLine)
+, mState(Waiting)
 {
+    std::vector<sf::Vertex> points(4, sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Black));
+    points[0].color = points[1].color = sf::Color(140, 140, 140);
+
+    M_VERTEX_ARRAY_INDEX = mArray.insert(points);
+}
+
+Obstacle::~Obstacle()
+{
+    mArray.free(M_VERTEX_ARRAY_INDEX);
+}
+
+void Obstacle::setSize(float width, float height)
+{
+    mRect.width = width;
+    mRect.height = height;
+
+    updateVertices();
+}
+
+void Obstacle::setPosition(float x, float y)
+{
+    mRect.left = x;
+    mRect.top = y;
+
+    updateVertices();
+}
+
+void Obstacle::updateVertices()
+{
+    float left, right, top, bot;
+    left = mRect.left;
+    right = left + mRect.width;
+    top = mRect.top;
+    bot = top + mRect.height;
+
+    mArray[M_VERTEX_ARRAY_INDEX].position       = sf::Vector2f(left, top);
+    mArray[M_VERTEX_ARRAY_INDEX + 1].position   = sf::Vector2f(right, top);
+    mArray[M_VERTEX_ARRAY_INDEX + 2].position   = sf::Vector2f(right, bot);
+    mArray[M_VERTEX_ARRAY_INDEX + 3].position   = sf::Vector2f(left, bot);
 }
 
 
@@ -57,58 +95,39 @@ void Obstacle::updateCurrent()
     switch(mState)
     {
         case Waiting:
-            if(getWorldPosition().y + getBoundingRect().height >= mPlayLine)
+            if(getWorldPosition().y + getBoundingRect().height >= M_PLAYLINE)
             {
                 mState = Playing;
                 mSoundPlayer.play();
-                mArray[mIVertexArray + 2].color = mArray[mIVertexArray + 3].color = sf::Color(150, 150, 150);
+                mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color(150, 150, 150);
             }
             else
                 break;
         case Playing:
-            if(getWorldPosition().y >= mPlayLine)
+            if(getWorldPosition().y >= M_PLAYLINE)
             {
                 mState = Silent;
                 mSoundPlayer.stop();
-                mArray[mIVertexArray + 2].color = mArray[mIVertexArray + 3].color = sf::Color::Black;
+                mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color::Black;
             }
             else
                 break;
         case Silent:
-            if(getWorldPosition().y >= mDeathLine)
+            if(getWorldPosition().y >= M_DEATHLINE)
                 mState = Dead;
             else
                 break;
         default:
             break;
     }
+}
 
-/*
-    if(!mIsPaused)//mSoundPlayer.getStatus() == sf::Sound::Status::Playing)
-    {
-        if(mPlayDuration <= mTime)
-        {
-            mSoundPlayer.SoundPlayer::stop();
-            mIsPaused = true;
-        }
-        else
-        {
-            float timeLeft = mPlayDuration - mTime;
-            //if(timeLeft < 0.2f)
-               //mSoundPlayer.fade(0.f, timeLeft);
-        }
-    }
-*/
-
-    move(0.f, mSpeed * TIME_PER_FRAME::seconds());
+sf::Vector2f Obstacle::getWorldPosition() const
+{
+    return mArray.getWorldTransform().transformPoint(mRect.left, mRect.top);
 }
 
 sf::FloatRect Obstacle::getBoundingRect() const
 {
-    return getWorldTransform().transformRect(mShape.getGlobalBounds());
-}
-
-unsigned int Obstacle::getVertexArrayIndex() const
-{
-    return mIVertexArray;
+    return mArray.getWorldTransform().transformRect(mRect);
 }

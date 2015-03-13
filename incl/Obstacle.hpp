@@ -29,19 +29,10 @@
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-namespace sf
-{
-    class SoundBuffer;
-    class VertexArray;
-}
-#include "SFML/Graphics/RectangleShape.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
-#include "SpriteNode.hpp"
-#include "SoundPlayer.hpp"
+#include "SceneNode.hpp"
+class SoundPlayer;
+class VertexArrayNode;
 ////////////////////////////////////////////////
 
 class Obstacle : public SceneNode
@@ -60,8 +51,13 @@ class Obstacle : public SceneNode
          * \param texture texture to apply to sprite.
          * \param buffer sound buffer that contains sound to be played.
          */
-        Obstacle(SoundPlayer& buffer, float speed, float playLine, sf::Vector2f size, float deathLine, unsigned int iVertexArray, sf::VertexArray& array, int category = 0);
+        Obstacle(SoundPlayer& soundPlayer, VertexArrayNode& array, float playLine, float deathLine, int category = 0);
 
+
+        /**
+         * \brief Destructor
+         */
+        ~Obstacle();
 
 		/**
 		 * \brief Indicate whether this node is marked for removal.
@@ -70,6 +66,10 @@ class Obstacle : public SceneNode
 		 */
 		 virtual bool isMarkedForRemoval() const;
 
+        virtual void setPosition(float x, float y);
+        virtual void setSize(float width, float height);
+
+        virtual sf::Vector2f getWorldPosition() const;
 
         /**
 		 * \brief Get bounding rectangle of node.
@@ -78,28 +78,25 @@ class Obstacle : public SceneNode
 		 */
 		virtual sf::FloatRect	getBoundingRect() const;
 
-		/**
-		 * \brief Get index in vertex array.
-		 *
-		 * \return index in vertex array.
-		 */
-		unsigned int getVertexArrayIndex() const;
-
     private:
 	    /**
 	     * \brief Update this node.
 	     */
 		virtual void updateCurrent();
 
+        void updateVertices();
+
+
     private:
-        sf::RectangleShape  mShape;         ///< Rectangular drawing shape.
         SoundPlayer&        mSoundPlayer;   ///< Use this to play sounds.
-        float               mSpeed;         ///< How fast the node moves.
-        float               mPlayLine;
-        float               mDeathLine;
+        VertexArrayNode&    mArray;
+        sf::FloatRect       mRect;
+        unsigned int  M_VERTEX_ARRAY_INDEX;
+        const float         M_PLAYLINE;
+        const float         M_DEATHLINE;
         State               mState;
-        unsigned int        mIVertexArray;
-        sf::VertexArray&    mArray;
+
+
 };
 
 
