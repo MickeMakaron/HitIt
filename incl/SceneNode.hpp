@@ -136,6 +136,9 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
 		 */
         void handleEvent(const sf::Event& event);
 
+    protected:
+        void clearChildren();
+
 	private:
 		/**
 		 * \brief Handle device input for this node.
