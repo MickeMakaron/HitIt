@@ -159,12 +159,12 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
 	    /**
 	     * \brief Update this node.
 	     */
-		virtual void            updateCurrent();
+		virtual void updateCurrent();
 
 		/**
 		 * \brief Update children of this node.
 		 */
-		void					updateChildren();
+		void updateChildren();
 
         /**
          * \brief Overloaded SFML draw function.
@@ -174,7 +174,7 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
          * \param target SFML RenderTarget object to draw to.
          * \param states SFML RenderStates object ot transform draw with.
          */
-		virtual void			draw(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
         /**
          * \brief Draw this node.

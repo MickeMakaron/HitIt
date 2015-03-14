@@ -25,17 +25,16 @@
 
 ////////////////////////////////////////////////
 // STD - C++ Standard Library
-#include <list>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Text.hpp"
+class BonusStrip;
 ////////////////////////////////////////////////
 
 class ScoreDisplay : public Text
@@ -45,7 +44,7 @@ class ScoreDisplay : public Text
          * \brief Constructor
          *
          */
-        ScoreDisplay(sf::Text text, const SceneNode& player, const SceneNode& busiestPositionIndicator);
+        ScoreDisplay(sf::Text text, const SceneNode& player, const BonusStrip& bonusStrip);
 
         /**
          * \brief Update score.
@@ -62,7 +61,7 @@ class ScoreDisplay : public Text
         };
 
         const SceneNode&    mPlayer;
-        const SceneNode&    mBusiestPositionIndicator;
+        const BonusStrip&   mBonusStrip;
         float               mScore;
         float               mTimeInRedZone;
         State               mState;

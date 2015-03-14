@@ -27,22 +27,17 @@
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Graphics/Texture.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "ScoreDisplay.hpp"
 #include "TIME_PER_FRAME.hpp"
+#include "BonusStrip.hpp"
 ////////////////////////////////////////////////
 
 
-ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, const SceneNode& busiestPositionIndicator)
+ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, const BonusStrip& bonusStrip)
 : Text(text)
 , mPlayer(player)
-, mBusiestPositionIndicator(busiestPositionIndicator)
+, mBonusStrip(bonusStrip)
 , mScore(0.f)
 , mTimeInRedZone(0.f)
 , mState(Outside)
@@ -54,13 +49,11 @@ ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, const SceneNo
 
 }
 
-#include <iostream>
 void ScoreDisplay::updateCurrent()
 {
     const sf::FloatRect PLAYER_RECT = mPlayer.getBoundingRect();
-    const sf::FloatRect INDICATOR_RECT = mBusiestPositionIndicator.getBoundingRect();
-    float distanceToIndicator = std::fabs((PLAYER_RECT.left + PLAYER_RECT.width / 2.f) - (INDICATOR_RECT.left + mBusiestPositionIndicator.getOrigin().x));
-    bool isInRedZone = distanceToIndicator < INDICATOR_RECT.width / 10.f;
+    float distanceToIndicator = mBonusStrip.getDistance(sf::Vector2f(PLAYER_RECT.left + PLAYER_RECT.width / 2.f, PLAYER_RECT.top + PLAYER_RECT.height / 2.f));
+    bool isInRedZone = distanceToIndicator < mBonusStrip.getWidth() / 2.f;
 
     if(!isInRedZone)
     {
