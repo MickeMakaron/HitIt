@@ -149,6 +149,11 @@ sf::Vertex& VertexArrayNode::operator[](unsigned int index)
     return mArray[index];
 }
 
+const sf::Vertex& VertexArrayNode::operator[](unsigned int index) const
+{
+    return mArray[index];
+}
+
 unsigned int VertexArrayNode::getSize() const
 {
     return mArray.getVertexCount();

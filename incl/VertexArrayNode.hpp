@@ -86,6 +86,7 @@ class VertexArrayNode : public SceneNode
         void free(unsigned int index);
 
         sf::Vertex& operator[](unsigned int index);
+        const sf::Vertex& operator[](unsigned int index) const;
 
     private:
         void updatePrimitiveSize();
