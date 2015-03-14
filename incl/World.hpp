@@ -148,8 +148,6 @@ class World
         State               mState;         ///< Current world state.
         float               mTimer;
         bool                mPlayerIsDamaged; ///< Player state.
-        SceneNode*          mBusiestPositionIndicator;
-        float               mBusiestPositionIndicatorSpeed;
         std::vector<std::function<void()>> mStateFuncs;
 };
 

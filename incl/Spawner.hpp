@@ -54,7 +54,7 @@ class Spawner
 
         float getNoteWidth() const;
 
-        float getBusiestPosition() const;
+        const VertexArrayNode& getObstacles() const;
 
     private:
         AudioSampler&           mSampler;

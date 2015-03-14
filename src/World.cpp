@@ -32,13 +32,12 @@
 #include "World.hpp"
 #include "Assets.hpp"
 #include "TIME_PER_FRAME.hpp"
-#include "SpriteNode.hpp"
 #include "Player.hpp"
 #include "CollissionCategory.hpp"
 #include "Midi.hpp"
 #include "HealthBar.hpp"
 #include "ScoreDisplay.hpp"
-#include "VertexArrayNode.hpp"
+#include "BonusStrip.hpp"
 ////////////////////////////////////////////////
 
 
@@ -54,8 +53,6 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mState(Starting)
 , mTimer(0.f)
 , mPlayerIsDamaged(false)
-, mBusiestPositionIndicator()
-, mBusiestPositionIndicatorSpeed(0.f)
 , mStateFuncs(StateCount)
 {
     buildWorld();
@@ -127,20 +124,9 @@ void World::updateRun()
 
     if(mSpawner.isEmpty())
         mStateFuncs[Victory]();
-    else
-    {
-        for(SceneNode* node : mSpawner.spawn())
-            mCollission.insert(node);
 
-        mTimer += TIME_PER_FRAME::seconds();
-        if(mTimer >= 0.5f)
-        {
-            mTimer = 0.f;
-            mBusiestPositionIndicatorSpeed = (mSpawner.getBusiestPosition() - mBusiestPositionIndicator->getWorldPosition().x - mBusiestPositionIndicator->getOrigin().x) / 0.5f;
-        }
-
-        mBusiestPositionIndicator->move(mBusiestPositionIndicatorSpeed * TIME_PER_FRAME::seconds(), 0.f);
-    }
+    for(SceneNode* node : mSpawner.spawn())
+        mCollission.insert(node);
 }
 
 void World::updateVictory()
@@ -183,54 +169,6 @@ void World::buildWorld()
         mScene.insert(line, SceneGraph::Middle);
     }
 
-
-    sf::Vector2f indicatorSize(mBounds.width / 4.f, mBounds.height);
-    float greenWidth = indicatorSize.x * 3.f / 4.f;
-    float redWidth = indicatorSize.x - greenWidth;
-    const unsigned int ARRAY_SIZE = 16;
-    sf::Vertex v[ARRAY_SIZE / 2] =
-    {
-        sf::Vertex(sf::Vector2f(0.f, 0.f)),
-        sf::Vertex(sf::Vector2f(indicatorSize.x, 0.f)),
-        sf::Vertex(sf::Vector2f(indicatorSize.x, indicatorSize.y)),
-        sf::Vertex(sf::Vector2f(0.f, indicatorSize.y)),
-        sf::Vertex(sf::Vector2f(greenWidth, 0.f)),
-        sf::Vertex(sf::Vector2f(greenWidth + redWidth, 0.f)),
-        sf::Vertex(sf::Vector2f(greenWidth + redWidth, indicatorSize.y)),
-        sf::Vertex(sf::Vector2f(greenWidth, indicatorSize.y)),
-    };
-
-
-
-    v[0].color = v[1].color = v[2].color = v[3].color = sf::Color::Black;
-    v[4].color = v[5].color = v[6].color = v[7].color = sf::Color::White;
-
-    v[0].color.a = v[3].color.a = v[4].color.a = v[7].color.a = 0;
-
-
-    sf::VertexArray indicatorArray(sf::Quads, ARRAY_SIZE);
-    for(unsigned int i = 0; i < ARRAY_SIZE / 2; i++)
-    {
-        indicatorArray[i] = v[i];
-        if(i < ARRAY_SIZE / 4)
-            v[i].position.x += indicatorSize.x;
-        else
-            v[i].position.x += redWidth;
-    }
-
-    v[0].color.a = v[3].color.a = v[4].color.a = v[7].color.a = 255;
-    v[1].color.a = v[2].color.a = v[5].color.a = v[6].color.a = 0;
-
-
-    for(unsigned int i = 0; i < ARRAY_SIZE / 2; i++)
-        indicatorArray[i + ARRAY_SIZE / 2] = v[i];
-
-    mBusiestPositionIndicator = new VertexArrayNode(indicatorArray);
-    mBusiestPositionIndicator->setOrigin(indicatorSize.x, 0.f);
-    mBusiestPositionIndicator->setPosition(mBounds.width / 2.f, 0.f);
-    mScene.insert(mBusiestPositionIndicator, SceneGraph::Background);
-
-
     RectangleNode* playLine = new RectangleNode(sf::Vector2f(mBounds.width, 2.f));
     playLine->setFillColor(sf::Color::Black);
     playLine->setPosition(0.f, mBounds.height / 3.f);
@@ -241,12 +179,17 @@ void World::buildWorld()
     HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
     mScene.insert(hpBar, SceneGraph::Foreground);
 
+    BonusStrip* bonusStrip = new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height));
+    mScene.insert(bonusStrip, SceneGraph::Layer::Background);
+
     sf::Text text;
     text.setCharacterSize(80);
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, *mBusiestPositionIndicator);
+    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, *bonusStrip);
     score->setPosition(10.f, 30.f);
     mScene.insert(score, SceneGraph::Foreground);
+
+
 }
 
 void World::keepPlayerInBounds()

@@ -56,7 +56,6 @@ Spawner::Spawner(std::string midiFilePath, AudioSampler& sampler, sf::FloatRect 
     layer->attachChild(mObstacles);
 }
 
-
 void Spawner::update()
 {
     mTime += TIME_PER_FRAME::seconds();
@@ -92,13 +91,7 @@ float Spawner::getNoteWidth() const
     return mNoteWidth;
 }
 
-float Spawner::getBusiestPosition() const
+const VertexArrayNode& Spawner::getObstacles() const
 {
-    float positionSumX = 0.f;
-    unsigned int numObstacles = mObstacles->getSize() / 4;
-    for(unsigned int i = 0; i < numObstacles * 4; i += 4)
-        positionSumX += mObstacles->operator[](i).position.x;
-
-    return (numObstacles == 0) ? M_SPAWN_AREA.width / 2.f : positionSumX / numObstacles;
+    return *mObstacles;
 }
-
