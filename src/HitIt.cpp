@@ -94,8 +94,8 @@ HitIt::WindowSettings HitIt::getWindowSettings() const
     for(const sf::VideoMode& fullscreenMode : sf::VideoMode::getFullscreenModes())
         if(fullscreenMode.isValid())
         {
-            mode = fullscreenMode;
-            style = sf::Style::Fullscreen;
+            //mode = fullscreenMode;
+            //style = sf::Style::Fullscreen;
             break;
         }
 
