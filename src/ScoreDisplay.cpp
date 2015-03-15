@@ -101,3 +101,9 @@ void ScoreDisplay::updateCurrent()
     ss << "$" << (int)mScore << bonus;
     setText(ss.str());
 }
+
+
+unsigned int ScoreDisplay::getScore() const
+{
+    return mScore;
+}

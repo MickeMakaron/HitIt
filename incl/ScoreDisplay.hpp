@@ -51,6 +51,8 @@ class ScoreDisplay : public Text
          */
         virtual void updateCurrent();
 
+        unsigned int getScore() const;
+
     private:
         enum State
         {
