@@ -67,7 +67,7 @@ bool GameState::update()
 
         case World::Victory:
             mWorld.pause();
-            requestStackPush(new VictoryMenu(getStack(), mTarget, mMidiFile));
+            requestStackPush(new VictoryMenu(getStack(), mTarget, mMidiFile, mWorld.getScore()));
             break;
 
         case World::Defeat:

@@ -187,7 +187,7 @@ void BonusStrip::gatherPoint(SceneNode* point)
     mPointsScore += 5.f;
 }
 
-const std::list<SceneNode*>& BonusStrip::getScore() const
+const std::list<SceneNode*>& BonusStrip::getPoints() const
 {
     return mPoints;
 }

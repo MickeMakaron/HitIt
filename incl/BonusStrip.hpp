@@ -57,7 +57,7 @@ class BonusStrip : public VertexArrayNode
         float fetchPointsScore();
         void gatherPoint(SceneNode* point);
 
-        const std::list<SceneNode*>& getScore() const;
+        const std::list<SceneNode*>& getPoints() const;
     private:
         void initializeStrip();
 

@@ -34,7 +34,6 @@
 #include "Text.hpp"
 ////////////////////////////////////////////////
 
-
 MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
 {
