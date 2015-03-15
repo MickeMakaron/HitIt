@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
+#include "HighScore.hpp"
 ////////////////////////////////////////////////
 
 class VictoryMenu : public MenuState
@@ -37,7 +38,7 @@ class VictoryMenu : public MenuState
          * \param stack to insert state into at construction.
          * \param target SFML RenderTarget object to draw to.
          */
-        VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
+        VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile, unsigned int score);
 
 
         /**
@@ -54,6 +55,8 @@ class VictoryMenu : public MenuState
 
     private:
         std::string             mMidiFile;
+        HighScore               mHighScore;
+        unsigned int            mScore;
 
 };
 
