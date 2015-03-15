@@ -50,6 +50,7 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
 , mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height))))
+, mScoreDisplay(nullptr)
 , mCollission(*mPlayer, mBonusStrip)
 , mState(Starting)
 , mTimer(0.f)
@@ -183,9 +184,9 @@ void World::buildWorld()
     sf::Text text;
     text.setCharacterSize(80);
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, mBonusStrip);
-    score->setPosition(10.f, 30.f);
-    mScene.insert(score, SceneGraph::Foreground);
+    mScoreDisplay = new ScoreDisplay(text, *mPlayer, mBonusStrip);
+    mScoreDisplay->setPosition(10.f, 30.f);
+    mScene.insert(mScoreDisplay, SceneGraph::Foreground);
 
     mScene.insert(&mBonusStrip, SceneGraph::Layer::Background);
 }
@@ -243,3 +244,12 @@ void World::resume()
     mSampler.resume();
     mState = Running;
 }
+
+unsigned int World::getScore() const
+{
+    if(mScoreDisplay)
+        return mScoreDisplay->getScore();
+    else
+        return 0;
+}
+

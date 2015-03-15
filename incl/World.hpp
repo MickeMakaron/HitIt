@@ -45,6 +45,7 @@ namespace sf
 #include "AudioSampler.hpp"
 class Player;
 class BonusStrip;
+class ScoreDisplay;
 ////////////////////////////////////////////////
 
 class World
@@ -105,6 +106,9 @@ class World
          */
         void resume();
 
+
+        unsigned int getScore() const;
+
     private:
         /**
          * \brief Perform initialization of world.
@@ -146,6 +150,7 @@ class World
         Spawner             mSpawner;       ///< Spawn new obstacles.
         Player*             mPlayer;        ///< Player controlled node.
         BonusStrip&         mBonusStrip;
+        ScoreDisplay*       mScoreDisplay;
         Collission          mCollission;    ///< Collission manager.
         State               mState;         ///< Current world state.
         float               mTimer;
