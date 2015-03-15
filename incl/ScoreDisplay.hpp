@@ -44,7 +44,7 @@ class ScoreDisplay : public Text
          * \brief Constructor
          *
          */
-        ScoreDisplay(sf::Text text, const SceneNode& player, const BonusStrip& bonusStrip);
+        ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& bonusStrip);
 
         /**
          * \brief Update score.
@@ -61,7 +61,7 @@ class ScoreDisplay : public Text
         };
 
         const SceneNode&    mPlayer;
-        const BonusStrip&   mBonusStrip;
+        BonusStrip&   mBonusStrip;
         float               mScore;
         float               mTimeInRedZone;
         State               mState;

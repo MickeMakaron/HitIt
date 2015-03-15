@@ -75,3 +75,8 @@ void RectangleNode::setOutlineColor(sf::Color color)
 {
     mShape.setOutlineColor(color);
 }
+
+void RectangleNode::setOutlineThickness(float thickness)
+{
+    mShape.setOutlineThickness(thickness);
+}

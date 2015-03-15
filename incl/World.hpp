@@ -44,6 +44,7 @@ namespace sf
 #include "Spawner.hpp"
 #include "AudioSampler.hpp"
 class Player;
+class BonusStrip;
 ////////////////////////////////////////////////
 
 class World
@@ -144,6 +145,7 @@ class World
         sf::FloatRect       mBounds;        ///< Area where player is allowed to reside.
         Spawner             mSpawner;       ///< Spawn new obstacles.
         Player*             mPlayer;        ///< Player controlled node.
+        BonusStrip&         mBonusStrip;
         Collission          mCollission;    ///< Collission manager.
         State               mState;         ///< Current world state.
         float               mTimer;

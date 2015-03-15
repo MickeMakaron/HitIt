@@ -30,6 +30,7 @@ namespace CollissionCategory
         None            = 0,
         Collidable      = 1 << 0,
         Lethal          = 1 << 1,
+        Point           = 1 << 2,
     };
 }
 

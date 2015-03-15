@@ -51,9 +51,13 @@ class BonusStrip : public VertexArrayNode
 	     */
 		virtual void updateCurrent();
 
-        float    getDistance(sf::Vector2f p) const;
+        float   getDistance(sf::Vector2f p) const;
         float   getWidth() const;
 
+        float fetchPointsScore();
+        void gatherPoint(SceneNode* point);
+
+        const std::list<SceneNode*>& getPoints() const;
     private:
         void initializeStrip();
 
@@ -62,6 +66,8 @@ class BonusStrip : public VertexArrayNode
 
         float getBusiestPosition() const;
 
+        void spawnPoint(float x);
+
     private:
         const VertexArrayNode&      M_OBSTACLES;
         const sf::Vector2f          M_SIZE;
@@ -69,6 +75,8 @@ class BonusStrip : public VertexArrayNode
         std::queue<unsigned int>    mQuadIndexQueue;
         float                       mTimer;
         const float                 M_UPDATE_INTERVAL = 0.5f;
+        float                       mPointsScore;
+        std::list<SceneNode*>       mPoints;
 };
 
 /************************************************

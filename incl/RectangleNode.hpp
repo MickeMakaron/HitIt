@@ -76,6 +76,8 @@ class RectangleNode : public SceneNode
 
         void setOutlineColor(sf::Color color);
 
+        void setOutlineThickness(float thickness);
+
         /**
          * \brief Set size of shape
          *

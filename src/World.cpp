@@ -49,11 +49,12 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)//mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y)
 , mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
-, mCollission(*mPlayer)
+, mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height))))
+, mCollission(*mPlayer, mBonusStrip)
 , mState(Starting)
 , mTimer(0.f)
 , mPlayerIsDamaged(false)
-, mStateFuncs(StateCount)
+, mStateFuncs(StateCount, [](){})
 {
     buildWorld();
 
@@ -179,17 +180,14 @@ void World::buildWorld()
     HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
     mScene.insert(hpBar, SceneGraph::Foreground);
 
-    BonusStrip* bonusStrip = new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height));
-    mScene.insert(bonusStrip, SceneGraph::Layer::Background);
-
     sf::Text text;
     text.setCharacterSize(80);
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, *bonusStrip);
+    ScoreDisplay* score = new ScoreDisplay(text, *mPlayer, mBonusStrip);
     score->setPosition(10.f, 30.f);
     mScene.insert(score, SceneGraph::Foreground);
 
-
+    mScene.insert(&mBonusStrip, SceneGraph::Layer::Background);
 }
 
 void World::keepPlayerInBounds()

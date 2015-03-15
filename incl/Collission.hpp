@@ -37,6 +37,7 @@
 // HitIt internal headers
 class SceneNode;
 class Player;
+class BonusStrip;
 ////////////////////////////////////////////////
 
 
@@ -48,7 +49,7 @@ class Collission
          *
          * \param player player node to track.
          */
-        Collission(Player& player);
+        Collission(Player& player, BonusStrip& bonusStrip);
 
         /**
          * \brief Add node to collission checklist.
@@ -97,8 +98,12 @@ class Collission
          */
         CollissionData checkCollission(sf::FloatRect a, sf::FloatRect b) const;
 
+
+        void handleCollissions(std::list<SceneNode*> nodes);
+
     private:
         Player&                 mPlayer;    ///< Player node
+        BonusStrip&             mBonusStrip;
         std::list<SceneNode*>   mNodes;     ///< Nodes in scene graph.
 };
 

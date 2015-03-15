@@ -36,10 +36,12 @@
 #include "Collission.hpp"
 #include "CollissionCategory.hpp"
 #include "Player.hpp"
+#include "BonusStrip.hpp"
 ////////////////////////////////////////////////
 
-Collission::Collission(Player& player)
+Collission::Collission(Player& player, BonusStrip& bonusStrip)
 : mPlayer(player)
+, mBonusStrip(bonusStrip)
 {
 
 }
@@ -57,9 +59,15 @@ void Collission::insert(SceneNode* node)
 
 void Collission::update()
 {
+    handleCollissions(mNodes);
+    handleCollissions(mBonusStrip.getPoints());
+}
+
+void Collission::handleCollissions(std::list<SceneNode*> nodes)
+{
     sf::FloatRect playerRect = mPlayer.getBoundingRect();
     sf::Vector2f maxPlayerPenetration(0.f, 0.f);
-    for(SceneNode* node : mNodes)
+    for(SceneNode* node : nodes)
     {
         CollissionData data = checkCollission(playerRect, node->getBoundingRect());
         if(!data.hasCollission)
@@ -84,6 +92,9 @@ void Collission::update()
 
             if(category & Lethal)
                 mPlayer.damage();
+
+            if(category & Point)
+                mBonusStrip.gatherPoint(node);
         }
     }
 }

@@ -35,6 +35,8 @@
 #include "BonusStrip.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "VertexArrayNode.hpp"
+#include "CollissionCategory.hpp"
+#include "RectangleNode.hpp"
 ////////////////////////////////////////////////
 
 
@@ -44,6 +46,7 @@ BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize
 , M_SIZE(windowSize.x / 4.f, windowSize.y)
 , M_SCROLL_SPEED(300.f)
 , mTimer(0.f)
+, mPointsScore(0.f)
 {
     initializeStrip();
 }
@@ -81,7 +84,7 @@ void BonusStrip::updateCurrent()
         insertQuad(middleX, prevMiddleX, bot - step, bot, false);
 
 
-
+        spawnPoint(middleX);
         mTimer = 0.f;
     }
 
@@ -154,4 +157,37 @@ float BonusStrip::getDistance(sf::Vector2f p) const
 float BonusStrip::getWidth() const
 {
     return M_SIZE.x;
+}
+
+void BonusStrip::spawnPoint(float x)
+{
+    RectangleNode* point = new RectangleNode(sf::Vector2f(20.f, 20.f), CollissionCategory::Point);
+    point->setPosition(x, operator[](mQuadIndexQueue.back()).position.y);
+    point->setFillColor(sf::Color::Yellow);
+    point->setOutlineColor(sf::Color::Black);
+    point->setOutlineThickness(1.f);
+    attachChild(point);
+    mPoints.push_back(point);
+}
+
+float BonusStrip::fetchPointsScore()
+{
+    float score = mPointsScore;
+    mPointsScore = 0.f;
+    return score;
+}
+
+void BonusStrip::gatherPoint(SceneNode* point)
+{
+    auto it = std::find(mPoints.begin(), mPoints.end(), point);
+    if(it != mPoints.end())
+        mPoints.erase(it);
+
+    detachChild(*point);
+    mPointsScore += 5.f;
+}
+
+const std::list<SceneNode*>& BonusStrip::getPoints() const
+{
+    return mPoints;
 }

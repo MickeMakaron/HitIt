@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////
 
 
-ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, const BonusStrip& bonusStrip)
+ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& bonusStrip)
 : Text(text)
 , mPlayer(player)
 , mBonusStrip(bonusStrip)
@@ -65,33 +65,36 @@ void ScoreDisplay::updateCurrent()
 
 
     std::string bonus;
+    float modifier = 0.f;
     switch(mState)
     {
         case Outside:
             if(isInRedZone)
                 mState = Red;
             else
-                mScore += 100.f / distanceToIndicator * TIME_PER_FRAME::seconds();
+                modifier = 100.f / distanceToIndicator;
             break;
         case Red:
-            mScore += 6.f * TIME_PER_FRAME::seconds();
+            modifier += 6.f;
             if(mTimeInRedZone >= 5.f)
                 mState = Red5Sec;
             bonus = "\nBonus x5!";
             break;
         case Red5Sec:
-            mScore += 12.f * TIME_PER_FRAME::seconds();
+            modifier += 12.f;
             if(mTimeInRedZone >= 10.f)
                 mState = Red10Sec;
             bonus = "\nBonus x10!";
             break;
         case Red10Sec:
-            mScore += 24.f * TIME_PER_FRAME::seconds();
+            modifier += 24.f;
             bonus = "\nBonus x20!";
             break;
         default:
             break;
     }
+
+    mScore += modifier * (TIME_PER_FRAME::seconds() + mBonusStrip.fetchPointsScore());
 
 
     std::stringstream ss;
