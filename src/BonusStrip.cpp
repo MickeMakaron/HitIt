@@ -50,6 +50,7 @@ BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize
 , mTimer(0.f)
 , mPointsScore(0.f)
 , mPointSound(Assets::get(ResourceID::Sound::ID::PickupPoint))
+, mPointTimer(0.f)
 {
     mPointSound.setVolume(60.f);
     initializeStrip();
