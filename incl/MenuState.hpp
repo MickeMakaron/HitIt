@@ -95,10 +95,7 @@ class MenuState : public State
         SoundList           mSounds;
         SoundPlayer         mSoundPlayer;
         GUIContainer        mMenu;
-
-    private:
         sf::RectangleShape  mBackground;
-
 };
 
 /************************************************

@@ -156,5 +156,5 @@ const sf::Vertex& VertexArrayNode::operator[](unsigned int index) const
 
 unsigned int VertexArrayNode::getSize() const
 {
-    return mArray.getVertexCount();
+    return (mArray.getVertexCount() / mPrimitiveSize) - mFreeIndices.size();
 }

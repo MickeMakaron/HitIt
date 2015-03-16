@@ -39,6 +39,7 @@ namespace ResourceID
             Button,
             Hp,
             BlackOverlay,
+            About,
             IDCount,
         };
     }
@@ -68,6 +69,10 @@ namespace ResourceID
         {
             Button,
             PlayerDamaged,
+            PlayerStep,
+            PickupPoint,
+            Bonus1,
+            Bonus2,
             Defeat,
             IDCount,
         };

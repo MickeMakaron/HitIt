@@ -29,6 +29,7 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
+#include "SFML/Audio/Sound.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -58,15 +59,17 @@ class ScoreDisplay : public Text
         {
             Outside,
             Red,
-            Red5Sec,
-            Red10Sec,
+            Bonus1,
+            Bonus2,
         };
 
         const SceneNode&    mPlayer;
-        BonusStrip&   mBonusStrip;
+        BonusStrip&         mBonusStrip;
         float               mScore;
         float               mTimeInRedZone;
         State               mState;
+        sf::Sound           mBonus1;
+        sf::Sound           mBonus2;
 };
 
 

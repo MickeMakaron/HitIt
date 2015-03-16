@@ -49,7 +49,7 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)//mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y)
 , mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
 , mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
-, mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height))))
+, mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height), mSpawner.getNoteWidth())))
 , mScoreDisplay(nullptr)
 , mCollission(*mPlayer, mBonusStrip)
 , mState(Starting)
@@ -225,6 +225,10 @@ std::list<SoundList::Asset> World::getSounds() const
     return
     {
         SoundList::Asset(ID::PlayerDamaged,     "sounds/player_damaged.ogg"),
+        SoundList::Asset(ID::PlayerStep,        "sounds/player_step.ogg"),
+        SoundList::Asset(ID::PickupPoint,       "sounds/pickup_point.ogg"),
+        SoundList::Asset(ID::Bonus1,            "sounds/bonus1.ogg"),
+        SoundList::Asset(ID::Bonus2,            "sounds/bonus2.ogg"),
     };
 }
 

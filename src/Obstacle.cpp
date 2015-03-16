@@ -55,7 +55,7 @@ Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, 
         {
             mState = Playing;
             mSoundPlayer.play();
-            mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color(150, 150, 150);
+            mArray[M_VERTEX_ARRAY_INDEX + 2].color = mArray[M_VERTEX_ARRAY_INDEX + 3].color = sf::Color(50, 50, 50);
         }
     };
 

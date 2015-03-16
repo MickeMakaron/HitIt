@@ -31,12 +31,11 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Graphics/ConvexShape.hpp"
+#include "SFML/Audio/Sound.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-
 #include "VertexArrayNode.hpp"
 ////////////////////////////////////////////////
 
@@ -44,7 +43,7 @@
 class BonusStrip : public VertexArrayNode
 {
     public:
-        BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize, int category = 0);
+        BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize, float noteWidth, int category = 0);
 
 	    /**
 	     * \brief Update this node.
@@ -72,11 +71,15 @@ class BonusStrip : public VertexArrayNode
         const VertexArrayNode&      M_OBSTACLES;
         const sf::Vector2f          M_SIZE;
         const float                 M_SCROLL_SPEED;
+        const float                 M_NOTE_WIDTH;
         std::queue<unsigned int>    mQuadIndexQueue;
         float                       mTimer;
+        float                       mPointTimer;
         const float                 M_UPDATE_INTERVAL = 0.5f;
+        const float                 M_POINT_SPAWN_INTERVAL = 2.f;
         float                       mPointsScore;
         std::list<SceneNode*>       mPoints;
+        sf::Sound                   mPointSound;;
 };
 
 /************************************************

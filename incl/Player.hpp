@@ -26,6 +26,7 @@
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
+#include "SFML/Audio/Sound.hpp"
 namespace sf
 {
     class Event;
@@ -35,7 +36,7 @@ namespace sf
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "RectangleNode.hpp"
-#include "SoundPlayer.hpp"
+
 ////////////////////////////////////////////////
 
 
@@ -115,7 +116,8 @@ class Player : public RectangleNode
         bool            mIsJumping;             ///< Indicator whether player is jumping.
         const float     mJumpingTime = 1.f;     ///< Time airborne in seconds.
         float           mJumpingCounter;        ///< Time accumulator for jumping.
-        SoundPlayer     mDamagedSound;          ///< Sound played when damaged.
+        sf::Sound       mDamagedSound;          ///< Sound played when damaged.
+        sf::Sound       mStepSound;
         float           mMoveCounter;
         const float     mMoveCooldown = 0.15f;
         sf::Vector2f    mDirection;

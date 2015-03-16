@@ -37,17 +37,21 @@
 #include "VertexArrayNode.hpp"
 #include "CollissionCategory.hpp"
 #include "RectangleNode.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
-BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize, int category)
+BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize, float noteWidth, int category)
 : VertexArrayNode(sf::Quads)
 , M_OBSTACLES(obstacles)
 , M_SIZE(windowSize.x / 4.f, windowSize.y)
 , M_SCROLL_SPEED(300.f)
+, M_NOTE_WIDTH(noteWidth)
 , mTimer(0.f)
 , mPointsScore(0.f)
+, mPointSound(Assets::get(ResourceID::Sound::ID::PickupPoint))
 {
+    mPointSound.setVolume(60.f);
     initializeStrip();
 }
 
@@ -72,6 +76,7 @@ void BonusStrip::updateCurrent()
 
     if(mTimer >= M_UPDATE_INTERVAL)
     {
+
         removeQuad();
         removeQuad();
 
@@ -83,10 +88,17 @@ void BonusStrip::updateCurrent()
         insertQuad(middleX - quadWidth, prevMiddleX - quadWidth, bot - step, bot, true);
         insertQuad(middleX, prevMiddleX, bot - step, bot, false);
 
-
-        spawnPoint(middleX);
+        mPointTimer += mTimer;
         mTimer = 0.f;
+
+        if(mPointTimer >= M_POINT_SPAWN_INTERVAL)
+        {
+            spawnPoint(middleX);
+            mPointTimer = 0.f;
+        }
     }
+
+
 
     move(0.f, M_SCROLL_SPEED * TIME_PER_FRAME::seconds());
 }
@@ -161,8 +173,8 @@ float BonusStrip::getWidth() const
 
 void BonusStrip::spawnPoint(float x)
 {
-    RectangleNode* point = new RectangleNode(sf::Vector2f(20.f, 20.f), CollissionCategory::Point);
-    point->setPosition(x, operator[](mQuadIndexQueue.back()).position.y);
+    RectangleNode* point = new RectangleNode(sf::Vector2f(M_NOTE_WIDTH, M_NOTE_WIDTH), CollissionCategory::Point);
+    point->setPosition((int)x, operator[](mQuadIndexQueue.back()).position.y);
     point->setFillColor(sf::Color::Yellow);
     point->setOutlineColor(sf::Color::Black);
     point->setOutlineThickness(1.f);
@@ -185,6 +197,8 @@ void BonusStrip::gatherPoint(SceneNode* point)
 
     detachChild(*point);
     mPointsScore += 5.f;
+
+    mPointSound.play();
 }
 
 const std::list<SceneNode*>& BonusStrip::getPoints() const

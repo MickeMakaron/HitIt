@@ -45,9 +45,11 @@ Player::Player(const sf::Texture& texture, float width, int hp, sf::Vector2f pos
 , mIsImmortal(false)
 , mImmortalCounter(0.f)
 , mDamagedSound(Assets::get(ResourceID::Sound::PlayerDamaged))
+, mStepSound(Assets::get(ResourceID::Sound::PlayerStep))
 , mMoveCounter(0.f)
 , mStepSize(width)
 {
+    mStepSound.setVolume(70.f);
     setSize(width - 2.f, width);
     setPosition(position);
 }
@@ -82,6 +84,10 @@ void Player::updateCurrent()
                 mDirection.x = 1.f;
         }
     }
+
+    if(mDirection.x)
+        mStepSound.play();
+
     mPreviousPosition = getWorldPosition();
     move(mDirection.x * mStepSize, mDirection.y * mMovementSpeed * TIME_PER_FRAME::seconds());
     mDirection.x = mDirection.y = 0.f;

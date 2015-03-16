@@ -31,6 +31,7 @@
 #include "ScoreDisplay.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "BonusStrip.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
@@ -41,6 +42,8 @@ ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& b
 , mScore(0.f)
 , mTimeInRedZone(0.f)
 , mState(Outside)
+, mBonus1(Assets::get(ResourceID::Sound::ID::Bonus1))
+, mBonus2(Assets::get(ResourceID::Sound::ID::Bonus2))
 {
     std::stringstream ss;
     ss << "$" << (int)mScore;
@@ -76,17 +79,24 @@ void ScoreDisplay::updateCurrent()
             break;
         case Red:
             modifier += 6.f;
-            if(mTimeInRedZone >= 5.f)
-                mState = Red5Sec;
+            if(mTimeInRedZone >= 20.f)
+            {
+                mState = Bonus1;
+                mBonus1.play();
+            }
+
             bonus = "\nBonus x5!";
             break;
-        case Red5Sec:
+        case Bonus1:
             modifier += 12.f;
-            if(mTimeInRedZone >= 10.f)
-                mState = Red10Sec;
+            if(mTimeInRedZone >= 40.f)
+            {
+                mState = Bonus2;
+                mBonus2.play();
+            }
             bonus = "\nBonus x10!";
             break;
-        case Red10Sec:
+        case Bonus2:
             modifier += 24.f;
             bonus = "\nBonus x20!";
             break;
