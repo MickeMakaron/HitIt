@@ -32,6 +32,7 @@
 #include "Button.hpp"
 #include "GameState.hpp"
 #include "MainMenu.hpp"
+#include "MenuThemeState.hpp"
 #include "Text.hpp"
 ////////////////////////////////////////////////
 
@@ -90,7 +91,12 @@ std::list<GUIElement*> PauseMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
+        [this]()
+        {
+            requestStackClear();
+            requestStackPush(new MenuThemeState(getStack(), mTarget));
+            requestStackPush(new MainMenu(getStack(), mTarget));
+        }
     );
 
 

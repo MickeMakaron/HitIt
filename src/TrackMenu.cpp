@@ -38,6 +38,7 @@
 #include "GameState.hpp"
 #include "Text.hpp"
 #include "MainMenu.hpp"
+#include "MenuThemeState.hpp"
 ////////////////////////////////////////////////
 
 
@@ -94,7 +95,7 @@ std::list<GUIElement*> TrackMenu::getButtons()
         (
             buttonText,
             mSoundPlayer,
-            [=](){requestStackPop(); requestStackPush(new GameState(getStack(), mTarget, filePath));}
+            [=](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget, filePath));}
         );
         button->setOrigin(0.f, 0.f);
         button->setPosition(pos);
@@ -111,7 +112,12 @@ std::list<GUIElement*> TrackMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
+        [this]()
+        {
+            requestStackPop();
+            requestStackPush(new MenuThemeState(getStack(), mTarget));
+            requestStackPush(new MainMenu(getStack(), mTarget));
+        }
     );
     pos.x = titleRect.width / 2.f;
     pos.y += yIncrement * 2.f;
