@@ -35,6 +35,7 @@
 // HitIt internal headers
 #include "HitIt.hpp"
 #include "TIME_PER_FRAME.hpp"
+#include "MenuThemeState.hpp"
 #include "MainMenu.hpp"
 #include "Assets.hpp"
 ////////////////////////////////////////////////
@@ -64,6 +65,7 @@ HitIt::HitIt()
     mWindow.setMouseCursorVisible(false);
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
+    mStateStack.push(new MenuThemeState(mStateStack, mWindow));
     mStateStack.push(new MainMenu(mStateStack, mWindow));
 
 
@@ -94,8 +96,8 @@ HitIt::WindowSettings HitIt::getWindowSettings() const
     for(const sf::VideoMode& fullscreenMode : sf::VideoMode::getFullscreenModes())
         if(fullscreenMode.isValid())
         {
-            //mode = fullscreenMode;
-            //style = sf::Style::Fullscreen;
+            mode = fullscreenMode;
+            style = sf::Style::Fullscreen;
             break;
         }
 

@@ -45,7 +45,7 @@ Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, 
 , mStateFuncs(StateCount, [](){})
 {
     std::vector<sf::Vertex> points(4, sf::Vertex(sf::Vector2f(0.f, 0.f), sf::Color::Black));
-    points[0].color = points[1].color = sf::Color(140, 140, 140);
+    points[0].color = points[1].color = sf::Color(70, 70, 70);
 
     M_VERTEX_ARRAY_INDEX = mArray.insert(points);
 

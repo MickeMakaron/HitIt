@@ -191,12 +191,12 @@ void GUIContainer::updateSize()
         max.y = std::max(max.y, bounds.top + bounds.height);
     }
 
-    mSize = max - min;
-    setOrigin(mSize / 2.f);
+    mBounds = sf::FloatRect(min, max - min);
+    setOrigin(sf::Vector2f(mBounds.width, mBounds.height) / 2.f);
 }
 
 
 sf::FloatRect GUIContainer::getGlobalBounds() const
 {
-    return getTransform().transformRect(sf::FloatRect(0.f, 0.f, mSize.x, mSize.y));
+    return getTransform().transformRect(mBounds);
 }

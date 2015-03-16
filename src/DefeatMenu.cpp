@@ -30,6 +30,7 @@
 // HitIt internal headers
 #include "DefeatMenu.hpp"
 #include "MainMenu.hpp"
+#include "MenuThemeState.hpp"
 #include "GameState.hpp"
 #include "Button.hpp"
 #include "Text.hpp"
@@ -76,7 +77,11 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget, mMidiFile));}
+        [this]()
+        {
+            requestStackClear();
+            requestStackPush(new GameState(getStack(), mTarget, mMidiFile));
+        }
     );
 
     buttonText.setString("Try another track");
@@ -84,7 +89,12 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     {
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new TrackMenu(getStack(), mTarget));}
+        [this]()
+        {
+            requestStackClear();
+            requestStackPush(new MenuThemeState(getStack(), mTarget));
+            requestStackPush(new TrackMenu(getStack(), mTarget));
+        }
     };
 
     buttonText.setString("Go to main menu");
@@ -92,7 +102,12 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackClear(); requestStackPush(new MainMenu(getStack(), mTarget));}
+        [this]()
+        {
+            requestStackClear();
+            requestStackPush(new MenuThemeState(getStack(), mTarget));
+            requestStackPush(new MainMenu(getStack(), mTarget));
+        }
     );
 
 

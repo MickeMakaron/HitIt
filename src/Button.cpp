@@ -37,7 +37,7 @@ Button::Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback
 , mSoundPlayer(soundPlayer)
 , mCallback(callback)
 {
-    sf::FloatRect textBounds = mText.getGlobalBounds();
+    sf::FloatRect textBounds = mText.getLocalBounds();
     setOrigin(textBounds.width / 2.f, textBounds.height / 2.f);
     mText.setColor(sf::Color::Black);
 }
@@ -45,6 +45,7 @@ Button::Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback
 void Button::select()
 {
     GUIElement::select();
+    setScale(1.2f, 1.2f);
     mText.setColor(sf::Color::White);
 }
 
@@ -52,6 +53,7 @@ void Button::deselect()
 {
     GUIElement::deselect();
     mSoundPlayer.play();
+    setScale(1.0f, 1.0f);
     mText.setColor(sf::Color::Black);
 }
 
@@ -74,5 +76,5 @@ bool Button::isSelectable() const
 
 sf::FloatRect Button::getBoundingRect() const
 {
-    return getWorldTransform().transformRect(mText.getGlobalBounds());
+    return getWorldTransform().transformRect(mText.getLocalBounds());
 }

@@ -32,22 +32,12 @@
 #include "Button.hpp"
 #include "TrackMenu.hpp"
 #include "Text.hpp"
-#include "Spawner.hpp"
-#include "AudioSampler.hpp"
-#include "VertexArrayNode.hpp"
+#include "AboutMenu.hpp"
 ////////////////////////////////////////////////
 
 MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
-, mTheme("assets/midi/damp.mid")
-, mSampler1(new AudioSampler())
-, mSampler2(nullptr)
-, mSpawner1(new Spawner(mTheme, *mSampler1, sf::FloatRect(sf::Vector2f(0.f, 0.f), mTarget.getView().getSize()), &mNotes))
-, mSpawner2(nullptr)
-, mCurrentMenu(&mMenu)
-, mAboutMenu({})
 {
-    mSampler1->setVolume(60.f);
 
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
@@ -57,88 +47,29 @@ MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
     mMenu.insert(new Text(text));
     mMenu.insert(getButtons());
 
-    mTextures.insert(getTextures());
-    mAbout.setTexture((Assets::get(ResourceID::Texture::About)));
-    mAbout.setPosition(0.f, mTarget.getView().getSize().y / 5.f);
-
-    sf::Color gray(100, 100, 100);
-    setBackground(gray);
+    setBackground(sf::Color::Transparent);
 
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
+    mGUIBackground.setFillColor(sf::Color(200, 200, 200, 150));
+    mGUIBackground.setOutlineColor(sf::Color(240, 240, 240, 150));
+    mGUIBackground.setOutlineThickness(3.f);
 
-    text.setCharacterSize(100);
-    text.setString("Ok!");
-    Button* ok = new Button(text, mSoundPlayer, [this](){mCurrentMenu = &mMenu;});
-    mAboutMenu.setPosition(mTarget.getView().getSize().x / 2.f, mTarget.getView().getSize().y * 2.f / 3.f);
-    mAboutMenu.insert(ok);
-}
+    sf::FloatRect guiRect = mMenu.getGlobalBounds();
+    mGUIBackground.setSize(sf::Vector2f(guiRect.width, guiRect.height) * 1.1f);
+    mGUIBackground.setPosition(sf::Vector2f(guiRect.left, guiRect.top) - sf::Vector2f(guiRect.width, guiRect.height) * 0.05f);
 
-MainMenu::~MainMenu()
-{
-    if(mSampler1)
-        delete mSampler1;
-    if(mSampler2)
-        delete mSampler2;
-    if(mSpawner1)
-        delete mSpawner1;
-    if(mSpawner2)
-        delete mSpawner2;
-}
-
-bool MainMenu::handleEvent(const sf::Event& event)
-{
-    mCurrentMenu->handleEvent(event);
 }
 
 void MainMenu::draw()
 {
-    mTarget.draw(mBackground);
-    mTarget.draw(mNotes);
-    mTarget.draw(*mCurrentMenu);
-
-    if(mCurrentMenu == &mAboutMenu)
-        mTarget.draw(mAbout);
+    mTarget.draw(mGUIBackground);
+    MenuState::draw();
 }
 
 bool MainMenu::update()
 {
-    mCurrentMenu->update();
-    mNotes.update();
-
-    mSpawner1->update();
-    mSpawner1->spawn();
-
-
-    if(mSpawner2 && mSampler2)
-    {
-        mSpawner2->update();
-        mSpawner2->spawn();
-    }
-
-    mNotes.removeWrecks();
-
-
-    if(mSpawner2)
-    {
-        if(mSpawner1->getObstacles().getSize() == 0)
-        {
-            delete mSpawner1;
-            delete mSampler1;
-
-            mSpawner1 = mSpawner2;
-            mSampler1 = mSampler2;
-
-            mSpawner2 = nullptr;
-            mSampler2 = nullptr;
-        }
-    }
-    else if(mSpawner1->isEmpty())
-    {
-        mSampler2 = new AudioSampler();
-        mSpawner2 = new Spawner(mTheme, *mSampler2, sf::FloatRect(sf::Vector2f(0.f, 0.f), mTarget.getView().getSize()), &mNotes);
-        mSampler2->setVolume(60.f);
-    }
-
+    MenuState::update();
+    return true;
 }
 
 std::list<GUIElement*> MainMenu::getButtons()
@@ -152,7 +83,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackPop(); requestStackPush(new TrackMenu(getStack(), mTarget));}
+        [this](){requestStackClear(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     );
 
     buttonText.setString("About");
@@ -160,7 +91,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){mCurrentMenu = &mAboutMenu;}
+        [this](){requestStackPop(); requestStackPush(new AboutMenu(getStack(), mTarget));}
     );
 
     buttonText.setString("Exit");
@@ -188,16 +119,5 @@ std::list<GUIElement*> MainMenu::getButtons()
         play,
         about,
         exit,
-    };
-}
-
-
-std::list<TextureList::Asset> MainMenu::getTextures() const
-{
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::MenuStateBg, "textures/menustate_bg_placeholder.png"),
-        TextureList::Asset(ID::About,       "textures/about.png"),
     };
 }

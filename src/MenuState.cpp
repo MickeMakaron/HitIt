@@ -67,7 +67,7 @@ bool MenuState::update()
 bool MenuState::handleEvent(const sf::Event& event)
 {
     mMenu.handleEvent(event);
-	return true;
+	return false;
 }
 
 void MenuState::setBackground(const sf::Texture& background)
@@ -85,7 +85,7 @@ std::list<TextureList::Asset> MenuState::getTextures() const
     namespace ID = ResourceID::Texture;
     return
     {
-        TextureList::Asset(ID::Button, "textures/button_placeholder.png"),
+        TextureList::Asset(ID::MenuStateBg,  "textures/menu_bg.png"),
     };
 }
 

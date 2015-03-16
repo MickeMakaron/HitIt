@@ -113,7 +113,7 @@ class GUIContainer : public sf::Transformable, public sf::Drawable
     private:
         std::list<ElementPtr>           mElements;  ///< GUI elements.
         std::list<ElementPtr>::iterator mSelection; ///< Current selection.
-        sf::Vector2f                    mSize;      ///< Size of container to fit all elements.
+        sf::FloatRect                   mBounds;    ///< Bounding rectangle of all elements.
 };
 
 /************************************************
