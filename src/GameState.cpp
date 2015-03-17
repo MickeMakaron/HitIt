@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "GameState.hpp"
-#include "VictoryMenu.hpp"
+#include "HighScoreMenu.hpp"
 #include "PauseMenu.hpp"
 #include "DefeatMenu.hpp"
 #include "Assets.hpp"
@@ -67,7 +67,7 @@ bool GameState::update()
 
         case World::Victory:
             mWorld.pause();
-            requestStackPush(new VictoryMenu(getStack(), mTarget, mMidiFile, mWorld.getScore()));
+            requestStackPush(new HighScoreMenu(getStack(), mTarget, mMidiFile, mWorld.getScore()));
             break;
 
         case World::Defeat:

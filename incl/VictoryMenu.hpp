@@ -23,10 +23,10 @@
 #ifndef HITIT_VICTORYMENU_HPP
 #define HITIT_VICTORYMENU_HPP
 
+
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
-#include "HighScore.hpp"
 ////////////////////////////////////////////////
 
 class VictoryMenu : public MenuState
@@ -38,26 +38,13 @@ class VictoryMenu : public MenuState
          * \param stack to insert state into at construction.
          * \param target SFML RenderTarget object to draw to.
          */
-        VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile, unsigned int score);
-
-
-        /**
-         * \brief Handle input events.
-         *
-         * \return indicate whether the state stack
-         * should allow further states to handle events
-         * (true) or not (false).
-         */
-		virtual bool handleEvent(const sf::Event& event);
+        VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
     private:
         std::list<GUIElement*>          getButtons();
 
     private:
         std::string             mMidiFile;
-        HighScore               mHighScore;
-        unsigned int            mScore;
-
 };
 
 /************************************************

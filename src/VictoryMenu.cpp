@@ -43,16 +43,13 @@
 ////////////////////////////////////////////////
 
 
-VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile, unsigned int score)
+VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile)
 : MenuState(stack, target)
 , mMidiFile(midiFile)
-, mScore(score)
 {
-    mHighScore.insert(midiFile, "Micke", score);
-
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    text.setCharacterSize(300);
+    text.setCharacterSize(230);
     text.setString("Woohoo!");
 
     mMenu.insert(new Text(text));
@@ -63,36 +60,13 @@ VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std:
     background.a = 120;
     setBackground(background);
 
-    std::list<HighScore::Score> scores = mHighScore.getByTrack(midiFile);
-    float y = 300.f;
-    for(HighScore::Score score : scores)
-    {
-        sf::Text text;
-        text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-        text.setCharacterSize(50);
-        std::ostringstream ss;
-        ss << score.name << ": " << score.score;
-        text.setString(ss.str());
-
-        Text* scoreText = new Text(text);
-        scoreText->setPosition(500.f, y);
-        y += 50.f;
-        mMenu.insert(scoreText);
-    }
-
-
-}
-
-bool VictoryMenu::handleEvent(const sf::Event& event)
-{
-    MenuState::handleEvent(event);
-    return false;
+    mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
 std::list<GUIElement*> VictoryMenu::getButtons()
 {
     sf::Text buttonText;
-    buttonText.setCharacterSize(100);
+    buttonText.setCharacterSize(80);
     buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
 
     buttonText.setString("Play again");
@@ -133,14 +107,6 @@ std::list<GUIElement*> VictoryMenu::getButtons()
         }
     );
 
-    buttonText.setString("Insert score");
-    Button* insertScore = new Button
-    (
-        buttonText,
-        mSoundPlayer,
-        [this](){mHighScore.insert(mMidiFile, "Micke", mScore);}
-    );
-
 
     sf::FloatRect titleRect = mMenu.getGlobalBounds();
     sf::Vector2f pos(titleRect.width / 2.f, titleRect.height * 2.f);
@@ -151,15 +117,12 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     playOther->setPosition(pos);
     pos.y += yIncrement;
     mainMenu->setPosition(pos);
-    pos.y += yIncrement;
-    insertScore->setPosition(pos);
 
     return
     {
         playSame,
         playOther,
         mainMenu,
-        insertScore,
     };
 }
 
