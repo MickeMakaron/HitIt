@@ -86,8 +86,46 @@ void HighScore::erase(std::string trackName, std::string playerName)
         mEntries.erase(found);
 }
 
+std::string HighScore::getBaseName(std::string filePath) const
+{
+    filePath.erase(0, filePath.find_last_of('/'));
+    return filePath;
+}
+
+bool HighScore::isNewRecord(std::list<HighScore::Score> scores, unsigned int score) const
+{
+    if(scores.size() < M_NUM_ENTRIES_PER_TRACK)
+        return true;
+
+    scores.sort([](const Score& a, const Score& b){return a.score < b.score;});
+    return scores.front().score < score;
+}
+
+std::list<HighScore::Score>::iterator HighScore::insertRecord(std::list<HighScore::Score>& scores, HighScore::Score score) const
+{
+    std::list<HighScore::Score> tmpScores = scores;
+    tmpScores.sort([](const Score& a, const Score& b){return a.score < b.score;});
+    if(isNewRecord(tmpScores, score.score))
+    {
+        for(auto it = scores.begin(); it != scores.end(); it++)
+        {
+            if(it->score < score.score)
+            {
+                scores.pop_back();
+                return scores.insert(it, score);
+            }
+        }
+
+        return scores.insert(scores.end(), score);
+    }
+    else
+        return scores.end();
+}
+
 void HighScore::insert(std::string trackName, std::string playerName, unsigned int score)
 {
+    trackName = getBaseName(trackName);
+
     std::list<Score> scores = getByTrack(trackName);
 
     bool allowInsertion = false;
@@ -96,12 +134,12 @@ void HighScore::insert(std::string trackName, std::string playerName, unsigned i
         allowInsertion = true;
     else
     {
-        scores.sort([](const Score& a, const Score& b){return a.score > b.score;});
+        scores.sort([](const Score& a, const Score& b){return a.score < b.score;});
 
         for(auto it = scores.begin(); it != scores.end(); it++)
             if(score > it->score)
             {
-                erase(trackName, playerName);
+                erase(it->trackName, it->name);
                 allowInsertion = true;
                 break;
             }
@@ -142,6 +180,8 @@ std::list<HighScore::Score> HighScore::get(std::function<bool(const Entry&)> pre
 
 std::list<HighScore::Score> HighScore::getByTrack(std::string trackName) const
 {
+    trackName = getBaseName(trackName);
+
     return get
     ([=](const Entry& entry)
     {

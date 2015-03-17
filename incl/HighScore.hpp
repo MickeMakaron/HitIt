@@ -62,6 +62,9 @@ class HighScore
         std::list<Score> getByTrack(std::string trackName) const;
         std::list<Score> getByPlayer(std::string playerName) const;
 
+        std::list<Score>::iterator insertRecord(std::list<Score>& scores, Score score) const;
+        bool isNewRecord(std::list<Score> scores, unsigned int score) const;
+
     private:
         static const unsigned int M_STRING_LENGTH = 80;
         struct Entry
@@ -77,6 +80,8 @@ class HighScore
 
         std::list<Score> get(std::function<bool(const Entry&)> predicate) const;
         void erase(std::string trackName, std::string playerName);
+
+        std::string getBaseName(std::string filePath) const;
 
     private:
         static const unsigned int M_NUM_ENTRIES_PER_TRACK = 5;
