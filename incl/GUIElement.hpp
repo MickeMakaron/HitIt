@@ -43,19 +43,28 @@ class GUIElement : public SceneNode
         GUIElement();
         virtual ~GUIElement();
 
-        virtual bool isSelectable() const;
-        bool isSelected() const;
-
-        virtual void select();
-        virtual void deselect();
-
         virtual void update();
         virtual void handleEvent(const sf::Event& event);
 
+        virtual bool    isSelectable() const;
+        bool            isSelected() const;
+        void            toggleSelection();
+
+        virtual bool    isActivatable() const;
+        bool            isActive() const;
+        void            toggleActivation();
+
+
+    private:
+        virtual void select();
+        virtual void deselect();
+
         virtual void activate();
+        virtual void deactivate();
 
     private:
         bool mIsSelected;
+        bool mIsActive;
 };
 
 

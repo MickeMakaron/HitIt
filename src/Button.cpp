@@ -44,17 +44,20 @@ Button::Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback
 
 void Button::select()
 {
-    GUIElement::select();
     setScale(1.2f, 1.2f);
     mText.setColor(sf::Color::White);
 }
 
 void Button::deselect()
 {
-    GUIElement::deselect();
     mSoundPlayer.play();
     setScale(1.0f, 1.0f);
     mText.setColor(sf::Color::Black);
+}
+
+bool Button::isActivatable() const
+{
+    return true;
 }
 
 void Button::activate()

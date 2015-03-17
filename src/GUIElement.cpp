@@ -28,6 +28,7 @@
 GUIElement::GUIElement()
 : SceneNode()
 , mIsSelected(false)
+, mIsActive(false)
 {
 
 }
@@ -67,6 +68,18 @@ void GUIElement::deselect()
 
 ////////////////////////////////////////////////
 
+void GUIElement::toggleSelection()
+{
+    if(mIsSelected)
+        deselect();
+    else
+        select();
+
+    mIsSelected = !mIsSelected;
+}
+
+////////////////////////////////////////////////
+
 void GUIElement::update()
 {
     // Do nothing by default.
@@ -79,8 +92,43 @@ void GUIElement::handleEvent(const sf::Event& event)
     // Do nothing by default.
 }
 
+////////////////////////////////////////////////
 
 void GUIElement::activate()
 {
+    // Nothing by default.
+}
 
+////////////////////////////////////////////////
+
+void GUIElement::deactivate()
+{
+    // Nothing by default.
+}
+
+////////////////////////////////////////////////
+
+bool GUIElement::isActivatable() const
+{
+    // False by default.
+    return false;
+}
+
+////////////////////////////////////////////////
+
+bool GUIElement::isActive() const
+{
+    return mIsActive;
+}
+
+////////////////////////////////////////////////
+
+void GUIElement::toggleActivation()
+{
+    if(mIsActive)
+        deactivate();
+    else
+        activate();
+
+    mIsActive = !mIsActive;
 }

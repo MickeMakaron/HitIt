@@ -41,7 +41,10 @@ class Button : public GUIElement
 
         Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback);
 
+
+        virtual bool isActivatable() const;
         virtual bool isSelectable() const;
+
         virtual void select();
         virtual void deselect();
         virtual void activate();
