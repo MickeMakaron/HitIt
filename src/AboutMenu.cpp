@@ -49,13 +49,14 @@ AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
 
     mMenu.insert(getButtons());
 
-    mGUIBackground.setFillColor(sf::Color(200, 200, 200, 150));
+    mGUIBackground.setFillColor(sf::Color(200, 200, 200, 100));
     mGUIBackground.setOutlineColor(sf::Color(240, 240, 240, 150));
     mGUIBackground.setOutlineThickness(3.f);
 
     sf::FloatRect guiRect = mAbout.getGlobalBounds();
     mGUIBackground.setSize(sf::Vector2f(guiRect.width, guiRect.height) * 1.1f);
     mGUIBackground.setPosition(sf::Vector2f(guiRect.left, guiRect.top) - sf::Vector2f(guiRect.width, guiRect.height) * 0.05f);
+
 }
 
 void AboutMenu::draw()
@@ -79,9 +80,8 @@ std::list<GUIElement*> AboutMenu::getButtons()
     text.setString("Ok!");
 
     Button* ok = new Button(text, mSoundPlayer, [this](){requestStackPop(); requestStackPush(new MainMenu(getStack(), mTarget));});
-    ok->setOrigin(ok->getBoundingRect().width / 2.f, ok->getBoundingRect().height / 2.f);
+    ok->setOrigin(0, ok->getBoundingRect().height / 2.f);
     ok->setPosition(mTarget.getView().getSize().x / 2.f, mTarget.getView().getSize().y * 2.f / 3.f);
-
     return {ok};
 }
 

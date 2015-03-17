@@ -50,20 +50,8 @@ MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
     setBackground(sf::Color::Transparent);
 
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
-    mGUIBackground.setFillColor(sf::Color(200, 200, 200, 150));
-    mGUIBackground.setOutlineColor(sf::Color(240, 240, 240, 150));
-    mGUIBackground.setOutlineThickness(3.f);
 
-    sf::FloatRect guiRect = mMenu.getGlobalBounds();
-    mGUIBackground.setSize(sf::Vector2f(guiRect.width, guiRect.height) * 1.1f);
-    mGUIBackground.setPosition(sf::Vector2f(guiRect.left, guiRect.top) - sf::Vector2f(guiRect.width, guiRect.height) * 0.05f);
-
-}
-
-void MainMenu::draw()
-{
-    mTarget.draw(mGUIBackground);
-    MenuState::draw();
+    mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
 bool MainMenu::update()

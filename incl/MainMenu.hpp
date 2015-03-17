@@ -25,12 +25,6 @@
 
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
 ////////////////////////////////////////////////
@@ -47,11 +41,9 @@ class MainMenu : public MenuState
         MainMenu(StateStack& stack, sf::RenderTarget& target);
 
         virtual bool update();
-        virtual void draw();
 
     private:
         std::list<GUIElement*>  getButtons();
-        sf::RectangleShape      mGUIBackground;
 };
 
 /************************************************
