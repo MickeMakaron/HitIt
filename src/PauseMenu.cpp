@@ -43,7 +43,7 @@ PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& gam
 {
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    text.setCharacterSize(350);
+    text.setCharacterSize(230);
     text.setString("Paused");
 
     mMenu.insert(new Text(text));
@@ -55,6 +55,8 @@ PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& gam
     sf::Color background = sf::Color::Black;
     background.a = 120;
     setBackground(background);
+
+    mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
 
@@ -75,7 +77,7 @@ bool PauseMenu::handleEvent(const sf::Event& event)
 std::list<GUIElement*> PauseMenu::getButtons()
 {
     sf::Text buttonText;
-    buttonText.setCharacterSize(100);
+    buttonText.setCharacterSize(80);
     buttonText.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
 
     buttonText.setString("Resume");
