@@ -32,6 +32,7 @@
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/Transformable.hpp"
 #include "SFML/Graphics/Drawable.hpp"
+#include "SFML/Graphics/RectangleShape.hpp"
 namespace sf
 {
     class RenderTarget;
@@ -91,6 +92,9 @@ class GUIContainer : public sf::Transformable, public sf::Drawable
 
         virtual sf::FloatRect getGlobalBounds() const;
 
+
+        void setBackground(sf::Color fillColor, sf::Color outlineColor = sf::Color::White, float outlineThickness = 0.f);
+
     private:
         /**
          * \brief Update size by checking bounds of elements.
@@ -114,6 +118,7 @@ class GUIContainer : public sf::Transformable, public sf::Drawable
         std::list<ElementPtr>           mElements;  ///< GUI elements.
         std::list<ElementPtr>::iterator mSelection; ///< Current selection.
         sf::FloatRect                   mBounds;    ///< Bounding rectangle of all elements.
+        sf::RectangleShape              mBackground;
 };
 
 /************************************************

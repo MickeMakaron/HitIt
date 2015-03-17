@@ -40,7 +40,10 @@
 
 
 GUIContainer::GUIContainer(std::list<GUIElement*> elements)
+: mSelection(mElements.end())
 {
+    mBackground.setFillColor(sf::Color::Transparent);
+
     insert(elements);
 }
 
@@ -58,6 +61,7 @@ void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
 
+    target.draw(mBackground, states);
     for(const ElementPtr& element : mElements)
         target.draw(*element, states);
 }
@@ -66,36 +70,38 @@ void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GUIContainer::handleEvent(const sf::Event& event)
 {
-    if(event.type == sf::Event::KeyPressed)
+    if(!mElements.empty() && !(*mSelection)->isActive())
     {
-        if(!mElements.empty())
-            switch(event.key.code)
-            {
-                case sf::Keyboard::Return:
-                    activate();
-                    break;
-                case sf::Keyboard::Down:
-                    selectNext();
-                    break;
-                case sf::Keyboard::Up:
-                    selectPrevious();
-                    break;
+        if(event.type == sf::Event::KeyPressed)
+        {
+            if(!mElements.empty())
+                switch(event.key.code)
+                {
+                    case sf::Keyboard::Return:
+                        activate();
+                        break;
+                    case sf::Keyboard::Down:
+                        selectNext();
+                        break;
+                    case sf::Keyboard::Up:
+                        selectPrevious();
+                        break;
 
-                default:
-                    break;
-            }
+                    default:
+                        break;
+                }
 
 
+        }
     }
-
-    for(ElementPtr& element : mElements)
-        element->handleEvent(event);
+    else
+        (*mSelection)->handleEvent(event);
 }
 
 void GUIContainer::activate()
 {
-    if(!mElements.empty() && (*mSelection)->isSelectable())
-        (*mSelection)->activate();
+    if(!mElements.empty() && (*mSelection)->isActivatable())
+        (*mSelection)->toggleActivation();
 }
 
 ////////////////////////////////////////////////
@@ -105,7 +111,7 @@ void GUIContainer::selectNext()
     if(!mElements.empty())
     {
         if(mSelection != mElements.end())
-            (*mSelection)->deselect();
+            (*mSelection)->toggleSelection();
 
         int iteration = 1;
         do
@@ -113,9 +119,11 @@ void GUIContainer::selectNext()
             mSelection++;
             if(mSelection == mElements.end())
                 mSelection = mElements.begin();
+
+            iteration++;
         } while(!(*mSelection)->isSelectable() && iteration < mElements.size());
 
-        (*mSelection)->select();
+        (*mSelection)->toggleSelection();
     }
 }
 
@@ -128,7 +136,7 @@ void GUIContainer::selectPrevious()
     if(!mElements.empty())
     {
         if(mSelection != mElements.end())
-            (*mSelection)->deselect();
+            (*mSelection)->toggleSelection();
 
         int iteration = 1;
         do
@@ -140,10 +148,12 @@ void GUIContainer::selectPrevious()
             }
             else
                 mSelection--;
+
+            iteration++;
         } while(!(*mSelection)->isSelectable() && iteration < mElements.size());
 
 
-        (*mSelection)->select();
+        (*mSelection)->toggleSelection();
     }
 }
 
@@ -152,6 +162,9 @@ void GUIContainer::selectPrevious()
 void GUIContainer::insert(GUIElement* element)
 {
     mElements.push_back(ElementPtr(element));
+
+    if(mSelection != mElements.end())
+        (*mSelection)->toggleSelection();
 
     mSelection = mElements.end();
     selectNext();
@@ -166,6 +179,9 @@ void GUIContainer::insert(std::list<GUIElement*> elements)
     {
         for(GUIElement* element : elements)
             mElements.push_back(ElementPtr(element));
+
+        if(mSelection != mElements.end())
+            (*mSelection)->toggleSelection();
 
         mSelection = mElements.end();
         selectNext();
@@ -191,12 +207,24 @@ void GUIContainer::updateSize()
         max.y = std::max(max.y, bounds.top + bounds.height);
     }
 
-    mBounds = sf::FloatRect(min, max - min);
-    setOrigin(sf::Vector2f(mBounds.width, mBounds.height) / 2.f);
+    sf::Vector2f pos = min;
+    sf::Vector2f size = max - min;
+    mBounds = sf::FloatRect(pos, size);
+    setOrigin(size / 2.f);
+    mBackground.setSize(size * 1.1f);
+    mBackground.setPosition(pos - size * 0.05f);
 }
 
 
 sf::FloatRect GUIContainer::getGlobalBounds() const
 {
     return getTransform().transformRect(mBounds);
+}
+
+
+void GUIContainer::setBackground(sf::Color fillColor, sf::Color outlineColor, float outlineThickness)
+{
+    mBackground.setFillColor(fillColor);
+    mBackground.setOutlineColor(outlineColor);
+    mBackground.setOutlineThickness(outlineThickness);
 }
