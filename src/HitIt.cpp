@@ -67,8 +67,6 @@ HitIt::HitIt()
 
     mStateStack.push(new MenuThemeState(mStateStack, mWindow));
     mStateStack.push(new MainMenu(mStateStack, mWindow));
-
-
 }
 
 ////////////////////////////////////////////////
