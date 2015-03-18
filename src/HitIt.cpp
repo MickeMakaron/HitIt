@@ -44,26 +44,20 @@ HitIt::HitIt()
 : mWindowSettings(getWindowSettings())
 , mWindow(mWindowSettings.mode, mWindowSettings.title, mWindowSettings.style)
 {
-    sf::View view;
-    float width = M_DRAW_SIZE.x / mWindowSettings.mode.width;
-    float left = width / 2.f;
-    view.setViewport(sf::FloatRect(left, 0.f, width, 1.f));
-    mWindow.setView(view);
+    updateViewport();
+
+    mWindow.setVerticalSyncEnabled(true);
+    mWindow.setMouseCursorVisible(false);
+    mWindow.setKeyRepeatEnabled(false);
+    TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     Assets::setDirectory("assets/");
     mFonts.setAssets
     ({
         FontList::Asset(ResourceID::Font::OldGateLaneNF,    "fonts/OldGateLaneNF.ttf"),
-        FontList::Asset(ResourceID::Font::CircusOrnate,     "fonts/CircusOrnate.ttf"),
         FontList::Asset(ResourceID::Font::Arial,            "fonts/arial.ttf"),
     });
 
-
-    mWindow.setVerticalSyncEnabled(true);
-    //mWindow.setFramerateLimit(60);
-
-    mWindow.setMouseCursorVisible(false);
-    TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     mStateStack.push(new MenuThemeState(mStateStack, mWindow));
     mStateStack.push(new MainMenu(mStateStack, mWindow));
@@ -100,6 +94,30 @@ HitIt::WindowSettings HitIt::getWindowSettings() const
         }
 
     return WindowSettings(mode, title, style);
+}
+
+////////////////////////////////////////////////
+
+void HitIt::updateViewport()
+{
+    sf::Vector2f windowSize(mWindowSettings.mode.width, mWindowSettings.mode.height);
+    float squareSize, left, top;
+    if(windowSize.x < windowSize.y)
+    {
+        squareSize = windowSize.x;
+        left = 0.f;
+        top = 0.25f;
+    }
+    else
+    {
+        squareSize = windowSize.y;
+        left = 0.25;
+        top = 0.f;
+    }
+
+    sf::View view;
+    view.setViewport(sf::FloatRect(left, top, squareSize / windowSize.x, squareSize / windowSize.y));
+    mWindow.setView(view);
 }
 
 ////////////////////////////////////////////////

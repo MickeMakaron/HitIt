@@ -68,6 +68,10 @@ class HitIt
          */
         WindowSettings getWindowSettings() const;
 
+        /**
+         * \brief Adjust viewport to fit current window settings.
+         */
+        void updateViewport();
 
         /**
          * \brief Process input from input devices.
