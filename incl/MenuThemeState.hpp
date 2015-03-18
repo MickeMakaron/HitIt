@@ -79,7 +79,7 @@ class MenuThemeState : public State
 
 
     protected:
-        const std::string       M_THEME_FILE_PATH = "assets/midi/damp.mid";
+        const std::string       M_THEME_FILE_PATH = "assets/midi/Mikael Hernvall - HitIt OST.mid";
         TextureList             mTextures;
         sf::RenderTarget&       mTarget;
         AudioSampler            mSampler;

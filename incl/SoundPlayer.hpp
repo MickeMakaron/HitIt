@@ -49,8 +49,8 @@ class SoundPlayer : public sf::Sound
         void resume();
 
     private:
-        float       mFadeStep;
         float       mVolume;
+        float       mFadeStep;
         unsigned    mSessionCount;
 };
 

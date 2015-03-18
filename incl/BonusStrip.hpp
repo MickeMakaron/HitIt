@@ -76,12 +76,12 @@ class BonusStrip : public VertexArrayNode
         const float                 M_NOTE_WIDTH;
         std::queue<unsigned int>    mQuadIndexQueue;
         float                       mTimer;
-        float                       mPointTimer;
         const float                 M_UPDATE_INTERVAL = 0.5f;
         const float                 M_POINT_SPAWN_INTERVAL = 2.f;
         float                       mPointsScore;
         std::list<SceneNode*>       mPoints;
-        sf::Sound                   mPointSound;;
+        sf::Sound                   mPointSound;
+        float                       mPointTimer;
 };
 
 /************************************************

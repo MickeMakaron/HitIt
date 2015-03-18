@@ -113,7 +113,7 @@ void GUIContainer::selectNext()
         if(mSelection != mElements.end())
             (*mSelection)->toggleSelection();
 
-        int iteration = 1;
+        unsigned int iteration = 1;
         do
         {
             mSelection++;
@@ -138,7 +138,7 @@ void GUIContainer::selectPrevious()
         if(mSelection != mElements.end())
             (*mSelection)->toggleSelection();
 
-        int iteration = 1;
+        unsigned int iteration = 1;
         do
         {
             if(mSelection == mElements.begin())

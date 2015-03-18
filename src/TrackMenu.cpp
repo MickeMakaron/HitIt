@@ -72,7 +72,7 @@ std::list<GUIElement*> TrackMenu::getButtons()
     buttonText.setFont(Assets::get(ResourceID::Font::Arial));
     buttonText.setString("A");
 
-    DIR* dir = opendir("assets/midi");
+    DIR* dir = opendir("tracks/");
     // Skip ".." and ".".
     readdir(dir);
     readdir(dir);

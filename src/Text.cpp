@@ -35,8 +35,6 @@ Text::Text(sf::Text text)
 : GUIElement()
 , mText(text)
 {
-    sf::FloatRect textBounds = mText.getGlobalBounds();
-    //setOrigin(textBounds.width / 2.f, textBounds.height / 2.f);
     mText.setColor(sf::Color::Black);
 }
 
