@@ -49,7 +49,7 @@ AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
 
     mMenu.insert(getButtons());
 
-    mGUIBackground.setFillColor(sf::Color(200, 200, 200, 100));
+    mGUIBackground.setFillColor(sf::Color(100, 100, 100, 100));
     mGUIBackground.setOutlineColor(sf::Color(240, 240, 240, 150));
     mGUIBackground.setOutlineThickness(3.f);
 
@@ -61,9 +61,10 @@ AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
 
 void AboutMenu::draw()
 {
-    MenuState::draw();
+
     mTarget.draw(mGUIBackground);
     mTarget.draw(mAbout);
+    MenuState::draw();
 }
 
 bool AboutMenu::update()

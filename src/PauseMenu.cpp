@@ -85,7 +85,7 @@ std::list<GUIElement*> PauseMenu::getButtons()
     (
         buttonText,
         mSoundPlayer,
-        [this](){requestStackPop();}
+        [this](){requestStackPop(); mGame.resume();}
     );
 
     buttonText.setString("Quit to main menu");

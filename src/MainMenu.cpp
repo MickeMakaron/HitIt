@@ -51,7 +51,7 @@ MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
 
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 
-    mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
+    mMenu.setBackground(sf::Color(100, 100, 100, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
 bool MainMenu::update()

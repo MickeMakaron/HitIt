@@ -26,6 +26,7 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/Text.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -96,6 +97,7 @@ class MenuState : public State
         SoundPlayer         mSoundPlayer;
         GUIContainer        mMenu;
         sf::RectangleShape  mBackground;
+        sf::Text            mWaterMark;
 };
 
 /************************************************

@@ -44,6 +44,13 @@ MenuState::MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIE
 , mMenu(elements)
 , mBackground(mTarget.getView().getSize())
 {
+    sf::Text text;
+    mWaterMark.setString("© 2015 Mikael Hernvall");
+    mWaterMark.setFont(Assets::get(ResourceID::Font::ID::OldGateLaneNF));
+    mWaterMark.setColor(sf::Color(0, 0, 0, 150));
+
+    sf::FloatRect waterMarkRect = mWaterMark.getGlobalBounds();
+    mWaterMark.setPosition(target.getView().getSize().x - waterMarkRect.width * 1.1f, target.getView().getSize().y - waterMarkRect.height * 1.5f);
 }
 
 ////////////////////////////////////////////////
@@ -52,6 +59,7 @@ void MenuState::draw()
 {
     mTarget.draw(mBackground);
     mTarget.draw(mMenu);
+    mTarget.draw(mWaterMark);
 }
 
 ////////////////////////////////////////////////

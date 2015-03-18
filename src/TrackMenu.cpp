@@ -39,6 +39,7 @@
 #include "Text.hpp"
 #include "MainMenu.hpp"
 #include "MenuThemeState.hpp"
+#include "Assets.hpp"
 ////////////////////////////////////////////////
 
 
@@ -55,10 +56,13 @@ TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
 
     mTextures.insert(getTextures());
 
-    sf::Color gray(100, 100, 100);
-    setBackground(gray);
+    Assets::get(ResourceID::Texture::MenuStateBg).setRepeated(true);
+    mBackground.setTexture(&Assets::get(ResourceID::Texture::MenuStateBg));
+    mBackground.setTextureRect(sf::IntRect(0, 0, mTarget.getView().getSize().x, mTarget.getView().getSize().y));
 
-    mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
+    mMenu.setBackground(sf::Color(100, 100, 100, 100), sf::Color(240, 240, 240, 150), 3.f);
+
+    mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y * 2.f / 5.f);
 }
 
 std::list<GUIElement*> TrackMenu::getButtons()
