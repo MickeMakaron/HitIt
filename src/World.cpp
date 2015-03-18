@@ -46,9 +46,9 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mTextures(getTextures())
 , mSounds(getSounds())
 , mSampler()
-, mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)//mTarget.getView().getSize().x / 5.f, 0.f, 3.f * mTarget.getView().getSize().x / 5.f, mTarget.getView().getSize().y)
+, mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)
 , mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5, sf::Vector2f(mBounds.left + 1.f, mBounds.height / 2.f)))
+, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5))
 , mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height), mSpawner.getNoteWidth())))
 , mScoreDisplay(nullptr)
 , mCollission(*mPlayer, mBonusStrip)
@@ -57,6 +57,8 @@ World::World(sf::RenderTarget& target, std::string midiFile)
 , mPlayerIsDamaged(false)
 , mStateFuncs(StateCount, [](){})
 {
+    mPlayer->setPosition(sf::Vector2f(mBounds.left + 1.f + mSpawner.getNoteWidth() * (int)((mBounds.width / 2.f)/ mSpawner.getNoteWidth()), mBounds.height / 2.f));
+
     buildWorld();
 
     mStateFuncs[Starting]   = [this](){updateStart();};
