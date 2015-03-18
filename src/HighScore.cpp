@@ -105,8 +105,10 @@ std::list<HighScore::Score>::iterator HighScore::insertRecord(std::list<HighScor
         {
             if(it->score < score.score)
             {
-                scores.pop_back();
-                return scores.insert(it, score);
+                auto iScore = scores.insert(it, score);
+                if(scores.size() >= M_NUM_ENTRIES_PER_TRACK)
+                    scores.pop_back();
+                return iScore;
             }
         }
 
