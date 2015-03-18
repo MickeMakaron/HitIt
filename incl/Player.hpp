@@ -119,7 +119,7 @@ class Player : public RectangleNode
         sf::Sound       mDamagedSound;          ///< Sound played when damaged.
         sf::Sound       mStepSound;
         float           mMoveCounter;
-        const float     mMoveCooldown = 0.12f;
+        const float     mMoveCooldown = 0.07f;
         sf::Vector2f    mDirection;
         sf::Vector2f    mPreviousPosition;
         float           mStepSize;
