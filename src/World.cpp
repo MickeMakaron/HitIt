@@ -156,8 +156,6 @@ void World::handleEvent(const sf::Event& event)
 
 void World::buildWorld()
 {
-    namespace ID = ResourceID::Texture;
-
     RectangleNode* background = new RectangleNode(mTarget.getView().getSize());
     sf::Color gray(200, 200, 200);
     background->setFillColor(gray);
@@ -179,6 +177,7 @@ void World::buildWorld()
     mScene.insert(playLine, SceneGraph::High);
 
 
+    namespace ID = ResourceID::Texture;
     Assets::get(ID::Hp).setRepeated(true);
     HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
     mScene.insert(hpBar, SceneGraph::Foreground);
@@ -212,11 +211,7 @@ std::list<TextureList::Asset> World::getTextures() const
     namespace ID = ResourceID::Texture;
     return
     {
-        TextureList::Asset(ID::GameStateBg,     "textures/gamestate_bg_placeholder.png"),
         TextureList::Asset(ID::Player,          "textures/player_placeholder.png"),
-        TextureList::Asset(ID::AudienceTerrace, "textures/audience_terrace_placeholder.png"),
-        TextureList::Asset(ID::Fence,           "textures/fence_placeholder.png"),
-        TextureList::Asset(ID::WorldBg,         "textures/world_bg_placeholder.png"),
         TextureList::Asset(ID::Hp,              "textures/hp_placeholder.png"),
     };
 }

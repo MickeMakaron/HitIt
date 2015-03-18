@@ -54,8 +54,6 @@ TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
     mMenu.insert(new Text(text));
     mMenu.insert(getButtons());
 
-    mTextures.insert(getTextures());
-
     Assets::get(ResourceID::Texture::MenuStateBg).setRepeated(true);
     mBackground.setTexture(&Assets::get(ResourceID::Texture::MenuStateBg));
     mBackground.setTextureRect(sf::IntRect(0, 0, mTarget.getView().getSize().x, mTarget.getView().getSize().y));
@@ -129,13 +127,4 @@ std::list<GUIElement*> TrackMenu::getButtons()
     buttons.push_back(mainMenu);
 
     return buttons;
-}
-
-std::list<TextureList::Asset> TrackMenu::getTextures() const
-{
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::MenuStateBg, "textures/menustate_bg_placeholder.png"),
-    };
 }

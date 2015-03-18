@@ -29,16 +29,9 @@ namespace ResourceID
     {
         enum ID
         {
-            GameStateBg,
             MenuStateBg,
-            LoadingStateBg,
             Player,
-            AudienceTerrace,
-            Fence,
-            WorldBg,
-            Button,
             Hp,
-            BlackOverlay,
             About,
             IDCount,
         };

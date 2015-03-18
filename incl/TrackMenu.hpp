@@ -40,7 +40,6 @@ class TrackMenu : public MenuState
         TrackMenu(StateStack& stack, sf::RenderTarget& target);
 
     private:
-        std::list<TextureList::Asset> getTextures() const;
         std::list<GUIElement*> getButtons();
 };
 
