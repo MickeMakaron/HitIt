@@ -158,3 +158,8 @@ unsigned int VertexArrayNode::getSize() const
 {
     return (mArray.getVertexCount() / mPrimitiveSize) - mFreeIndices.size();
 }
+
+unsigned int VertexArrayNode::getCount() const
+{
+    return mArray.getVertexCount();
+}

@@ -79,7 +79,7 @@ class VertexArrayNode : public SceneNode
          */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
-
+        unsigned int getCount() const;
         unsigned int getSize() const;
 
         unsigned int insert(std::vector<sf::Vertex> primitive);
