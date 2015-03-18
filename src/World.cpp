@@ -157,7 +157,7 @@ void World::buildWorld()
     namespace ID = ResourceID::Texture;
 
     RectangleNode* background = new RectangleNode(mTarget.getView().getSize());
-    sf::Color gray(150, 150, 150);
+    sf::Color gray(200, 200, 200);
     background->setFillColor(gray);
     mScene.insert(background, SceneGraph::Background);
     mScene.insert(mPlayer, SceneGraph::Middle);
