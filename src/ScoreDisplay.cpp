@@ -64,7 +64,11 @@ void ScoreDisplay::updateCurrent()
         mTimeInRedZone = 0.f;
     }
     else
+    {
+
         mTimeInRedZone += TIME_PER_FRAME::seconds();
+    }
+
 
 
     std::string bonus;

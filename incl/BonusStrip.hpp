@@ -67,6 +67,8 @@ class BonusStrip : public VertexArrayNode
 
         void spawnPoint(float x);
 
+        void loopBack();
+
     private:
         const VertexArrayNode&      M_OBSTACLES;
         const sf::Vector2f          M_SIZE;

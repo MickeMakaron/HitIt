@@ -59,10 +59,8 @@ BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize
 void BonusStrip::initializeStrip()
 {
     float middleX = M_SIZE.x * 2.f;
-    float quadWidth = M_SIZE.x / 2.f;
 
     float left = middleX - M_SIZE.x / 2.f;
-    float right = middleX + M_SIZE.x / 2.f;
     for(float top = M_SIZE.y * 2.f; top > -M_SCROLL_SPEED * M_UPDATE_INTERVAL * 2.f; top -= 10.f)
     {
         insertQuad(left, left, top, top + 10.f, true);
@@ -73,7 +71,7 @@ void BonusStrip::initializeStrip()
 void BonusStrip::updateCurrent()
 {
     mTimer += TIME_PER_FRAME::seconds();
-
+    loopBack();
 
     if(mTimer >= M_UPDATE_INTERVAL)
     {
@@ -81,13 +79,16 @@ void BonusStrip::updateCurrent()
         removeQuad();
         removeQuad();
 
+
         float middleX = getBusiestPosition();
         float prevMiddleX = operator[](mQuadIndexQueue.back()).position.x;
         float quadWidth = M_SIZE.x / 2.f;
-        float bot = operator[](mQuadIndexQueue.back()).position.y;
+        float bot = (operator[](mQuadIndexQueue.back()).position).y;
+
         float step =  M_SCROLL_SPEED * mTimer;
         insertQuad(middleX - quadWidth, prevMiddleX - quadWidth, bot - step, bot, true);
         insertQuad(middleX, prevMiddleX, bot - step, bot, false);
+
 
         mPointTimer += mTimer;
         mTimer = 0.f;
@@ -98,7 +99,6 @@ void BonusStrip::updateCurrent()
             mPointTimer = 0.f;
         }
     }
-
 
 
     move(0.f, M_SCROLL_SPEED * TIME_PER_FRAME::seconds());
@@ -137,28 +137,29 @@ void BonusStrip::insertQuad(float topLeft, float botLeft, float top, float bot, 
 float BonusStrip::getBusiestPosition() const
 {
     float positionSumX = 0.f;
-    unsigned int numObstacles = M_OBSTACLES.getSize() / 4;
+    unsigned int numObstacles = M_OBSTACLES.getSize();
     for(unsigned int i = 0; i < numObstacles * 4; i += 4)
         positionSumX += M_OBSTACLES[i].position.x;
 
     return (numObstacles == 0) ? M_SIZE.x * 2.f : positionSumX / numObstacles;
 }
 
-
 float BonusStrip::getDistance(sf::Vector2f p) const
 {
+    sf::Transform transform = getWorldTransform();
     float minSqrd = std::numeric_limits<float>::max();
-    for(unsigned int i = 1; i < getSize(); i += 8)
+    for(unsigned int i = 1; i < getCount(); i += 8)
     {
-        sf::Vector2f d = p - getWorldTransform().transformPoint(operator[](i).position);
+        sf::Vector2f d = p - transform.transformPoint(operator[](i).position);
         float dSqrd = d.x * d.x + d.y * d.y;
         if(dSqrd < minSqrd)
             minSqrd = dSqrd;
+
     }
 
-    for(unsigned int i = 2; i < getSize(); i+= 8)
+    for(unsigned int i = 2; i < getCount(); i += 8)
     {
-        sf::Vector2f d = p - getWorldTransform().transformPoint(operator[](i).position);
+        sf::Vector2f d = p - transform.transformPoint(operator[](i).position);
         float dSqrd = d.x * d.x + d.y * d.y;
         if(dSqrd < minSqrd)
             minSqrd = dSqrd;
@@ -205,4 +206,20 @@ void BonusStrip::gatherPoint(SceneNode* point)
 const std::list<SceneNode*>& BonusStrip::getPoints() const
 {
     return mPoints;
+}
+
+
+void BonusStrip::loopBack()
+{
+    sf::Vector2f pos = getPosition();
+    if(pos.y > 10000.f)
+    {
+        for(unsigned int i = 0; i < getCount(); i++)
+            operator[](i).position.y += 10000.f;
+
+        for(SceneNode* point : mPoints)
+            point->move(0.f, 10000.f);
+
+        move(0.f, -10000.f);
+    }
 }
