@@ -1,4 +1,4 @@
-# HitIt
+# [HitIt](http://mikael.hernvall.com/hitit)
 Top-down 2D game where the goal is to NOT hit the music.
 
 
