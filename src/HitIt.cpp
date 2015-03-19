@@ -21,23 +21,17 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <sstream>
-////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "HitIt.hpp"
 #include "TIME_PER_FRAME.hpp"
 #include "MenuThemeState.hpp"
 #include "MainMenu.hpp"
 #include "Assets.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Event.hpp"
 ////////////////////////////////////////////////
 
 HitIt::HitIt()
@@ -65,6 +59,7 @@ HitIt::~HitIt()
     Assets::release();
 }
 
+////////////////////////////////////////////////
 
 HitIt::WindowSettings HitIt::getWindowSettings() const
 {
@@ -82,8 +77,8 @@ HitIt::WindowSettings HitIt::getWindowSettings() const
     for(const sf::VideoMode& fullscreenMode : sf::VideoMode::getFullscreenModes())
         if(fullscreenMode.isValid())
         {
-            mode = fullscreenMode;
-            style = sf::Style::Fullscreen;
+            //mode = fullscreenMode;
+            //style = sf::Style::Fullscreen;
             break;
         }
 
@@ -94,18 +89,18 @@ HitIt::WindowSettings HitIt::getWindowSettings() const
 
 void HitIt::updateViewport()
 {
-    sf::Vector2f windowSize(mWindowSettings.mode.width, mWindowSettings.mode.height);
+    sf::Vector2u windowSize = mWindow.getSize();
     float squareSize, left, top;
     if(windowSize.x < windowSize.y)
     {
         squareSize = windowSize.x;
         left = 0.f;
-        top = 0.25f;
+        top = ((windowSize.y - squareSize) / 2.f) / windowSize.y;
     }
     else
     {
         squareSize = windowSize.y;
-        left = 0.25;
+        left = ((windowSize.x - squareSize) / 2.f) / windowSize.x;
         top = 0.f;
     }
 
@@ -125,6 +120,8 @@ void HitIt::processInput()
 
         if(event.type == sf::Event::Closed)
             mWindow.close();
+        else if(event.type == sf::Event::Resized)
+            updateViewport();
     }
 }
 
@@ -158,12 +155,5 @@ void HitIt::run()
                 mWindow.close();
         }
         render();
-
-        ////////////////////////////////////////////////
-        // DEBUG - FPS COUNTER
-        std::ostringstream stream;
-        stream << "Hit it! | FPS: " << 1 / dt.asSeconds();
-        mWindow.setTitle(stream.str());
-        ////////////////////////////////////////////////
     }
 }

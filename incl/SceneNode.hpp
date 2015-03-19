@@ -23,7 +23,6 @@
 #ifndef HITIT_SCENENODE_HPP
 #define HITIT_SCENENODE_HPP
 
-
 ////////////////////////////////////////////////
 // STD - C++ Standard Library
 #include <list>
@@ -41,11 +40,10 @@ namespace sf
 }
 ////////////////////////////////////////////////
 
-class SceneNode : public sf::Transformable, virtual public sf::Drawable, private sf::NonCopyable
+class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 	public:
 		typedef std::unique_ptr<SceneNode> Ptr;
-
 
 	public:
 	    /**
@@ -59,89 +57,84 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
         virtual ~SceneNode();
 
         /**
-         * \brief Attach child to node.
+         * \brief Attach child to node
          *
-         * \param child node to attach.
+         * \param child node to attach
          */
 		void attachChild(SceneNode* child);
 
 		/**
-		 * \brief Detach child from node.
+		 * \brief Detach child from node
 		 *
-		 * \param node node to detach.
+		 * \param node node to detach
 		 *
-		 * \return detached node.
+		 * \return detached node
 		 */
 		Ptr detachChild(const SceneNode& node);
 
         /**
-         * \brief Update node.
+         * \brief Update node
          *
          * Performs the updateCurrent and updateChildren update functions.
          */
 		void update();
 
 		/**
-		 * \brief Remove children marked for removal.
+		 * \brief Remove children marked for removal
 		 */
         void removeWrecks();
 
         /**
-         * \brief Get world position of node.
+         * \brief Get world position of node
          *
-         * \return absolute world position of node.
+         * \return absolute world position of node
          */
-		sf::Vector2f getWorldPosition() const;
+		virtual sf::Vector2f getWorldPosition() const;
 
 		/**
-		 * \brief Get world transform of node.
+		 * \brief Get world transform of node
 		 *
-		 * \return absolute world transform of node.
+		 * \return absolute world transform of node
 		 */
 		sf::Transform getWorldTransform() const;
 
 		/**
-		 * \brief Get bounding rectangle of node.
+		 * \brief Get bounding rectangle of node
 		 *
-		 * \return bounding rectangle of node.
+		 * \return bounding rectangle of node
 		 */
-		virtual sf::FloatRect	getBoundingRect() const;
+		virtual sf::FloatRect getBoundingRect() const;
 
 		/**
-         * \brief Get category of node.
+         * \brief Get category of node
          *
-         * \return enumarable value (int) representing categories.
+         * \return enumarable value (int) representing categories
          */
         virtual int getCategory() const;
 
 		/**
-		 * \brief Indicate whether this node is marked for removal.
+		 * \brief Indicate whether this node is marked for removal
 		 *
-		 * \return true if marked for removal, else false.
+		 * \return true if marked for removal, else false
 		 */
         virtual bool isMarkedForRemoval() const;
 
-        /**
-         * \brief Draw bounding rectangle of node.
-         *
-         * \param target SFML RenderTarget object to draw bounding rectangle to.
-         * \param states SFML RenderStates object to transform draw with.
-         */
-		void drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
-
 		/**
-		 * \brief Handle device input.
+		 * \brief Handle device input
 		 *
 		 * \param event event to handle
 		 */
         void handleEvent(const sf::Event& event);
 
     protected:
+        /**
+         * \brief Delete all children of this node
+         */
         void clearChildren();
 
 	private:
 		/**
-		 * \brief Handle device input for this node.
+		 * \brief Handle device input for this node
 		 *
 		 * \param event event to handle
 		 */
@@ -149,54 +142,52 @@ class SceneNode : public sf::Transformable, virtual public sf::Drawable, private
 
 
 		/**
-		 * \brief Handle device input for children.
+		 * \brief Handle device input for children
 		 *
 		 * \param event event to handle
 		 */
         void handleEventChildren(const sf::Event& event);
 
-
 	    /**
-	     * \brief Update this node.
+	     * \brief Update this node
 	     */
 		virtual void updateCurrent();
 
 		/**
-		 * \brief Update children of this node.
+		 * \brief Update children of this node
 		 */
 		void updateChildren();
 
         /**
-         * \brief Overloaded SFML draw function.
+         * \brief Overloaded SFML draw function
          *
          * Performs the drawCurrent and drawChildren draw functions.
          *
-         * \param target SFML RenderTarget object to draw to.
-         * \param states SFML RenderStates object ot transform draw with.
+         * \param target SFML RenderTarget object to draw to
+         * \param states SFML RenderStates object to transform draw with
          */
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
         /**
-         * \brief Draw this node.
+         * \brief Draw this node
          *
-         * \param target SFML RenderTarget object to draw this node to.
-         * \param states SFML RenderStates object ot transform draw with.
+         * \param target SFML RenderTarget object to draw this node to
+         * \param states SFML RenderStates object to transform draw with
          */
-		virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+		virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
         /**
-         * \brief Draw children of this node.
+         * \brief Draw children of this node
          *
-         * \param target SFML RenderTarget object to draw children of this node to.
-         * \param states SFML RenderStates object ot transform draw with.
+         * \param target SFML RenderTarget object to draw children of this node to
+         * \param states SFML RenderStates object to transform draw with
          */
-		void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
-
+		void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	private:
-		std::list<Ptr>		    mChildren;  ///< Children of this node.
-		SceneNode*              mParent;    ///< Parent of this node.
-		int                     mCategory;  ///< Category of node.
+		std::list<Ptr>  mChildren;  ///< Children of this node
+		SceneNode*      mParent;    ///< Parent of this node
+		int             mCategory;  ///< Category of node
 };
 
 /************************************************

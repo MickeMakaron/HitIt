@@ -21,15 +21,14 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "RectangleNode.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 RectangleNode::RectangleNode(const sf::Vector2f& size, int category)
 : SceneNode(category)
@@ -59,22 +58,28 @@ sf::FloatRect RectangleNode::getBoundingRect() const
     return getWorldTransform().transformRect(mShape.getGlobalBounds());
 }
 
+////////////////////////////////////////////////
+
 void RectangleNode::setSize(float x, float y)
 {
     mShape.setSize(sf::Vector2f(x, y));
 }
 
+////////////////////////////////////////////////
 
 void RectangleNode::setFillColor(sf::Color color)
 {
     mShape.setFillColor(color);
 }
 
+////////////////////////////////////////////////
 
 void RectangleNode::setOutlineColor(sf::Color color)
 {
     mShape.setOutlineColor(color);
 }
+
+////////////////////////////////////////////////
 
 void RectangleNode::setOutlineThickness(float thickness)
 {

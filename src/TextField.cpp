@@ -20,22 +20,15 @@
 ****************************************************************
 ****************************************************************/
 
-
-
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <cassert>
+// HitIt internal headers
+#include "TextField.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Window/Event.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "TextField.hpp"
 ////////////////////////////////////////////////
 
 TextField::TextField(sf::Text text, const sf::SoundBuffer& soundBuffer, unsigned int maxLength)
@@ -51,6 +44,8 @@ TextField::TextField(sf::Text text, const sf::SoundBuffer& soundBuffer, unsigned
     mInsertionCursor.setPosition(textBounds.left + textBounds.width, textBounds.top);
     mInsertionCursor.setFillColor(mText.getColor());
 }
+
+////////////////////////////////////////////////
 
 void TextField::handleEventCurrent(const sf::Event& event)
 {
@@ -75,16 +70,21 @@ void TextField::handleEventCurrent(const sf::Event& event)
             insert(event.text.unicode);
 }
 
+////////////////////////////////////////////////
 
 bool TextField::isActivatable() const
 {
     return true;
 }
 
+////////////////////////////////////////////////
+
 void TextField::select()
 {
     mText.setColor(sf::Color::White);
 }
+
+////////////////////////////////////////////////
 
 void TextField::deselect()
 {
@@ -92,20 +92,28 @@ void TextField::deselect()
     mText.setColor(sf::Color::Black);
 }
 
+////////////////////////////////////////////////
+
 void TextField::activate()
 {
     mSoundPlayer.play();
 }
+
+////////////////////////////////////////////////
 
 void TextField::deactivate()
 {
     mSoundPlayer.play();
 }
 
+////////////////////////////////////////////////
+
 bool TextField::isSelectable() const
 {
     return true;
 }
+
+////////////////////////////////////////////////
 
 void TextField::insert(char character)
 {
@@ -124,6 +132,8 @@ void TextField::insert(char character)
     mInsertionCursor.move(dWidth, 0);
 }
 
+////////////////////////////////////////////////
+
 void TextField::erase()
 {
     sf::String str = mText.getString();
@@ -137,6 +147,8 @@ void TextField::erase()
     mInsertionCursor.move(dWidth, 0);
 }
 
+////////////////////////////////////////////////
+
 void TextField::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mText, states);
@@ -145,10 +157,14 @@ void TextField::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
         target.draw(mInsertionCursor, states);
 }
 
+////////////////////////////////////////////////
+
 sf::FloatRect TextField::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mText.getGlobalBounds());
 }
+
+////////////////////////////////////////////////
 
 std::string TextField::getString() const
 {

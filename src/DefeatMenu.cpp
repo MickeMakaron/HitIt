@@ -21,12 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "DefeatMenu.hpp"
 #include "MainMenu.hpp"
@@ -37,6 +31,10 @@
 #include "TrackMenu.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile)
 : MenuState(stack, target)
@@ -60,11 +58,7 @@ DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::s
     setBackground(background);
 }
 
-bool DefeatMenu::handleEvent(const sf::Event& event)
-{
-    MenuState::handleEvent(event);
-    return false;
-}
+////////////////////////////////////////////////
 
 void DefeatMenu::loadButtons()
 {

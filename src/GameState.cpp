@@ -20,23 +20,18 @@
 ****************************************************************
 ****************************************************************/
 
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "GameState.hpp"
 #include "HighScoreMenu.hpp"
 #include "PauseMenu.hpp"
 #include "DefeatMenu.hpp"
-#include "Assets.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Event.hpp"
+////////////////////////////////////////////////
 
 GameState::GameState(StateStack& stack, sf::RenderTarget& target, std::string midiFile)
 : State(stack)
@@ -91,22 +86,26 @@ bool GameState::handleEvent(const sf::Event& event)
     mWorld.handleEvent(event);
 
 	if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-        requestStackPush(new PauseMenu(getStack(), mTarget, *this));//requestStackPush(new VictoryMenu(getStack(), mTarget));//requestStackClear();//requestStackPush(new PauseState(getStack(), mTarget));
+        requestStackPush(new PauseMenu(getStack(), mTarget, *this));
 
 	return true;
 }
 
+////////////////////////////////////////////////
 
 void GameState::pause()
 {
     mWorld.pause();
 }
 
+////////////////////////////////////////////////
+
 void GameState::resume()
 {
     mWorld.resume();
 }
 
+////////////////////////////////////////////////
 
 void GameState::loadAssets()
 {

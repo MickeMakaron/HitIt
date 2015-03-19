@@ -24,18 +24,14 @@
 #define HITIT_SCOREDISPLAY_HPP
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
+// HitIt internal headers
+#include "Text.hpp"
+class BonusStrip;
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Audio/Sound.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "Text.hpp"
-class BonusStrip;
 ////////////////////////////////////////////////
 
 class ScoreDisplay : public Text
@@ -44,17 +40,28 @@ class ScoreDisplay : public Text
         /**
          * \brief Constructor
          *
+         * \param text SFML Text object to draw
+         * \param player Reference to Player node
+         * \param bonusStrip Reference to BonusStrip node
          */
         ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& bonusStrip);
 
         /**
-         * \brief Update score.
+         * \brief Update score
          */
         virtual void updateCurrent();
 
+        /**
+         * \brief Get current score
+         */
         unsigned int getScore() const;
 
     private:
+        /**
+         * \brief State
+         *
+         * Current state of bonus.
+         */
         enum State
         {
             Outside,
@@ -63,22 +70,20 @@ class ScoreDisplay : public Text
             Bonus2,
         };
 
-        const SceneNode&    mPlayer;
-        BonusStrip&         mBonusStrip;
-        float               mScore;
-        float               mTimeInRedZone;
-        State               mState;
-        sf::Sound           mBonus1;
-        sf::Sound           mBonus2;
+        const SceneNode&    mPlayer;        ///< Reference to Player node
+        BonusStrip&         mBonusStrip;    ///< Refernce to BonusStrip node
+        float               mScore;         ///< Current score
+        float               mTimeInRedZone; ///< How long the player has consecutively been in the bonus area
+        State               mState;         ///< Current bonus state
+        sf::Sound           mBonus1;        ///< Sound played when transgressing to first bonus level
+        sf::Sound           mBonus2;        ///< Sound played when transgressing to second bonus level
 };
-
 
 /************************************************
  * \class ScoreDisplay
  *
- * For displaying the current score in-game.
+ * For displaying the current score and bonus level in-game.
  *
 ************************************************/
-
 
 #endif // HITIT_SCOREDISPLAY_HPP

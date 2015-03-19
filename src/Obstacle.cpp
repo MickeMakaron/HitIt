@@ -21,18 +21,11 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "Obstacle.hpp"
-#include "TIME_PER_FRAME.hpp"
 #include "SoundPlayer.hpp"
 #include "VertexArrayNode.hpp"
 ////////////////////////////////////////////////
-
 
 Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, float deathLine, int category)
 : SceneNode(category)
@@ -76,10 +69,14 @@ Obstacle::Obstacle(SoundPlayer& buffer, VertexArrayNode& array, float playLine, 
     };
 }
 
+////////////////////////////////////////////////
+
 Obstacle::~Obstacle()
 {
     mArray.free(M_VERTEX_ARRAY_INDEX);
 }
+
+////////////////////////////////////////////////
 
 void Obstacle::setSize(float width, float height)
 {
@@ -89,6 +86,8 @@ void Obstacle::setSize(float width, float height)
     updateVertices();
 }
 
+////////////////////////////////////////////////
+
 void Obstacle::setPosition(float x, float y)
 {
     mRect.left = x;
@@ -96,6 +95,8 @@ void Obstacle::setPosition(float x, float y)
 
     updateVertices();
 }
+
+////////////////////////////////////////////////
 
 void Obstacle::updateVertices()
 {
@@ -111,21 +112,28 @@ void Obstacle::updateVertices()
     mArray[M_VERTEX_ARRAY_INDEX + 3].position   = sf::Vector2f(left, bot);
 }
 
+////////////////////////////////////////////////
 
 bool Obstacle::isMarkedForRemoval() const
 {
     return mState == Dead;
 }
 
+////////////////////////////////////////////////
+
 void Obstacle::updateCurrent()
 {
     mStateFuncs[mState]();
 }
 
+////////////////////////////////////////////////
+
 sf::Vector2f Obstacle::getWorldPosition() const
 {
     return mArray.getWorldTransform().transformPoint(mRect.left, mRect.top);
 }
+
+////////////////////////////////////////////////
 
 sf::FloatRect Obstacle::getBoundingRect() const
 {

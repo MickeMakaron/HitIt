@@ -21,25 +21,13 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <cassert>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "BonusStrip.hpp"
 #include "TIME_PER_FRAME.hpp"
-#include "VertexArrayNode.hpp"
 #include "CollissionCategory.hpp"
 #include "RectangleNode.hpp"
 #include "Assets.hpp"
 ////////////////////////////////////////////////
-
 
 BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize, float noteWidth, int category)
 : VertexArrayNode(sf::Quads)
@@ -56,6 +44,8 @@ BonusStrip::BonusStrip(const VertexArrayNode& obstacles, sf::Vector2f windowSize
     initializeStrip();
 }
 
+////////////////////////////////////////////////
+
 void BonusStrip::initializeStrip()
 {
     float middleX = M_SIZE.x * 2.f;
@@ -67,6 +57,8 @@ void BonusStrip::initializeStrip()
         insertQuad(middleX, middleX, top, top + 10.f, false);
     }
 }
+
+////////////////////////////////////////////////
 
 void BonusStrip::updateCurrent()
 {
@@ -104,11 +96,15 @@ void BonusStrip::updateCurrent()
     move(0.f, M_SCROLL_SPEED * TIME_PER_FRAME::seconds());
 }
 
+////////////////////////////////////////////////
+
 void BonusStrip::removeQuad()
 {
     free(mQuadIndexQueue.front());
     mQuadIndexQueue.pop();
 }
+
+////////////////////////////////////////////////
 
 void BonusStrip::insertQuad(float topLeft, float botLeft, float top, float bot, bool isLeft)
 {
@@ -133,6 +129,7 @@ void BonusStrip::insertQuad(float topLeft, float botLeft, float top, float bot, 
     mQuadIndexQueue.push(insert(quad));
 }
 
+////////////////////////////////////////////////
 
 float BonusStrip::getBusiestPosition() const
 {
@@ -143,6 +140,8 @@ float BonusStrip::getBusiestPosition() const
 
     return (numObstacles == 0) ? M_SIZE.x * 2.f : positionSumX / numObstacles;
 }
+
+////////////////////////////////////////////////
 
 float BonusStrip::getDistance(sf::Vector2f p) const
 {
@@ -168,10 +167,14 @@ float BonusStrip::getDistance(sf::Vector2f p) const
     return sqrtf(minSqrd);
 }
 
+////////////////////////////////////////////////
+
 float BonusStrip::getWidth() const
 {
     return M_SIZE.x;
 }
+
+////////////////////////////////////////////////
 
 void BonusStrip::spawnPoint(float x)
 {
@@ -184,12 +187,16 @@ void BonusStrip::spawnPoint(float x)
     mPoints.push_back(point);
 }
 
+////////////////////////////////////////////////
+
 float BonusStrip::fetchPointsScore()
 {
     float score = mPointsScore;
     mPointsScore = 0.f;
     return score;
 }
+
+////////////////////////////////////////////////
 
 void BonusStrip::gatherPoint(SceneNode* point)
 {
@@ -203,11 +210,14 @@ void BonusStrip::gatherPoint(SceneNode* point)
     mPointSound.play();
 }
 
+////////////////////////////////////////////////
+
 const std::list<SceneNode*>& BonusStrip::getPoints() const
 {
     return mPoints;
 }
 
+////////////////////////////////////////////////
 
 void BonusStrip::loopBack()
 {

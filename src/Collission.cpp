@@ -21,17 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <cassert>
-#include <cmath>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/System/Vector2.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "Collission.hpp"
 #include "CollissionCategory.hpp"
@@ -39,12 +28,23 @@
 #include "BonusStrip.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// C Standard Library
+#include <math.h>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/System/Vector2.hpp"
+////////////////////////////////////////////////
+
 Collission::Collission(Player& player, BonusStrip& bonusStrip)
 : mPlayer(player)
 , mBonusStrip(bonusStrip)
 {
-
 }
+
+////////////////////////////////////////////////
 
 Collission::CollissionData::CollissionData(bool hasCollission, sf::Vector2f depth)
 : hasCollission(hasCollission)
@@ -52,16 +52,22 @@ Collission::CollissionData::CollissionData(bool hasCollission, sf::Vector2f dept
 {
 }
 
+////////////////////////////////////////////////
+
 void Collission::insert(SceneNode* node)
 {
     mNodes.push_back(node);
 }
+
+////////////////////////////////////////////////
 
 void Collission::update()
 {
     handleCollissions(mNodes);
     handleCollissions(mBonusStrip.getPoints());
 }
+
+////////////////////////////////////////////////
 
 void Collission::handleCollissions(std::list<SceneNode*> nodes)
 {
@@ -99,6 +105,8 @@ void Collission::handleCollissions(std::list<SceneNode*> nodes)
     }
 }
 
+////////////////////////////////////////////////
+
 Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::FloatRect b) const
 {
     sf::Vector2f depth;
@@ -130,6 +138,7 @@ Collission::CollissionData Collission::checkCollission(sf::FloatRect a, sf::Floa
         return CollissionData();
 }
 
+////////////////////////////////////////////////
 
 void Collission::removeWrecks()
 {

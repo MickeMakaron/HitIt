@@ -24,15 +24,6 @@
 #define HITIT_GUIELEMENT_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-namespace sf
-{
-    class Event;
-    class RenderTarget;
-}
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneNode.hpp"
 ////////////////////////////////////////////////
@@ -40,29 +31,91 @@ namespace sf
 class GUIElement : public SceneNode
 {
     public:
+        /**
+         * \brief Constructor
+         */
         GUIElement();
+
+        /**
+         * \brief Destructor
+         */
         virtual ~GUIElement();
 
-        virtual bool    isSelectable() const;
-        bool            isSelected() const;
-        void            toggleSelection();
+        /**
+         * \brief Indicate whether element is selectable or not
+         *
+         * \return True if selectable, else false
+         */
+        virtual bool isSelectable() const;
 
-        virtual bool    isActivatable() const;
-        bool            isActive() const;
-        void            toggleActivation();
+        /**
+         * \brief Indicate whether element is selected or not
+         *
+         * \return True if selected, else false
+         */
+        bool isSelected() const;
 
+        /**
+         * \brief Toggle selection
+         *
+         * If currently selected, it deselects.
+         * If not currently selected, select.
+         */
+        void toggleSelection();
+
+        /**
+         * \brief Indicate whether element can be activated or not
+         *
+         * \return True if activatable, else false
+         */
+        virtual bool isActivatable() const;
+
+        /**
+         * \brief Indicate whether element is active or not
+         *
+         * \return True if active, else false
+         */
+        bool isActive() const;
+
+        /**
+         * \brief Toggle activation
+         *
+         * If currently activated, it deactivates.
+         * If not currently activated, it activates.
+         */
+        void toggleActivation();
 
     private:
+        /**
+         * \brief Select element
+         */
         virtual void select();
+
+        /**
+         * \brief Deselect element
+         */
         virtual void deselect();
 
+        /**
+         * \brief Activate element
+         */
         virtual void activate();
+
+        /**
+         * \brief Deactivate element
+         */
         virtual void deactivate();
 
     private:
-        bool mIsSelected;
-        bool mIsActive;
+        bool mIsSelected;   ///< Is the element currently selected?
+        bool mIsActive;     ///< Is the element currently active?
 };
 
+/************************************************
+ * \class GUIElement
+ *
+ * A graphical user interface element for menus.
+ *
+************************************************/
 
 #endif // HITIT_GUIELEMENT_HPP

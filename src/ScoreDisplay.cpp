@@ -20,12 +20,6 @@
 ****************************************************************
 ****************************************************************/
 
-
-////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <sstream>
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "ScoreDisplay.hpp"
@@ -34,6 +28,10 @@
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <sstream>
+////////////////////////////////////////////////
 
 ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& bonusStrip)
 : Text(text)
@@ -51,6 +49,8 @@ ScoreDisplay::ScoreDisplay(sf::Text text, const SceneNode& player, BonusStrip& b
     setText(ss.str());
 
 }
+
+////////////////////////////////////////////////
 
 void ScoreDisplay::updateCurrent()
 {
@@ -116,6 +116,7 @@ void ScoreDisplay::updateCurrent()
     setText(ss.str());
 }
 
+////////////////////////////////////////////////
 
 unsigned int ScoreDisplay::getScore() const
 {

@@ -37,7 +37,7 @@ class GameState : public State
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
+         * \param stack Stack to insert state into at construction
          */
         GameState(StateStack& stack, sf::RenderTarget& target, std::string midiFile);
 
@@ -49,35 +49,44 @@ class GameState : public State
         /**
          * \brief Update state
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should continue updating further states
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool update();
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should allow further states to handle events
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool handleEvent(const sf::Event& event);
 
-
+        /**
+         * \brief Pause game
+         */
 		void pause();
+
+		/**
+		 * \brief Resume game
+		 */
 		void resume();
 
     private:
+        /**
+         * \brief Load resources into memory
+         */
         void loadAssets();
 
     private:
-        sf::RenderTarget&   mTarget;
-        World               mWorld;
-        std::string         mMidiFile;
-        TextureList         mTextures;
-        SoundList           mSounds;
-        FontList            mFonts;
+        sf::RenderTarget&   mTarget;    ///< SFML RenderTarget object to draw to
+        World               mWorld;     ///< The actual game world
+        std::string         mMidiFile;  ///< Path to MIDI track being played
+        TextureList         mTextures;  ///< Texture resources
+        SoundList           mSounds;    ///< Sound resources
+        FontList            mFonts;     ///< Font resources
 };
 
 /************************************************

@@ -21,6 +21,11 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
+// HitIt internal headers
+#include "VertexArrayNode.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // STD - C++ Standard Library
 #include <cassert>
 ////////////////////////////////////////////////
@@ -30,18 +35,14 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "VertexArrayNode.hpp"
-////////////////////////////////////////////////
-
-
 VertexArrayNode::VertexArrayNode(sf::VertexArray array, int category)
 : SceneNode(category)
 , mArray(array)
 {
     updatePrimitiveSize();
 }
+
+////////////////////////////////////////////////
 
 VertexArrayNode::VertexArrayNode(sf::PrimitiveType type, int category)
 : SceneNode(category)
@@ -50,11 +51,14 @@ VertexArrayNode::VertexArrayNode(sf::PrimitiveType type, int category)
     updatePrimitiveSize();
 }
 
+////////////////////////////////////////////////
+
 VertexArrayNode::~VertexArrayNode()
 {
     clearChildren();
 }
 
+////////////////////////////////////////////////
 
 void VertexArrayNode::updatePrimitiveSize()
 {
@@ -106,6 +110,8 @@ sf::FloatRect VertexArrayNode::getBoundingRect() const
     return getWorldTransform().transformRect(mArray.getBounds());
 }
 
+////////////////////////////////////////////////
+
 unsigned int VertexArrayNode::insert(std::vector<sf::Vertex> primitive)
 {
     // Make sure we are inserting ONE primitive.
@@ -130,6 +136,8 @@ unsigned int VertexArrayNode::insert(std::vector<sf::Vertex> primitive)
     return index;
 }
 
+////////////////////////////////////////////////
+
 void VertexArrayNode::free(unsigned int index)
 {
     // Make sure index is not out of bounds.
@@ -144,20 +152,28 @@ void VertexArrayNode::free(unsigned int index)
     mFreeIndices.push(index);
 }
 
+////////////////////////////////////////////////
+
 sf::Vertex& VertexArrayNode::operator[](unsigned int index)
 {
     return mArray[index];
 }
+
+////////////////////////////////////////////////
 
 const sf::Vertex& VertexArrayNode::operator[](unsigned int index) const
 {
     return mArray[index];
 }
 
+////////////////////////////////////////////////
+
 unsigned int VertexArrayNode::getSize() const
 {
     return (mArray.getVertexCount() / mPrimitiveSize) - mFreeIndices.size();
 }
+
+////////////////////////////////////////////////
 
 unsigned int VertexArrayNode::getCount() const
 {

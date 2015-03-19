@@ -21,29 +21,18 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <cmath>
-#include <stdexcept>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Audio/SoundBuffer.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
-
 
 SoundPlayer::SoundPlayer()
 : mVolume(100.f)
 , mFadeStep(0.f)
 , mSessionCount(0)
 {
-
 }
+
+////////////////////////////////////////////////
 
 SoundPlayer::SoundPlayer(const sf::SoundBuffer& buffer)
 : sf::Sound(buffer)
@@ -51,8 +40,9 @@ SoundPlayer::SoundPlayer(const sf::SoundBuffer& buffer)
 , mFadeStep(0.f)
 , mSessionCount(0)
 {
-
 }
+
+////////////////////////////////////////////////
 
 void SoundPlayer::update(float seconds)
 {
@@ -77,17 +67,22 @@ void SoundPlayer::update(float seconds)
     }
 }
 
+////////////////////////////////////////////////
 
 void SoundPlayer::fade(float targetVolume, float seconds)
 {
     mFadeStep = (targetVolume - mVolume) / seconds;
 }
 
+////////////////////////////////////////////////
+
 void SoundPlayer::setVolume(float volume)
 {
     mVolume = volume;
     sf::Sound::setVolume(mVolume);
 }
+
+////////////////////////////////////////////////
 
 void SoundPlayer::play()
 {
@@ -102,6 +97,8 @@ void SoundPlayer::play()
         sf::Sound::play();
 
 }
+
+////////////////////////////////////////////////
 
 void SoundPlayer::stop()
 {
@@ -119,12 +116,15 @@ void SoundPlayer::stop()
         sf::Sound::stop();
 }
 
+////////////////////////////////////////////////
+
 void SoundPlayer::pause()
 {
     if(getStatus() == Status::Playing)
         sf::Sound::pause();
 }
 
+////////////////////////////////////////////////
 
 void SoundPlayer::resume()
 {

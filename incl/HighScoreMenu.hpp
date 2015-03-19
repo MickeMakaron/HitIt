@@ -27,7 +27,7 @@
 // HitIt internal headers
 #include "MenuState.hpp"
 #include "HighScore.hpp"
-#include "TextField.hpp"
+class TextField;
 ////////////////////////////////////////////////
 
 class HighScoreMenu : public MenuState
@@ -36,26 +36,35 @@ class HighScoreMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         HighScoreMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile, unsigned int score);
 
     private:
+        /**
+         * \brief Create GUI score list and insert into container
+         */
         void createList();
-        void createButtons();
+
+        /**
+         * \brief Load buttons into GUIContainer
+         */
+        void loadButtons();
 
     private:
-        std::string             mMidiFile;
-        HighScore               mHighScore;
-        unsigned int            mScore;
-        TextField*              mTextField;
+        std::string             mMidiFile;  ///< Path to MIDI track
+        HighScore               mHighScore; ///< HighScore object for fetching highscore data from file
+        unsigned int            mScore;     ///< Player score
+        TextField*              mTextField; ///< Text field for user input if player made a new record
 };
 
 /************************************************
  * \class HighScoreMenu
  *
- *
+ * Display highscore list for a MIDI track and
+ * allow user to insert its own score accompanied
+ * with a name into the highscore data file.
  *
 ************************************************/
 

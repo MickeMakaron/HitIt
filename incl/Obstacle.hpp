@@ -24,11 +24,6 @@
 #define HITIT_OBSTACLE_HPP
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneNode.hpp"
 class SoundPlayer;
@@ -38,6 +33,11 @@ class VertexArrayNode;
 class Obstacle : public SceneNode
 {
     public:
+        /**
+         * \enum State
+         *
+         * Current state of obstacle.
+         */
         enum State
         {
             Waiting,
@@ -46,14 +46,16 @@ class Obstacle : public SceneNode
             Dead,
             StateCount,
         };
+
         /**
          * \brief Constructor
          *
-         * \param texture texture to apply to sprite.
-         * \param buffer sound buffer that contains sound to be played.
+         * \param soundPlayer SoundPlayer to play when crossing playline
+         * \param array Reference to parent VertexArrayNode
+         * \param playLine Y-coordinate that, when crossed, sets Obstacle to Playing state
+         * \param deathLine Y-coordinate that, when crossed, sets Obstacle to Dead state
          */
         Obstacle(SoundPlayer& soundPlayer, VertexArrayNode& array, float playLine, float deathLine, int category = 0);
-
 
         /**
          * \brief Destructor
@@ -61,23 +63,41 @@ class Obstacle : public SceneNode
         ~Obstacle();
 
 		/**
-		 * \brief Indicate whether this node is marked for removal.
+		 * \brief Indicate whether this node is marked for removal
 		 *
-		 * \return true if marked for removal, else false.
+		 * \return true if marked for removal, else false
 		 */
 		 virtual bool isMarkedForRemoval() const;
 
+        /**
+         * \brief Set position of obstacle
+         *
+         * \param x X-coordinate
+         * \param y Y-coordinate
+         */
         virtual void setPosition(float x, float y);
+
+        /**
+         * \brief Set size of obstacle
+         *
+         * \param width Width of obstacle
+         * \param height Height of obstacle
+         */
         virtual void setSize(float width, float height);
 
+        /**
+         * \brief Get world position of node
+         *
+         * \return absolute world position of node
+         */
         virtual sf::Vector2f getWorldPosition() const;
 
         /**
-		 * \brief Get bounding rectangle of node.
+		 * \brief Get bounding rectangle of node
 		 *
-		 * \return bounding rectangle of node.
+		 * \return bounding rectangle of node
 		 */
-		virtual sf::FloatRect	getBoundingRect() const;
+		virtual sf::FloatRect getBoundingRect() const;
 
     private:
 	    /**
@@ -85,28 +105,27 @@ class Obstacle : public SceneNode
 	     */
 		virtual void updateCurrent();
 
+        /**
+         * \brief Update vertices' positions
+         */
         void updateVertices();
 
-
     private:
-        SoundPlayer&        mSoundPlayer;   ///< Use this to play sounds.
-        VertexArrayNode&    mArray;
-        sf::FloatRect       mRect;
-        unsigned int        M_VERTEX_ARRAY_INDEX;
-        const float         M_PLAYLINE;
-        const float         M_DEATHLINE;
-        State               mState;
-        std::vector<std::function<void()>> mStateFuncs;
-
-
+        SoundPlayer&        mSoundPlayer;               ///< Used to play note
+        VertexArrayNode&    mArray;                     ///< Parent vertex array
+        sf::FloatRect       mRect;                      ///< Bounding rectangle
+        unsigned int        M_VERTEX_ARRAY_INDEX;       ///< Index in parent vertex array
+        const float         M_PLAYLINE;                 ///< Y-coordinate of play line
+        const float         M_DEATHLINE;                ///< Y-coordinate of death line
+        State               mState;                     ///< Current state
+        std::vector<std::function<void()>> mStateFuncs; ///< State update functions
 };
-
 
 /************************************************
  * \class Obstacle
  *
  * Obstacle node that the player is supposed to
- * not collide with.
+ * NOT collide with.
  *
 ************************************************/
 

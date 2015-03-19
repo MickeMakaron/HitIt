@@ -21,24 +21,23 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
+// HitIt internal headers
+#include "HighScoreMenu.hpp"
+#include "VictoryMenu.hpp"
+#include "Text.hpp"
+#include "Button.hpp"
+#include "TextField.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // STD - C++ Standard Library
 #include <sstream>
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
 #include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "HighScoreMenu.hpp"
-#include "VictoryMenu.hpp"
-#include "Text.hpp"
-#include "Button.hpp"
-////////////////////////////////////////////////
-
 
 HighScoreMenu::HighScoreMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile, unsigned int score)
 : MenuState(stack, target)
@@ -59,14 +58,16 @@ HighScoreMenu::HighScoreMenu(StateStack& stack, sf::RenderTarget& target, const 
     setBackground(background);
 
     createList();
-    createButtons();
+    loadButtons();
     if(mTextField)
         mTextField->toggleActivation();
 
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y * 2.f / 5.f);
 }
 
-void HighScoreMenu::createButtons()
+////////////////////////////////////////////////
+
+void HighScoreMenu::loadButtons()
 {
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
@@ -87,7 +88,7 @@ void HighScoreMenu::createButtons()
     mMenu.insert(done);
 }
 
-
+////////////////////////////////////////////////
 
 void HighScoreMenu::createList()
 {

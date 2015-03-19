@@ -20,25 +20,19 @@
 ****************************************************************
 ****************************************************************/
 
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
-#include "GameState.hpp"
-#include "Button.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
-MenuState::MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIElement*> elements)
+MenuState::MenuState(StateStack& stack, sf::RenderTarget& target)
 : State(stack)
 , mTarget(target)
-, mMenu(elements)
 , mBackground(mTarget.getView().getSize())
 {
     loadAssets();
@@ -76,15 +70,21 @@ bool MenuState::handleEvent(const sf::Event& event)
 	return false;
 }
 
+////////////////////////////////////////////////
+
 void MenuState::setBackground(const sf::Texture& background)
 {
     mBackground.setTexture(&background);
 }
 
+////////////////////////////////////////////////
+
 void MenuState::setBackground(sf::Color color)
 {
     mBackground.setFillColor(color);
 }
+
+////////////////////////////////////////////////
 
 void MenuState::loadAssets()
 {

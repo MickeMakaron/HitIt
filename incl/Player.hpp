@@ -23,22 +23,15 @@
 #ifndef HITIT_PLAYER_HPP
 #define HITIT_PLAYER_HPP
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "RectangleNode.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Audio/Sound.hpp"
-namespace sf
-{
-    class Event;
-}
 ////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "RectangleNode.hpp"
-
-////////////////////////////////////////////////
-
 
 class Player : public RectangleNode
 {
@@ -46,85 +39,90 @@ class Player : public RectangleNode
         /**
          * \brief Constructor
          *
-         * \param texture texture to apply to shape.
-         * \param width width of player shape.
+         * \param texture texture to apply to shape
+         * \param width width of player shape
          * \param hp hp of player
          * \param position initial position
          */
         Player(const sf::Texture& texture, float width, int hp, sf::Vector2f position = sf::Vector2f(0.f, 0.f));
 
         /**
-         * \brief Damage the player by a fixed amount.
+         * \brief Damage the player by a fixed amount
          */
         void damage();
 
         /**
-         * \brief Kill player.
+         * \brief Kill player
          */
         void destroy();
 
         /**
-         * \brief Check if player is dead.
+         * \brief Check if player is dead
          */
         bool isDestroyed() const;
 
         /**
-         * \brief Increase movement speed.
+         * \brief Increase movement speed
          */
         void accelerate(float a);
 
         /**
-         * \brief Get current HP.
+         * \brief Get current HP
          *
-         * \return current HP of player node.
+         * \return current HP of player node
          */
          int getHp() const;
 
+        /**
+         * \brief Indicate whether player is in a damaged state or not
+         */
         bool isDamaged() const;
-
-        sf::Vector2f getPreviousPosition() const;
 
     private:
         /**
-         * \brief Draw this node.
+         * \brief Draw this node
          *
-         * \param target SFML RenderTarget object to draw this node to.
-         * \param states SFML RenderStates object ot transform draw with.
+         * \param target SFML RenderTarget object to draw this node to
+         * \param states SFML RenderStates object to transform draw with
          */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 		/**
-		 * \brief Handle device input for this node.
+		 * \brief Handle device input for this node
 		 *
 		 * \param event event to handle
 		 */
         virtual void handleEventCurrent(const sf::Event& event);
 
 	    /**
-	     * \brief Update this node.
+	     * \brief Update this node
 	     */
 		virtual void updateCurrent();
 
-
-
     private:
-        int             mHp;                    ///< Hp of player.
-        float           mMovementSpeed;         ///< Movement speed.
-        bool            mIsImmortal;            ///< Indicator whether player is immortal.
-        const float     mImmortalTime = 1.f;    ///< Time to remain immortal in seconds.
-        float           mImmortalCounter;       ///< Time accumulator for immortality.
-        bool            mIsJumping;             ///< Indicator whether player is jumping.
-        const float     mJumpingTime = 1.f;     ///< Time airborne in seconds.
-        float           mJumpingCounter;        ///< Time accumulator for jumping.
-        sf::Sound       mDamagedSound;          ///< Sound played when damaged.
-        sf::Sound       mStepSound;
-        float           mMoveCounter;
-        const float     mMoveCooldown = 0.07f;
-        sf::Vector2f    mDirection;
-        sf::Vector2f    mPreviousPosition;
-        float           mStepSize;
+        int             mHp;                    ///< Hp of player
+        float           mMovementSpeed;         ///< Movement speed
+        bool            mIsImmortal;            ///< Indicator whether player is immortal
+        const float     mImmortalTime = 1.f;    ///< Time to remain immortal in seconds
+        float           mImmortalCounter;       ///< Time accumulator for immortality
+        bool            mIsJumping;             ///< Indicator whether player is jumping
+        const float     mJumpingTime = 1.f;     ///< Time airborne in seconds
+        float           mJumpingCounter;        ///< Time accumulator for jumping
+        sf::Sound       mDamagedSound;          ///< Sound played when damaged
+        sf::Sound       mStepSound;             ///< Sound played when stepping horisontally
+        float           mMoveCounter;           ///< Time counter for move cooldown
+        const float     mMoveCooldown = 0.07f;  ///< Cooldown between horisontal steps
+        sf::Vector2f    mDirection;             ///< Movement direction for this time step
+        float           mStepSize;              ///< Horisontal step length
 
 
 };
+
+/************************************************
+ * \class Player
+ *
+ * Player class. Is controlled by user.
+ *
+************************************************/
 
 #endif // HITIT_PLAYER_HPP

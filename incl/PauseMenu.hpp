@@ -35,26 +35,29 @@ class PauseMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
+         * \param game Reference to game state operating being paused behind this state
          */
         PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& game);
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should allow further states to handle events
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool handleEvent(const sf::Event& event);
 
-
     private:
+        /**
+         * \brief Load buttons into GUIContainer
+         */
         void loadButtons();
 
     private:
-        GameState& mGame;
+        GameState& mGame; ///< Reference to paused game state
 };
 
 /************************************************

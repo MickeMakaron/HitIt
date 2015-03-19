@@ -23,15 +23,15 @@
 #ifndef HITIT_ASSETLIST_HPP
 #define HITIT_ASSETLIST_HPP
 
-
-////////////////////////////////////////////////
-// C++ Standard Library
-#include <list>
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "ResourceIdentifiers.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <list>
+#include <string>
 ////////////////////////////////////////////////
 
 template <typename AssetIdentifierT>
@@ -40,28 +40,26 @@ class AssetList
     public:
         /**
          * \struct Asset
-         *
          * Wrap resource ID and resource file path into a struct.
-         *
          */
         struct Asset
         {
             /**
              * \brief Constructor
              *
-             * \param id resource ID
-             * \param filePath file path to resource
+             * \param id Resource ID
+             * \param filePath File path to resource
              */
             Asset(AssetIdentifierT id, std::string filePath) : id(id), filePath(filePath){};
-            AssetIdentifierT id;    ///< Resource ID of resource.
-            std::string filePath;   ///< Path to resource.
+            AssetIdentifierT id;    ///< Resource ID of resource
+            std::string filePath;   ///< Path to resource
         };
 
     public:
         /**
          * \brief Constructor
          *
-         * \param assets list of assets to use
+         * \param assets List of assets to use
          */
         AssetList(std::list<Asset> assets);
 
@@ -78,35 +76,33 @@ class AssetList
         /**
          * \brief Set list of assets to use
          *
-         * \param assets list of assets to use
-         * \param loadImmediately if set to true, AssetList will load the resources
-         * to memory immediately.
+         * \param assets List of assets to use
+         * \param loadImmediately If set to true, AssetList will load the resources
+         * to memory immediately
          */
         void setAssets(std::list<Asset> assets);
 
         /**
-         * \brief Add multiple assets.
+         * \brief Add multiple assets
          *
-         * \param assets list of assets to insert.
+         * \param assets List of assets to insert
          */
         void insert(std::list<Asset> assets);
 
-
     private:
         /**
-         * \brief Load assets into memory.
+         * \brief Load assets into memory
          */
         void load();
 
         /**
-         * \brief Release assets from memory.
+         * \brief Release assets from memory
          */
         void release();
 
     private:
-        std::list<Asset>    mAssets;    ///< Assets to use.
+        std::list<Asset> mAssets; ///< Assets to use
 };
-
 
 /************************************************
  * \class AssetList

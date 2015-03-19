@@ -21,11 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <cstring>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "Spawner.hpp"
 #include "TIME_PER_FRAME.hpp"
@@ -33,6 +28,11 @@
 #include "CollissionCategory.hpp"
 #include "VertexArrayNode.hpp"
 #include "AudioSampler.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <string>
 ////////////////////////////////////////////////
 
 Spawner::Spawner(std::string midiFilePath, AudioSampler& sampler, sf::FloatRect spawnArea, SceneNode* layer)
@@ -56,11 +56,15 @@ Spawner::Spawner(std::string midiFilePath, AudioSampler& sampler, sf::FloatRect 
     layer->attachChild(mObstacles);
 }
 
+////////////////////////////////////////////////
+
 void Spawner::update()
 {
     mTime += TIME_PER_FRAME::seconds();
     mObstacles->move(0.f, mScrollSpeed * TIME_PER_FRAME::seconds());
 }
+
+////////////////////////////////////////////////
 
 std::list<SceneNode*> Spawner::spawn()
 {
@@ -81,15 +85,21 @@ std::list<SceneNode*> Spawner::spawn()
     return spawns;
 }
 
+////////////////////////////////////////////////
+
 bool Spawner::isEmpty() const
 {
     return mSpawnQueue.empty();
 }
 
+////////////////////////////////////////////////
+
 float Spawner::getNoteWidth() const
 {
     return mNoteWidth;
 }
+
+////////////////////////////////////////////////
 
 const VertexArrayNode& Spawner::getObstacles() const
 {

@@ -24,14 +24,14 @@
 #define HITIT_BUTTON_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/Text.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "GUIElement.hpp"
 #include "SoundPlayer.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/Text.hpp"
 ////////////////////////////////////////////////
 
 class Button : public GUIElement
@@ -39,26 +39,74 @@ class Button : public GUIElement
     public:
         typedef std::function<void()> Callback;
 
+        /**
+        * \brief Constructor
+        *
+        * \param text Text to display
+        * \param soundBuffer SFML SoundBuffer object that holds the sound to be played
+        * when deselected
+        * \param callback Function to execute when activated
+        */
         Button(const sf::Text& text, const sf::SoundBuffer& soundBuffer, Callback callback);
 
-
+        /**
+         * \brief Indicate whether element can be activated or not
+         *
+         * \return True if activatable, else false
+         */
         virtual bool isActivatable() const;
+
+        /**
+         * \brief Indicate whether element is selectable or not
+         *
+         * \return True if selectable, else false
+         */
         virtual bool isSelectable() const;
 
-        virtual void select();
-        virtual void deselect();
-        virtual void activate();
-
+		/**
+		 * \brief Get bounding rectangle of node
+		 *
+		 * \return bounding rectangle of node
+		 */
         virtual sf::FloatRect getBoundingRect() const;
 
     private:
+        /**
+         * \brief Draw this node.
+         *
+         * \param target SFML RenderTarget object to draw this node to
+         * \param states SFML RenderStates object to transform draw with
+         */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        /**
+         * \brief Select element
+         */
+        virtual void select();
+
+        /**
+         * \brief Deselect element
+         */
+        virtual void deselect();
+
+        /**
+         * \brief Activate element
+         */
+        virtual void activate();
+
+
     private:
-        sf::Text	    mText;
-        SoundPlayer     mSoundPlayer;
-        Callback	    mCallback;
+        sf::Text	    mText;          ///< Text to display
+        SoundPlayer     mSoundPlayer;   ///< Sound to play when deselected and activated
+        Callback	    mCallback;      ///< Function to execute when activated
 };
 
+/************************************************
+ * \class Button
+ *
+ * Selectable and activatable GUI element
+ * that performs a callback when activated.
+ *
+************************************************/
 
 #endif // HITIT_BUTTON_HPP

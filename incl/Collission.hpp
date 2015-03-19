@@ -24,7 +24,14 @@
 #define HITIT_COLLISSION_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// HitIt internal headers
+class SceneNode;
+class Player;
+class BonusStrip;
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
 #include <list>
 ////////////////////////////////////////////////
 
@@ -33,38 +40,30 @@
 #include "SFML/Graphics/Rect.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-class SceneNode;
-class Player;
-class BonusStrip;
-////////////////////////////////////////////////
-
-
 class Collission
 {
     public:
         /**
          * \brief Constructor
          *
-         * \param player player node to track.
+         * \param player player node to track
          */
         Collission(Player& player, BonusStrip& bonusStrip);
 
         /**
-         * \brief Add node to collission checklist.
+         * \brief Add node to collission checklist
          *
-         * \param node node to add.
+         * \param node node to add
          */
         void insert(SceneNode* node);
 
         /**
-         * \brief Manage collissions.
+         * \brief Manage collissions
          */
         void update();
 
         /**
-         * \brief Remove nodes marked for removal.
+         * \brief Remove nodes marked for removal
          */
         void removeWrecks();
 
@@ -84,33 +83,39 @@ class Collission
              * \param depth depth of collission.
              */
             CollissionData(bool hasCollission = false, sf::Vector2f depth = sf::Vector2f(0.f, 0.f));
-            bool            hasCollission;  ///< Indicator of whether a collission has occured or not.
-            sf::Vector2f    depth;          ///< Depth of collission.
+            bool            hasCollission;  ///< Indicator of whether a collission has occured or not
+            sf::Vector2f    depth;          ///< Depth of collission
         };
 
         /**
-         * \brief Check if two non-rotated rectangles intersect.
+         * \brief Check if two non-rotated rectangles intersect
          *
          * \param a first rectangle
          * \param b second rectangle
          *
-         * \return collission data.
+         * \return collission data
          */
         CollissionData checkCollission(sf::FloatRect a, sf::FloatRect b) const;
 
-
+        /**
+         * \brief Handle collissions between player and all scene nodes
+         *
+         * \param nodes List of scene nodes to handle collissions with
+         */
         void handleCollissions(std::list<SceneNode*> nodes);
 
     private:
-        Player&                 mPlayer;    ///< Player node
-        BonusStrip&             mBonusStrip;
-        std::list<SceneNode*>   mNodes;     ///< Nodes in scene graph.
+        Player&                 mPlayer;        ///< Player node
+        BonusStrip&             mBonusStrip;    ///< Bonus strip node
+        std::list<SceneNode*>   mNodes;         ///< Nodes in scene graph
 };
 
-/**
+/************************************************
  * \class Collission
+ *
  * Collission manager for detecting and handling collissions
  * between player node and the rest of the scene graph.
- */
+ *
+************************************************/
 
 #endif // HITIT_COLLISSION_HPP

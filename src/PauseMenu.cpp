@@ -21,12 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "PauseMenu.hpp"
 #include "Button.hpp"
@@ -36,6 +30,11 @@
 #include "Text.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Event.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& game)
 : MenuState(stack, target)
@@ -59,6 +58,7 @@ PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& gam
     mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
+////////////////////////////////////////////////
 
 bool PauseMenu::handleEvent(const sf::Event& event)
 {
@@ -73,6 +73,7 @@ bool PauseMenu::handleEvent(const sf::Event& event)
     return false;
 }
 
+////////////////////////////////////////////////
 
 void PauseMenu::loadButtons()
 {

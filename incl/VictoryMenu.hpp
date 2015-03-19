@@ -23,7 +23,6 @@
 #ifndef HITIT_VICTORYMENU_HPP
 #define HITIT_VICTORYMENU_HPP
 
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
@@ -35,16 +34,20 @@ class VictoryMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
+         * \param midiFile Path to MIDI track
          */
         VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
     private:
+        /**
+         * \brief Load buttons into GUIContainer.
+         */
         void loadButtons();
 
     private:
-        std::string             mMidiFile;
+        std::string             mMidiFile; ///< Path to MIDI track
 };
 
 /************************************************

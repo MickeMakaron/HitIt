@@ -24,19 +24,6 @@
 #define HITIT_SCENEGRAPH_HPP
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <memory>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-namespace sf
-{
-    class RenderTarget;
-}
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneNode.hpp"
 ////////////////////////////////////////////////
@@ -67,32 +54,44 @@ class SceneGraph
         SceneGraph();
 
         /**
-         * \brief Update scene graph.
+         * \brief Update scene graph
          */
         void update();
 
         /**
-         * \brief Draw scene graph to target.
+         * \brief Draw scene graph to target
          *
-         * \param target SFML RenderTarget object to draw to.
+         * \param target SFML RenderTarget object to draw to
          */
         void draw(sf::RenderTarget& target) const;
 
         /**
-         * \brief Remove nodes marked for removal.
+         * \brief Remove nodes marked for removal
          */
         void removeWrecks();
 
+        /**
+         * \brief Handle device input for scene graph
+		 *
+		 * \param event event to handle
+		 */
         void handleEvent(const sf::Event& event);
 
         /**
-         * \brief Insert node into scene graph.
+         * \brief Insert node into scene graph
          *
-         * \param node node to insert.
-         * \param layer layer to insert to.
+         * \param node node to insert
+         * \param layer layer to insert to
          */
         void insert(SceneNode* node, Layer layer);
 
+        /**
+         * \brief Get pointer to layer node
+         *
+         * \param layer Layer to return
+         *
+         * \return Pointer to layer node
+         */
         SceneNode* getLayer(SceneGraph::Layer layer);
 
 

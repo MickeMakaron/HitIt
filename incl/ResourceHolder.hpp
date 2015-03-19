@@ -24,7 +24,7 @@
 #define HITIT_RESOURCEHOLDER_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// STD - C++ Standard Library
 #include <map>
 #include <string>
 #include <memory>
@@ -35,52 +35,52 @@ class ResourceHolder
 {
     public:
         /**
-         * \brief Load resource into memory by file path.
+         * \brief Load resource into memory by file path
          *
          * \param id ID of resource
          * \param filePath file path to resource
          *
-         * \return reference to loaded resource.
+         * \return reference to loaded resource
          */
         ResourceT& load(IdentifierT id, const std::string& filePath);
 
         /**
-         * \brief Load resource into memory by resource object.
+         * \brief Load resource into memory by resource object
          *
          * \param id ID of resource
          * \param resource resource object to load
          *
-         * \return reference to loaded resource.
+         * \return reference to loaded resource
          */
         ResourceT& load(IdentifierT id, ResourceT& resource);
 
         /**
-         * \brief Get resource from memory.
+         * \brief Get resource from memory
          *
          * \param id ID of resource
          *
-         * \return reference to resource.
+         * \return reference to resource
          */
         ResourceT& get(IdentifierT id);
 
         /**
-         * \brief Check if resource is loaded into memory.
+         * \brief Check if resource is loaded into memory
          *
          * \param id ID of resource
          *
-         * \return true if resource is loaded into memory, else false.
+         * \return true if resource is loaded into memory, else false
          */
         bool isLoaded(IdentifierT id);
 
         /**
-         * \brief Release resource from memory.
+         * \brief Release resource from memory
          *
          * \param id ID of resource
          */
         void release(IdentifierT id);
 
         /**
-         * \brief Release all resources from memory.
+         * \brief Release all resources from memory
          */
         void release();
 
@@ -95,11 +95,11 @@ class ResourceHolder
          */
         struct Resource
         {
-            Ptr resource;   ///< Unique resource pointer. Multiple sessions of the same resource is not allowed.
-            int counter;    ///< Indicator of how many sessions that are using this resource.
+            Ptr resource;   ///< Unique resource pointer. Multiple sessions of the same resource is not allowed
+            int counter;    ///< Indicator of how many sessions that are using this resource
         };
 
-        std::map<IdentifierT, Resource> mResourceMap; ///< ID-resource map.
+        std::map<IdentifierT, Resource> mResourceMap; ///< ID-resource map
 };
 /************************************************
  * \class ResourceHolder

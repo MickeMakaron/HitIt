@@ -21,17 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C Standard library
-#include <dirent.h>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "TrackMenu.hpp"
 #include "Button.hpp"
@@ -42,6 +31,15 @@
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// C Standard library
+#include <dirent.h>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
@@ -62,6 +60,8 @@ TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
 
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y * 2.f / 5.f);
 }
+
+////////////////////////////////////////////////
 
 void TrackMenu::loadButtons()
 {

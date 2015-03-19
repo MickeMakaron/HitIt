@@ -24,13 +24,13 @@
 #define HITIT_HITIT_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderWindow.hpp"
+// HitIt internal headers
+#include "StateStack.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// HitIt internal headers
-#include "StateStack.hpp"
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderWindow.hpp"
 ////////////////////////////////////////////////
 
 class HitIt
@@ -52,43 +52,54 @@ class HitIt
         void run();
 
     private:
+        /**
+         * \struct WindowSettings
+         *
+         * Wrapper for window data, i.e. SFML video mode, window title and SFML window style.
+         */
         struct WindowSettings
         {
+            /**
+             * \brief Constructor
+             *
+             * \param mode SFML Video mode object
+             * \param title Window title
+             * \param style SFML window style
+             */
             WindowSettings(sf::VideoMode mode, std::string title, unsigned int style) : mode(mode), title(title), style(style){};
-            sf::VideoMode   mode;
-            std::string     title;
-            unsigned int    style;
+            sf::VideoMode   mode;   ///< SFML Video mode object
+            std::string     title;  ///< Window title
+            unsigned int    style;  ///< SFML window style
         };
 
         /**
-         * \brief Get optimal window configuration for this computer.
+         * \brief Get optimal window configuration for this computer
          *
          * \return window configuration.
          */
         WindowSettings getWindowSettings() const;
 
         /**
-         * \brief Adjust viewport to fit current window settings.
+         * \brief Adjust viewport to fit current window settings
          */
         void updateViewport();
 
         /**
-         * \brief Process input from input devices.
+         * \brief Process input from input devices
          */
         void processInput();
 
         /**
-         * \brief Clear, draw and display program graphics.
+         * \brief Clear, draw and display program graphics
          */
         void render();
 
     private:
-        const sf::Vector2f  M_DRAW_SIZE = sf::Vector2f(1000.f, 1000.f);
-        WindowSettings      mWindowSettings;
-        sf::RenderWindow    mWindow;    ///< SFML window object.
-        StateStack          mStateStack;      ///< State stack for program states.
+        const sf::Vector2f  M_DRAW_SIZE = sf::Vector2f(1000.f, 1000.f); ///< Default draw size
+        WindowSettings      mWindowSettings;                            ///< Optimal window settings for target computer
+        sf::RenderWindow    mWindow;                                    ///< SFML window object
+        StateStack          mStateStack;                                ///< State stack for program states
 };
-
 
 /************************************************
  * \class HitIt
@@ -97,6 +108,5 @@ class HitIt
  * a HitIt object and call its run function.
  *
 ************************************************/
-
 
 #endif // HITIT_HITIT_HPP

@@ -23,39 +23,33 @@
 #ifndef HITIT_TIME_PER_FRAME_HPP
 #define HITIT_TIME_PER_FRAME_HPP
 
-
 class TIME_PER_FRAME
 {
     public:
         /**
-         * \brief Set time step as seconds.
+         * \brief Set time step as seconds
          *
-         * \param seconds time step size in seconds.
+         * \param seconds Time step size in seconds
          */
         static void setAsSeconds(float seconds);
 
         /**
          * \brief Get timestep as seconds.
          *
-         * \return timestep as seconds
+         * \return Timestep as seconds
          */
         static const float& seconds();
 
-
     private:
-        static float mSeconds;      ///< Time step as seconds.
-        static float mMilliSeconds; ///< Time step as milliseconds.
+        static float mSeconds;      ///< Time step as seconds
+        static float mMilliSeconds; ///< Time step as milliseconds
 };
 
-/**
+/************************************************
  * \class TIME_PER_FRAME
  *
- *  Wrapper-class for static time steps.
- */
-
+ * Wrapper-class for static time steps.
+ *
+************************************************/
 
 #endif // HITIT_TIME_PER_FRAME_HPP
-
-
-
-

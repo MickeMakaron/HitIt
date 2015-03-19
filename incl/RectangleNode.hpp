@@ -23,18 +23,15 @@
 #ifndef HITIT_RECTANGLENODE_HPP
 #define HITIT_RECTANGLENODE_HPP
 
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/Texture.hpp"
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneNode.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RectangleShape.hpp"
+////////////////////////////////////////////////
 
 class RectangleNode : public SceneNode
 {
@@ -42,40 +39,54 @@ class RectangleNode : public SceneNode
         /**
          * \brief Constructor
          *
-         * \param size size of rectangle.
-         * \param category category of node.
+         * \param size size of rectangle
+         * \param category category of node
          */
         RectangleNode(const sf::Vector2f& size = sf::Vector2f(0.f, 0.f), int category = 0);
 
         /**
          * \brief Constructor
          *
-         * \param texture texture of rectangle.
-         * \param category category of node.
+         * \param texture texture of rectangle
+         * \param category category of node
          */
          RectangleNode(const sf::Texture& texture, int category = 0);
 
 
         /**
-         * \brief Get bounding rectangle of shape.
+         * \brief Get bounding rectangle of shape
          *
-         * \return bounding rectangle of shape.
+         * \return bounding rectangle of shape
          */
         virtual sf::FloatRect getBoundingRect() const;
 
         /**
          * \brief Draw shape.
          *
-         * \param target SFML RenderTarget object to draw shape to.
-         * \param states SFML RenderStates object to transform draw with.
+         * \param target SFML RenderTarget object to draw shape to
+         * \param states SFML RenderStates object to transform draw with
          */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        /**
+         * \brief Set fill color of rectangle
+         *
+         * \param color Fill color
+         */
         void setFillColor(sf::Color color);
 
-
+        /**
+         * \brief Set outline color of rectangle
+         *
+         * \param color Outline color
+         */
         void setOutlineColor(sf::Color color);
 
+        /**
+         * \brief Set outline thickness of rectangle
+         *
+         * \param thickness Outline thickness
+         */
         void setOutlineThickness(float thickness);
 
         /**
@@ -87,7 +98,7 @@ class RectangleNode : public SceneNode
         void setSize(float x, float y);
 
     protected:
-        sf::RectangleShape mShape;
+        sf::RectangleShape mShape; ///< SFML RectangleShape object defining this node
 };
 
 /************************************************

@@ -21,26 +21,14 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <algorithm>
-#include <cassert>
-#include <cmath>
-#include <deque>
-#include <set>
-#include <utility>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneNode.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <cassert>
+////////////////////////////////////////////////
 
 SceneNode::SceneNode(int category)
 : mChildren()
@@ -75,6 +63,8 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	mChildren.erase(found);
 	return result;
 }
+
+////////////////////////////////////////////////
 
 void SceneNode::clearChildren()
 {
@@ -113,11 +103,14 @@ void SceneNode::handleEvent(const sf::Event& event)
     handleEventChildren(event);
 }
 
+////////////////////////////////////////////////
 
 void SceneNode::handleEventCurrent(const sf::Event& event)
 {
     // Nothing by default.
 }
+
+////////////////////////////////////////////////
 
 void SceneNode::handleEventChildren(const sf::Event& event)
 {
@@ -125,6 +118,7 @@ void SceneNode::handleEventChildren(const sf::Event& event)
         child->handleEvent(event);
 }
 
+////////////////////////////////////////////////
 
 void SceneNode::removeWrecks()
 {
@@ -164,22 +158,6 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
 {
 	for(const Ptr& child : mChildren)
         child->draw(target, states);
-}
-
-////////////////////////////////////////////////
-
-void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) const
-{
-	sf::FloatRect rect = getBoundingRect();
-
-	sf::RectangleShape shape;
-	shape.setPosition(sf::Vector2f(rect.left, rect.top));
-	shape.setSize(sf::Vector2f(rect.width, rect.height));
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineColor(sf::Color::Blue);
-	shape.setOutlineThickness(1.f);
-
-	target.draw(shape);
 }
 
 ////////////////////////////////////////////////

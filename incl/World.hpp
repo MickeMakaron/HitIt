@@ -24,19 +24,6 @@
 #define HITIT_WORLD_HPP
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <memory>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-namespace sf
-{
-    class RenderTarget;
-}
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneGraph.hpp"
 #include "Spawner.hpp"
@@ -50,6 +37,11 @@ class Collission;
 class World
 {
     public:
+        /**
+         * \enum State
+         *
+         * Current world state
+         */
         enum State
         {
             Starting,
@@ -63,86 +55,101 @@ class World
         /**
          * \brief Constructor
          *
-         * \param target SFML RenderTarget object to draw to.
+         * \param target SFML RenderTarget object to draw to
+         * \param midiFile File path to MIDI track
          */
         World(sf::RenderTarget& target, std::string midiFile);
 
+        /**
+         * \brief Destructor
+         */
         ~World();
 
         /**
-         * \brief Draw world.
+         * \brief Draw world
          */
         void draw();
 
         /**
-         * \brief Update world.
+         * \brief Update world
          */
         void update();
 
         /**
-         * \brief Handle input event.
+         * \brief Handle input event
          *
-         * \param event event ot handle.
+         * \param event event ot handle
          */
         void handleEvent(const sf::Event& event);
 
         /**
-         * \brief Check world state.
+         * \brief Check world state
          *
          * \return current world state
          */
          State getState() const;
 
         /**
-         * \brief Pause world.
+         * \brief Pause world
          *
-         * Must be used when putting a state above this one.
+         * Must be used when putting a state above this one
          */
         void pause();
 
         /**
-         * \brief Resume world.
+         * \brief Resume world
          */
         void resume();
 
-
+        /**
+         * \brief Get current score
+         *
+         * \return Current score
+         */
         unsigned int getScore() const;
 
         /**
-         * \brief Perform initialization of world.
+         * \brief Perform initialization of world
          */
         void buildWorld();
 
     private:
-
-
+        /**
+         * \brief Start state update function
+         */
         void updateStart();
+
+        /**
+         * \brief Run state update function
+         */
         void updateRun();
+
+        /**
+         * \brief Victory state update function
+         */
         void updateVictory();
 
         /**
-         * \brief Enclose the player character in the view.
+         * \brief Enclose the player character in the view
          */
          void keepPlayerInBounds();
 
-
-
     private:
-        sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to.
-        SceneGraph          mScene;         ///< Scene graph of all game objects.
-        AudioSampler        mSampler;
-        sf::FloatRect       mBounds;        ///< Area where player is allowed to reside.
-        Spawner             mSpawner;       ///< Spawn new obstacles.
-        Player*             mPlayer;        ///< Player controlled node.
-        BonusStrip*         mBonusStrip;
-        ScoreDisplay*       mScoreDisplay;
-        Collission*         mCollission;    ///< Collission manager.
-        State               mState;         ///< Current world state.
-        float               mTimer;
-        bool                mPlayerIsDamaged; ///< Player state.
-        std::vector<std::function<void()>> mStateFuncs;
-};
+        sf::RenderTarget&   mTarget;            ///< SFML RenderTarget to draw to
+        SceneGraph          mScene;             ///< Scene graph of all game objects
+        AudioSampler        mSampler;           ///< Sampler to generate note sounds from raw audio data
+        sf::FloatRect       mBounds;            ///< Area where player is allowed to reside
+        Spawner             mSpawner;           ///< Spawn new obstacles
+        Player*             mPlayer;            ///< Player controlled node
+        BonusStrip*         mBonusStrip;        ///< Pointer to BonusStrip node
+        ScoreDisplay*       mScoreDisplay;      ///< Pointer to ScoreDisplay node
+        Collission*         mCollission;        ///< Collission manager
+        State               mState;             ///< Current world state
+        float               mTimer;             ///< Time counter
+        bool                mPlayerIsDamaged;   ///< Player state
 
+        std::vector<std::function<void()>> mStateFuncs; ///< State update functions
+};
 
 /************************************************
  * \class World

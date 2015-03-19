@@ -24,7 +24,12 @@
 #define HITIT_STATE_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// HitIt internal headers
+class StateStack;
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
 #include <memory>
 ////////////////////////////////////////////////
 
@@ -36,11 +41,6 @@ namespace sf
 }
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-class StateStack;
-////////////////////////////////////////////////
-
 class State
 {
 	public:
@@ -50,7 +50,7 @@ class State
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
+         * \param stack Stack to insert state into at construction
          */
         State(StateStack& stack);
 
@@ -67,49 +67,48 @@ class State
         /**
          * \brief Update state
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should continue updating further states
-         * (true) or not (false).
+         * (true) or not (false)
          */
         virtual bool update() = 0;
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
          * \param event event to handle
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should allow further states to handle events
-         * (true) or not (false).
+         * (true) or not (false)
          */
         virtual bool handleEvent(const sf::Event& event) = 0;
 
-
     protected:
         /**
-         * \brief Push state to stack.
+         * \brief Push state to stack
          */
         void requestStackPush(State* state);
 
         /**
-         * \brief Pop state from stack.
+         * \brief Pop state from stack
          */
         void requestStackPop();
 
         /**
-         * \brief Clear stack.
+         * \brief Clear stack
          */
         void requestStackClear();
 
         /**
-         * \brief Get stack.
+         * \brief Get stack
          *
-         * \return reference to the stack this state belongs to.
+         * \return reference to the stack this state belongs to
          */
          StateStack& getStack();
 
     private:
-        StateStack& mStack; ///< State stack this state belongs to.
+        StateStack& mStack; ///< State stack this state belongs to
 };
 
 /************************************************

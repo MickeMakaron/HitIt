@@ -23,6 +23,11 @@
 #ifndef HITIT_COLLISSIONCATEGORY_HPP
 #define HITIT_COLLISSIONCATEGORY_HPP
 
+/**
+ * \namespace CollissionCategory
+ *
+ * Different categories for collidable nodes.
+ */
 namespace CollissionCategory
 {
     enum ID

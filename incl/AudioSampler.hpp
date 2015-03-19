@@ -24,7 +24,12 @@
 #define HITIT_AUDIOSAMPLER_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// HitIt internal headers
+#include "SoundPlayer.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
 #include <vector>
 ////////////////////////////////////////////////
 
@@ -33,54 +38,83 @@
 #include "SFML/Audio/SoundBuffer.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "SoundPlayer.hpp"
-////////////////////////////////////////////////
-
 class AudioSampler
 {
     public:
+        /**
+         * \brief Constructor
+         *
+         * \param sampleRate Sample rate to produce sound buffers at
+         * \param volume Amplitude of soundwaves
+         */
         AudioSampler(unsigned int sampleRate = 44100, double volume = 2000);
-        ~AudioSampler();
-
-
-        sf::SoundBuffer& getBuffer(unsigned int iTone);
-        SoundPlayer& getSoundPlayer(unsigned int iTone);
-
 
         /**
-         * \brief Pause sound players.
+         * \brief Destructor
+         */
+        ~AudioSampler();
+
+        /**
+         * \brief Get buffer by tone
          *
-         * Force pauses all sound players.
+         * \param iTone Tone starting from C0
+         *
+         * \return Reference to SFML SoundBuffer object containing tone samples
+         */
+        sf::SoundBuffer& getBuffer(unsigned int iTone);
+
+        /**
+         * \brief Get sound player by tone
+         *
+         * \param iTone Tone starting from C0
+         *
+         * \return Reference to SoundPlayer object able to play the given tone
+         */
+        SoundPlayer& getSoundPlayer(unsigned int iTone);
+
+        /**
+         * \brief Pause all sound players
+         *
+         * Ignores any session count.
+         *
          */
         void pause();
 
         /**
-         * \brief Resume sound players
-         *.
-         * Resumes sound players.
+         * \brief Resume all sound players
          */
         void resume();
 
+        /**
+         * \brief Set volume of all sound players
+         */
         void setVolume(float volume);
 
-
     private:
+        /**
+         * \brief Create raw audio samples for a specific tone
+         *
+         * \param samples Raw audio data to return
+         * \param tone Tone to generate audio data of
+         * \param numSamples Number of samples that are required (depends on wavelength)
+         * \param sampleRate Sample rate to produce data with
+         * \param volume Amplitude of sound waves
+         */
         void createSamples(sf::Int16*& samples, unsigned int tone, unsigned int& numSamples, unsigned int sampleRate, double volume) const;
 
     private:
-        const double BOTTOM_C = 57.;
-        const double TWO_PI = 6.283185307179586476925286766559;
-        std::vector<sf::SoundBuffer> mBuffers;
-        std::vector<SoundPlayer>     mSoundPlayers;
+        const double BOTTOM_C = 57.;                            ///< C0, 4 octaves below "middle C"
+        const double TWO_PI = 6.283185307179586476925286766559; ///< Caching PI * 2 for performance
+        std::vector<sf::SoundBuffer> mBuffers;                  ///< Array of sound buffers
+        std::vector<SoundPlayer>     mSoundPlayers;             ///< Array of sound players
 };
-
 
 /************************************************
  * \class AudioSampler
  *
- * Create raw audio samples for all tones.
+ * Create raw audio samples for all tones ranging from
+ * frequency 16.35 (C0, 4 octaves below "middle C") to
+ * frequency 11839.82 (way too high).
  *
 ************************************************/
 

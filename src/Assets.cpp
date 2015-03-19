@@ -30,7 +30,6 @@ ResourceHolder<sf::Texture, ResourceID::Texture::ID>    Assets::mTextureHolder;
 ResourceHolder<sf::Font, ResourceID::Font::ID>          Assets::mFontHolder;
 ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>  Assets::mSoundHolder;
 
-
 ////////////////////////////////////////////////
 
 const sf::Texture& Assets::load(ResourceID::Texture::ID texture, const std::string& filePath)

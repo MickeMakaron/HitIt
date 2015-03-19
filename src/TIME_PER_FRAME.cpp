@@ -25,7 +25,6 @@
 #include "TIME_PER_FRAME.hpp"
 ////////////////////////////////////////////////
 
-
 float TIME_PER_FRAME::mSeconds      = 0.f;
 float TIME_PER_FRAME::mMilliSeconds = 0.f;
 

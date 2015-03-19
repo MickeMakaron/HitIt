@@ -21,21 +21,20 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <fstream>
-#include <cstring>
-#include <algorithm>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "HighScore.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// C Standard library
+#include <string.h>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <fstream>
+#include <algorithm>
+////////////////////////////////////////////////
 
 HighScore::HighScore()
 {
@@ -44,11 +43,15 @@ HighScore::HighScore()
     readFile();
 }
 
+////////////////////////////////////////////////
+
 void HighScore::createFile()
 {
     std::ofstream newFile(M_SCORES_FILE_PATH, std::ios::out | std::ios::app);
     newFile.close();
 }
+
+////////////////////////////////////////////////
 
 void HighScore::readFile()
 {
@@ -69,6 +72,8 @@ void HighScore::readFile()
     }
 }
 
+////////////////////////////////////////////////
+
 void HighScore::erase(std::string trackName, std::string playerName)
 {
     auto found = std::find_if
@@ -81,11 +86,15 @@ void HighScore::erase(std::string trackName, std::string playerName)
         mEntries.erase(found);
 }
 
+////////////////////////////////////////////////
+
 std::string HighScore::getBaseName(std::string filePath) const
 {
     filePath.erase(0, filePath.find_last_of('/'));
     return filePath;
 }
+
+////////////////////////////////////////////////
 
 bool HighScore::isNewRecord(std::list<HighScore::Score> scores, unsigned int score) const
 {
@@ -95,6 +104,8 @@ bool HighScore::isNewRecord(std::list<HighScore::Score> scores, unsigned int sco
     scores.sort([](const Score& a, const Score& b){return a.score < b.score;});
     return scores.front().score < score;
 }
+
+////////////////////////////////////////////////
 
 std::list<HighScore::Score>::iterator HighScore::insertRecord(std::list<HighScore::Score>& scores, HighScore::Score score) const
 {
@@ -118,6 +129,8 @@ std::list<HighScore::Score>::iterator HighScore::insertRecord(std::list<HighScor
     else
         return scores.end();
 }
+
+////////////////////////////////////////////////
 
 void HighScore::insert(std::string trackName, std::string playerName, unsigned int score)
 {
@@ -156,6 +169,8 @@ void HighScore::insert(std::string trackName, std::string playerName, unsigned i
     }
 }
 
+////////////////////////////////////////////////
+
 std::list<HighScore::Score> HighScore::get(std::function<bool(const Entry&)> predicate) const
 {
     std::list<Score> matches;
@@ -175,6 +190,8 @@ std::list<HighScore::Score> HighScore::get(std::function<bool(const Entry&)> pre
     return matches;
 }
 
+////////////////////////////////////////////////
+
 std::list<HighScore::Score> HighScore::getByTrack(std::string trackName) const
 {
     trackName = getBaseName(trackName);
@@ -186,6 +203,8 @@ std::list<HighScore::Score> HighScore::getByTrack(std::string trackName) const
     });
 }
 
+////////////////////////////////////////////////
+
 std::list<HighScore::Score> HighScore::getByPlayer(std::string playerName) const
 {
     return get
@@ -195,12 +214,14 @@ std::list<HighScore::Score> HighScore::getByPlayer(std::string playerName) const
     });
 }
 
-
+////////////////////////////////////////////////
 
 HighScore::~HighScore()
 {
     writeToFile();
 }
+
+////////////////////////////////////////////////
 
 void HighScore::writeToFile()
 {

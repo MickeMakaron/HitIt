@@ -24,7 +24,7 @@
 #define HITIT_MIDI_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// STD - C++ Standard Library
 #include <cstring>
 #include <list>
 ////////////////////////////////////////////////
@@ -34,31 +34,45 @@
 #include "MidiFile.h"
 ////////////////////////////////////////////////
 
-
 class Midi
 {
     public:
+        /**
+         * \brief Constructor
+         *
+         * \param filePath Path to MIDI file
+         */
         Midi(const std::string& filePath);
 
+        /**
+         * \struct Note
+         *
+         * Wrapper for note data, i.e. tone, duration and starting time.
+         */
         struct Note
         {
-            unsigned int    tone;
-            float           duration;
-            float           time;
+            unsigned int    tone;       ///< Tone of note
+            float           duration;   ///< Duration of note
+            float           time;       ///< Starting time of note
         };
 
+        /**
+         * \brief Get notes extracted from MIDI file
+         *
+         * \return List of note data extracted from designated MIDI file
+         */
         std::list<Note> getNotes();
 
-
-        float getSpeed() const;
-
     private:
-        MidiFile    mFile;
+        MidiFile    mFile; ///< MidiFile object containing MIDI data
 };
 
-/**
+/************************************************
  * \class Midi
  *
- */
+ * Interface to MidiFile library, which in turn
+ * is an interface to MIDI files.
+ *
+************************************************/
 
 #endif // HITIT_MIDI_HPP

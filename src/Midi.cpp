@@ -21,16 +21,15 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// C++ Standard Library
-#include <stdexcept>
-#include <cassert>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "Midi.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <stdexcept>
+#include <cassert>
+////////////////////////////////////////////////
 
 Midi::Midi(const std::string& filePath)
 : mFile()
@@ -38,6 +37,8 @@ Midi::Midi(const std::string& filePath)
     if(!mFile.read(filePath))
         std::runtime_error("Midi::Midi - Failed to load " + filePath);
 }
+
+////////////////////////////////////////////////
 
 std::list<Midi::Note> Midi::getNotes()
 {

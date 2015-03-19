@@ -23,8 +23,18 @@
 #ifndef HITIT_RESOURCEIDENTIFIERS_HPP
 #define HITIT_RESOURCEIDENTIFIERS_HPP
 
+/**
+ * \namespace ResourceID
+ *
+ * Resource identifier
+ */
 namespace ResourceID
 {
+    /**
+     * \namespace Texture
+     *
+     * Texture resource identifier
+     */
     namespace Texture
     {
         enum ID
@@ -37,6 +47,11 @@ namespace ResourceID
         };
     }
 
+    /**
+     * \namespace Font
+     *
+     * Font resource identifier
+     */
     namespace Font
     {
         enum ID
@@ -47,6 +62,11 @@ namespace ResourceID
         };
     }
 
+    /**
+     * \namespace Music
+     *
+     * Music resource identifier
+     */
     namespace Music
     {
         enum ID
@@ -55,6 +75,11 @@ namespace ResourceID
         };
     }
 
+    /**
+     * \namespace Sound
+     *
+     * Sound resource identifier
+     */
     namespace Sound
     {
         enum ID

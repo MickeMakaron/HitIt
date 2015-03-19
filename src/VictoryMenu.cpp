@@ -21,17 +21,6 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <sstream>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "VictoryMenu.hpp"
 #include "GameState.hpp"
@@ -42,6 +31,10 @@
 #include "MenuThemeState.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile)
 : MenuState(stack, target)
@@ -62,6 +55,8 @@ VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std:
 
     mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
+
+////////////////////////////////////////////////
 
 void VictoryMenu::loadButtons()
 {
@@ -120,5 +115,3 @@ void VictoryMenu::loadButtons()
 
     mMenu.insert({playSame, playOther, mainMenu});
 }
-
-

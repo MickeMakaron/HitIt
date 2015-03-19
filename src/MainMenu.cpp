@@ -21,18 +21,17 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "MainMenu.hpp"
 #include "Button.hpp"
 #include "TrackMenu.hpp"
 #include "Text.hpp"
 #include "AboutMenu.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
@@ -54,11 +53,15 @@ MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
     mMenu.setBackground(sf::Color(100, 100, 100, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
+////////////////////////////////////////////////
+
 bool MainMenu::update()
 {
     MenuState::update();
     return true;
 }
+
+////////////////////////////////////////////////
 
 void MainMenu::loadButtons()
 {

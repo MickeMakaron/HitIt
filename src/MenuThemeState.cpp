@@ -20,13 +20,6 @@
 ****************************************************************
 ****************************************************************/
 
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuThemeState.hpp"
@@ -34,6 +27,10 @@
 #include "VertexArrayNode.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 MenuThemeState::MenuThemeState(StateStack& stack, sf::RenderTarget& target)
 : State(stack)
@@ -60,11 +57,15 @@ MenuThemeState::~MenuThemeState()
         delete mSpawner2;
 }
 
+////////////////////////////////////////////////
+
 void MenuThemeState::draw()
 {
     mTarget.draw(mBackground);
     mTarget.draw(mNotes);
 }
+
+////////////////////////////////////////////////
 
 bool MenuThemeState::update()
 {
@@ -103,10 +104,14 @@ bool MenuThemeState::update()
     return true;
 }
 
+////////////////////////////////////////////////
+
 bool MenuThemeState::handleEvent(const sf::Event& event)
 {
     return true;
 }
+
+////////////////////////////////////////////////
 
 void MenuThemeState::loadAssets()
 {

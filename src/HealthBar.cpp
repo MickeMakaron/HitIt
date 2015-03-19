@@ -21,27 +21,25 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Graphics/Texture.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "HealthBar.hpp"
 #include "Player.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/Texture.hpp"
+////////////////////////////////////////////////
 
 HealthBar::HealthBar(const sf::Texture& texture, const Player& player)
 : RectangleNode(texture)
 , mPlayer(player)
 , mNumHitPoints(player.getHp())
 {
-    mShape.setSize(sf::Vector2f(0.f, mShape.getTexture()->getSize().y));
-
     updateShape();
 }
+
+////////////////////////////////////////////////
 
 void HealthBar::offsetHp(int hp)
 {
@@ -52,6 +50,8 @@ void HealthBar::offsetHp(int hp)
     updateShape();
 }
 
+////////////////////////////////////////////////
+
 void HealthBar::updateShape()
 {
     sf::Vector2u texSize = mShape.getTexture()->getSize();
@@ -59,6 +59,8 @@ void HealthBar::updateShape()
     mShape.setSize(size);
     mShape.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }
+
+////////////////////////////////////////////////
 
 void HealthBar::updateCurrent()
 {

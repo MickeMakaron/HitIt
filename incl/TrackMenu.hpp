@@ -34,19 +34,22 @@ class TrackMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         TrackMenu(StateStack& stack, sf::RenderTarget& target);
 
     private:
+        /**
+         * \brief Load buttons into GUIContainer
+         */
         void loadButtons();
 };
 
 /************************************************
  * \class TrackMenu
  *
- * Track menu. Displays a list of all midi tracks.
+ * Track menu. Displays a list of all MIDI tracks.
  *
 ************************************************/
 

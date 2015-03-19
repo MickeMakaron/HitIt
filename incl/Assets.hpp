@@ -24,48 +24,48 @@
 #define HITIT_ASSETS_HPP
 
 ////////////////////////////////////////////////
+// HitIt internal headers
+#include "ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/Texture.hpp"
 #include "SFML/Graphics/Font.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "ResourceIdentifiers.hpp"
-#include "ResourceHolder.hpp"
-////////////////////////////////////////////////
-
 class Assets
 {
     public:
         /**
-         * \brief Load texture.
+         * \brief Load texture
          *
          * \param texture ID of texture
-         * \param filePath path to texture
+         * \param filePath Path to texture
          *
-         * \return reference to loaded texture.
+         * \return Reference to loaded texture
          */
         static const sf::Texture& load(ResourceID::Texture::ID texture, const std::string& filePath);
 
         /**
-         * \brief Load font.
+         * \brief Load font
          *
          * \param font ID of font
-         * \param filePath path to font
+         * \param filePath Path to font
          *
-         * \return reference to loaded font.
+         * \return Reference to loaded font
          */
         static const sf::Font& load(ResourceID::Font::ID font, const std::string& filePath);
 
         /**
-         * \brief Load sound.
+         * \brief Load sound
          *
          * \param sound ID of sound
-         * \param filePath path to sound
+         * \param filePath Path to sound
          *
-         * \return reference to loaded sound.
+         * \return Reference to loaded sound
          */
         static const sf::SoundBuffer& load(ResourceID::Sound::ID sound, const std::string& filePath);
 
@@ -74,7 +74,7 @@ class Assets
          *
          * \param texture ID of texture
          *
-         * \return reference to texture
+         * \return Reference to texture
          */
         static sf::Texture& get(ResourceID::Texture::ID texture);
 
@@ -83,7 +83,7 @@ class Assets
          *
          * \param font ID of font
          *
-         * \return reference to font
+         * \return Reference to font
          */
         static sf::Font& get(ResourceID::Font::ID font);
 
@@ -92,62 +92,64 @@ class Assets
          *
          * \param sound ID of sound
          *
-         * \return reference to sound
+         * \return Reference to sound
          */
         static sf::SoundBuffer& get(ResourceID::Sound::ID sound);
 
         /**
-         * \brief Release texture.
+         * \brief Release texture
          *
          * \param texture ID of texture
          */
         static void release(ResourceID::Texture::ID texture);
 
         /**
-         * \brief Release font.
+         * \brief Release font
          *
          * \param font ID of font
          */
         static void release(ResourceID::Font::ID font);
 
         /**
-         * \brief Release sound.
+         * \brief Release sound
          *
          * \param sound ID of sound
          */
         static void release(ResourceID::Sound::ID sound);
 
         /**
-         * \brief Release all resources.
+         * \brief Release all resources
          */
         static void release();
 
-
         /**
-         * \brief Set working directory.
+         * \brief Set working directory
          *
-         * \param path full path to directory.
+         * All file paths passed into the "load" functions
+         * will be regarded as relative to this directory.
+         *
+         * \param path Absolute path to directory
          */
          static void setDirectory(const std::string& path);
 
     private:
-        static std::string mWorkingDirectory;
+        static std::string mWorkingDirectory; ///< Relative directory to search in for resource files
 
-        static ResourceHolder<sf::Texture, ResourceID::Texture::ID>     mTextureHolder; ///< Holder of texture resources.
-        static ResourceHolder<sf::Font, ResourceID::Font::ID>           mFontHolder;    ///< Holder of font resources.
-        static ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>   mSoundHolder;   ///< Holder of sound resources.
+        static ResourceHolder<sf::Texture, ResourceID::Texture::ID>     mTextureHolder; ///< Holder of texture resources
+        static ResourceHolder<sf::Font, ResourceID::Font::ID>           mFontHolder;    ///< Holder of font resources
+        static ResourceHolder<sf::SoundBuffer, ResourceID::Sound::ID>   mSoundHolder;   ///< Holder of sound resources
 };
-
 
 /************************************************
  * \class Assets
  *
  * The Assets class holds all assets, such as
- * textures, fonts and sounds and manages resource
- * lifetime.
+ * textures, fonts and sounds. It does NOT manage
+ * resource lifetime.
  *
- * Assets is not responsible for making sure
- * resources are released on exit.
+ * Since Assets is a static class it is not
+ * responsible for making sure resources are
+ * released on exit. Use AssetList for this.
  *
 ************************************************/
 

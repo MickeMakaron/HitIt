@@ -35,28 +35,20 @@ class DefeatMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
-
-        /**
-         * \brief Handle input events.
-         *
-         * \return indicate whether the state stack
-         * should allow further states to handle events
-         * (true) or not (false).
-         */
-		virtual bool handleEvent(const sf::Event& event);
-
-
     private:
+        /**
+         * \brief Load buttons into GUIContainer
+         */
         void loadButtons();
 
     private:
-        SoundPlayer mTaunt; ///< Taunt the player for losing with this annoying sound.
-        std::string mMidiFile;
+        SoundPlayer mTaunt;     ///< Taunt the player for losing with this annoying sound
+        std::string mMidiFile;  ///< Path to MIDI track
 };
 
 /************************************************

@@ -20,15 +20,14 @@
 ****************************************************************
 ****************************************************************/
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "Button.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "Button.hpp"
 ////////////////////////////////////////////////
 
 Button::Button(const sf::Text& text, const sf::SoundBuffer& soundBuffer, Callback callback)
@@ -41,11 +40,15 @@ Button::Button(const sf::Text& text, const sf::SoundBuffer& soundBuffer, Callbac
     mText.setColor(sf::Color::Black);
 }
 
+////////////////////////////////////////////////
+
 void Button::select()
 {
     setScale(1.2f, 1.2f);
     mText.setColor(sf::Color::White);
 }
+
+////////////////////////////////////////////////
 
 void Button::deselect()
 {
@@ -54,10 +57,14 @@ void Button::deselect()
     mText.setColor(sf::Color::Black);
 }
 
+////////////////////////////////////////////////
+
 bool Button::isActivatable() const
 {
     return true;
 }
+
+////////////////////////////////////////////////
 
 void Button::activate()
 {
@@ -65,15 +72,21 @@ void Button::activate()
     mCallback();
 }
 
+////////////////////////////////////////////////
+
 void Button::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mText, states);
 }
 
+////////////////////////////////////////////////
+
 bool Button::isSelectable() const
 {
     return true;
 }
+
+////////////////////////////////////////////////
 
 sf::FloatRect Button::getBoundingRect() const
 {

@@ -20,12 +20,6 @@
 ****************************************************************
 ****************************************************************/
 
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Window/Event.hpp"
-#include "SFML/System/Vector2.hpp"
-////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // HitIt internal headers
@@ -35,12 +29,15 @@
 #include "Player.hpp"
 #include "CollissionCategory.hpp"
 #include "Collission.hpp"
-#include "Midi.hpp"
 #include "HealthBar.hpp"
 #include "ScoreDisplay.hpp"
 #include "BonusStrip.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
+////////////////////////////////////////////////
 
 World::World(sf::RenderTarget& target, std::string midiFile)
 : mTarget(target)
@@ -105,6 +102,8 @@ void World::update()
     mScene.removeWrecks();
 }
 
+////////////////////////////////////////////////
+
 void World::updateStart()
 {
     mTimer += TIME_PER_FRAME::seconds();
@@ -114,6 +113,8 @@ void World::updateStart()
         mTimer = 0.f;
     }
 }
+
+////////////////////////////////////////////////
 
 void World::updateRun()
 {
@@ -129,6 +130,8 @@ void World::updateRun()
         mCollission->insert(node);
 }
 
+////////////////////////////////////////////////
+
 void World::updateVictory()
 {
     mTimer += TIME_PER_FRAME::seconds();
@@ -139,7 +142,6 @@ void World::updateVictory()
         mTimer = 0.f;
     }
 }
-
 
 ////////////////////////////////////////////////
 
@@ -195,6 +197,8 @@ void World::buildWorld()
     mCollission = new Collission(*mPlayer, *mBonusStrip);
 }
 
+////////////////////////////////////////////////
+
 void World::keepPlayerInBounds()
 {
     sf::FloatRect playerRect = mPlayer->getBoundingRect();
@@ -209,10 +213,14 @@ void World::keepPlayerInBounds()
         mPlayer->move(-mSpawner.getNoteWidth(), 0.f);
 }
 
+////////////////////////////////////////////////
+
 World::State World::getState() const
 {
     return mState;
 }
+
+////////////////////////////////////////////////
 
 void World::pause()
 {
@@ -220,11 +228,15 @@ void World::pause()
     mState = Paused;
 }
 
+////////////////////////////////////////////////
+
 void World::resume()
 {
     mSampler.resume();
     mState = Running;
 }
+
+////////////////////////////////////////////////
 
 unsigned int World::getScore() const
 {
@@ -233,4 +245,3 @@ unsigned int World::getScore() const
     else
         return 0;
 }
-

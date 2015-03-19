@@ -21,17 +21,15 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Window/Event.hpp"
-#include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "AboutMenu.hpp"
 #include "Button.hpp"
 #include "MainMenu.hpp"
-#include "Text.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
@@ -58,19 +56,24 @@ AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
 
 }
 
+////////////////////////////////////////////////
+
 void AboutMenu::draw()
 {
-
     mTarget.draw(mGUIBackground);
     mTarget.draw(mAbout);
     MenuState::draw();
 }
+
+////////////////////////////////////////////////
 
 bool AboutMenu::update()
 {
     MenuState::update();
     return true;
 }
+
+////////////////////////////////////////////////
 
 void AboutMenu::loadButtons()
 {

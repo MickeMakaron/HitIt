@@ -20,16 +20,6 @@
 ****************************************************************
 ****************************************************************/
 
-
-
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
-#include "SFML/Window/Keyboard.hpp"
-#include "SFML/Window/Event.hpp"
-////////////////////////////////////////////////
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Player.hpp"
@@ -37,6 +27,11 @@
 #include "Assets.hpp"
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Window/Keyboard.hpp"
+#include "SFML/Window/Event.hpp"
+////////////////////////////////////////////////
 
 Player::Player(const sf::Texture& texture, float width, int hp, sf::Vector2f position)
 : RectangleNode(texture)
@@ -53,6 +48,8 @@ Player::Player(const sf::Texture& texture, float width, int hp, sf::Vector2f pos
     setSize(width - 2.f, width);
     setPosition(position);
 }
+
+////////////////////////////////////////////////
 
 void Player::updateCurrent()
 {
@@ -88,11 +85,11 @@ void Player::updateCurrent()
     if(mDirection.x)
         mStepSound.play();
 
-    mPreviousPosition = getWorldPosition();
     move(mDirection.x * mStepSize, mDirection.y * mMovementSpeed * TIME_PER_FRAME::seconds());
     mDirection.x = mDirection.y = 0.f;
 }
 
+////////////////////////////////////////////////
 
 void Player::handleEventCurrent(const sf::Event& event)
 {
@@ -142,10 +139,14 @@ void Player::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
 
 }
 
+////////////////////////////////////////////////
+
 bool  Player::isDestroyed() const
 {
     return mHp <= 0;
 }
+
+////////////////////////////////////////////////
 
 void Player::damage()
 {
@@ -159,27 +160,30 @@ void Player::damage()
     }
 }
 
+////////////////////////////////////////////////
+
 void Player::destroy()
 {
     mHp = 0;
 }
+
+////////////////////////////////////////////////
 
 void Player::accelerate(float a)
 {
     mMovementSpeed += a;
 }
 
+////////////////////////////////////////////////
+
 int Player::getHp() const
 {
     return mHp;
 }
 
+////////////////////////////////////////////////
+
 bool Player::isDamaged() const
 {
     return mIsImmortal;
-}
-
-sf::Vector2f Player::getPreviousPosition() const
-{
-    return mPreviousPosition;
 }

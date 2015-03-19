@@ -23,17 +23,15 @@
 #ifndef HITIT_ABOUTMENU_HPP
 #define HITIT_ABOUTMENU_HPP
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "MenuState.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
-////////////////////////////////////////////////
-
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "MenuState.hpp"
 ////////////////////////////////////////////////
 
 class AboutMenu : public MenuState
@@ -42,27 +40,41 @@ class AboutMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         AboutMenu(StateStack& stack, sf::RenderTarget& target);
 
-
+        /**
+         * \brief Draw state
+         */
 		virtual void draw();
-        virtual bool update();
+
+        /**
+         * \brief Update state
+         *
+         * \return Indicate whether the state stack
+         * should continue updating further states
+         * (true) or not (false)
+         */
+		virtual bool update();
 
     private:
+        /**
+         * \brief Load buttons into GUIContainer
+         */
         void loadButtons();
 
     private:
-        sf::Sprite              mAbout;
-        sf::RectangleShape      mGUIBackground;
+        sf::Sprite          mAbout;         ///< Player instructions
+        sf::RectangleShape  mGUIBackground; ///< GUI background combined with mAbout sprite
 };
 
 /************************************************
  * \class AboutMenu
  *
- * Main menu. Is displayed after title screen.
+ * About menu. Shows the player how to play the
+ * game.
  *
 ************************************************/
 

@@ -1,14 +1,40 @@
-////////////////////////////////////////////////
-// C++ Standard Library
-#include <stdexcept>
-#include <cmath>
-#include <cstring>
-////////////////////////////////////////////////
+/****************************************************************
+****************************************************************
+*
+* HitIt - Top-down 2D game where the goal is NOT to hit the music.
+* Copyright (C) 2015 Mikael Hernvall (mikael.hernvall@gmail.com)
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+****************************************************************
+****************************************************************/
 
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "AudioSampler.hpp"
 ////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// C Standard Library
+#include <math.h>
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
+#include <stdexcept>
+////////////////////////////////////////////////
+
 AudioSampler::AudioSampler(unsigned int sampleRate, double volume)
 : mBuffers(BOTTOM_C * 2)
 , mSoundPlayers(BOTTOM_C * 2)
@@ -28,6 +54,8 @@ AudioSampler::AudioSampler(unsigned int sampleRate, double volume)
     }
 }
 
+////////////////////////////////////////////////
+
 AudioSampler::~AudioSampler()
 {
     for(SoundPlayer& player : mSoundPlayers)
@@ -36,6 +64,8 @@ AudioSampler::~AudioSampler()
     mSoundPlayers.clear();
     mBuffers.clear();
 }
+
+////////////////////////////////////////////////
 
 void AudioSampler::createSamples(sf::Int16*& samples, unsigned int tone, unsigned int& numSamples, unsigned int sampleRate, double volume) const
 {
@@ -54,15 +84,21 @@ void AudioSampler::createSamples(sf::Int16*& samples, unsigned int tone, unsigne
     samples = derp;
 }
 
+////////////////////////////////////////////////
+
 sf::SoundBuffer& AudioSampler::getBuffer(unsigned int iTone)
 {
     return mBuffers[iTone];
 }
 
+////////////////////////////////////////////////
+
 SoundPlayer& AudioSampler::getSoundPlayer(unsigned int iTone)
 {
     return mSoundPlayers[iTone];
 }
+
+////////////////////////////////////////////////
 
 void AudioSampler::pause()
 {
@@ -70,6 +106,7 @@ void AudioSampler::pause()
         player.pause();
 }
 
+////////////////////////////////////////////////
 
 void AudioSampler::resume()
 {
@@ -77,6 +114,7 @@ void AudioSampler::resume()
         player.resume();
 }
 
+////////////////////////////////////////////////
 
 void AudioSampler::setVolume(float volume)
 {

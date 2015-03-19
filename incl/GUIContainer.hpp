@@ -25,7 +25,13 @@
 
 ////////////////////////////////////////////////
 // STD - C++ Standard Library
+#include <memory>
+#include <list>
+////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// HitIt internal headers
+class GUIElement;
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
@@ -35,13 +41,8 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 namespace sf
 {
-    class RenderTarget;
+    class Event;
 }
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "GUIElement.hpp"
 ////////////////////////////////////////////////
 
 class GUIContainer : public sf::Transformable, public sf::Drawable
@@ -51,10 +52,20 @@ class GUIContainer : public sf::Transformable, public sf::Drawable
 
         /**
          * \brief Constructor
+         */
+        GUIContainer();
+
+        /**
+         * \brief Constructor
          *
          * \param elements GUI elements to assign to container
          */
         GUIContainer(std::list<GUIElement*> elements);
+
+        /**
+         * \brief Destructor
+         */
+        ~GUIContainer();
 
         /**
          * \brief Update container elements.
@@ -62,69 +73,84 @@ class GUIContainer : public sf::Transformable, public sf::Drawable
         void update();
 
         /**
-         * \brief Draw container to target.
+         * \brief Draw container to target
          *
-         * \param target SFML RenderTarget object to draw to.
-         * \param target SFML RenderStates object to draw with.
+         * \param target SFML RenderTarget object to draw to
+         * \param target SFML RenderStates object to draw with
          */
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
          * \param event event to handle
          */
         void handleEvent(const sf::Event& event);
 
         /**
-         * \brief Insert element into container.
+         * \brief Insert element into container
          *
-         * \param element element to insert.
+         * \param element element to insert
          */
         void insert(GUIElement* element);
 
         /**
-         * \brief Insert GUI elements.
+         * \brief Insert GUI elements
          *
-         * \param elements GUI elements.
+         * \param elements GUI elements
          */
         void insert(std::list<GUIElement*> elements);
 
+        /**
+         * \brief Get bounds of container
+         *
+         * \return Smallest bounds encompassing all elements in container
+         */
         virtual sf::FloatRect getGlobalBounds() const;
 
-
+        /**
+         * \brief Set container background
+         *
+         * \param fillColor Fill color of background
+         * \param outlineColor Outline color of background
+         * \param outlineThickness Thickness of outline
+         */
         void setBackground(sf::Color fillColor, sf::Color outlineColor = sf::Color::White, float outlineThickness = 0.f);
 
     private:
         /**
-         * \brief Update size by checking bounds of elements.
+         * \brief Update size by checking bounds of elements
          */
          void updateSize();
 
-    private:
         /**
-         * \brief Select next element in array.
+         * \brief Select next element in array
          */
         void selectNext();
 
         /**
-         * \brief Select previous element in array.
+         * \brief Select previous element in array
          */
         void selectPrevious();
 
-        void activate();
+        /**
+         * \brief Activate element
+         */
+        virtual void activate();
 
     private:
-        std::list<ElementPtr>           mElements;  ///< GUI elements.
-        std::list<ElementPtr>::iterator mSelection; ///< Current selection.
-        sf::FloatRect                   mBounds;    ///< Bounding rectangle of all elements.
-        sf::RectangleShape              mBackground;
+        std::list<ElementPtr>           mElements;      ///< GUI elements
+        std::list<ElementPtr>::iterator mSelection;     ///< Current selection
+        sf::FloatRect                   mBounds;        ///< Bounding rectangle of all elements
+        sf::RectangleShape              mBackground;    ///< GUI background encompassing entire container bounds
 };
 
 /************************************************
  * \class GUIContainer
  *
- * GUI element container.
+ * GUI element container. Loops through elements
+ * and selects them when user pressed the up or
+ * down arrow keys.
  *
 ************************************************/
 

@@ -23,10 +23,13 @@
 #ifndef HITIT_STATESTACK_HPP
 #define HITIT_STATESTACK_HPP
 
-
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "State.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// STD - C++ Standard Library
 #include <list>
 #include <queue>
 ////////////////////////////////////////////////
@@ -34,20 +37,14 @@
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/System/NonCopyable.hpp"
-namespace sf
-{
-    class Event;
-}
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "State.hpp"
 ////////////////////////////////////////////////
 
 class StateStack : private sf::NonCopyable
 {
     public:
+        /**
+         * \enum Request identifiers
+         */
         enum Request
         {
             Push,
@@ -72,7 +69,7 @@ class StateStack : private sf::NonCopyable
         void draw();
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
          * \param event event to handle.
          */
@@ -117,7 +114,6 @@ class StateStack : private sf::NonCopyable
         std::queue<State::Ptr>  mPushQueue;     ///< FIFO-queue of pending state pushes.
         std::queue<Request>     mRequestQueue;  ///< FIFO-queue of pending pop and clear requests.
 };
-
 
 /************************************************
  * \class StateStack

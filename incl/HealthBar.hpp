@@ -24,16 +24,6 @@
 #define HITIT_HEALTHBAR_HPP
 
 ////////////////////////////////////////////////
-// STD - C++ Standard Library
-#include <list>
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "RectangleNode.hpp"
 class Player;
@@ -45,14 +35,14 @@ class HealthBar : public RectangleNode
         /**
          * \brief Constructor
          *
-         * \param texture texture of ONE hitpoint.
-         * \param player player node to track.
+         * \param texture texture of ONE hitpoint
+         * \param player player node to track
          */
         HealthBar(const sf::Texture& texture, const Player& player);
 
 
         /**
-         * \brief Update bar.
+         * \brief Update bar
          */
         virtual void updateCurrent();
 
@@ -60,20 +50,19 @@ class HealthBar : public RectangleNode
         /**
          * \brief Offset current hp
          *
-         * \param hp amount to offset.
+         * \param hp amount to offset
          */
         void offsetHp(int hp);
 
         /**
-         * \brief Update rectangle shape.
+         * \brief Update rectangle shape
          */
         void updateShape();
 
     private:
-        const Player&           mPlayer; ///< Player node to keep track of.
-        int                     mNumHitPoints;
+        const Player&           mPlayer;        ///< Player node to keep track of
+        int                     mNumHitPoints;  ///< Current HP
 };
-
 
 /************************************************
  * \class HealthBar
@@ -81,6 +70,5 @@ class HealthBar : public RectangleNode
  * For displaying the health of the player node.
  *
 ************************************************/
-
 
 #endif // HITIT_HEALTHBAR_HPP

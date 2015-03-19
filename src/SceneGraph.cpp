@@ -21,13 +21,13 @@
 ****************************************************************/
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RenderTarget.hpp"
+// HitIt internal headers
+#include "SceneGraph.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// HitIt internal headers
-#include "SceneGraph.hpp"
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RenderTarget.hpp"
 ////////////////////////////////////////////////
 
 SceneGraph::SceneGraph()
@@ -58,6 +58,7 @@ void SceneGraph::removeWrecks()
         layer.removeWrecks();
 }
 
+////////////////////////////////////////////////
 
 void SceneGraph::handleEvent(const sf::Event& event)
 {
@@ -79,6 +80,8 @@ void SceneGraph::clear()
 {
     mGraph.clear();
 }
+
+////////////////////////////////////////////////
 
 SceneNode* SceneGraph::getLayer(SceneGraph::Layer layer)
 {

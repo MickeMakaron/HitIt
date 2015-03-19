@@ -23,7 +23,6 @@
 #ifndef HITIT_MAINMENU_HPP
 #define HITIT_MAINMENU_HPP
 
-
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "MenuState.hpp"
@@ -35,21 +34,31 @@ class MainMenu : public MenuState
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         MainMenu(StateStack& stack, sf::RenderTarget& target);
 
+        /**
+         * \brief Update state
+         *
+         * \return Indicate whether the state stack
+         * should continue updating further states
+         * (true) or not (false)
+         */
         virtual bool update();
 
     private:
+        /**
+         * \brief Load buttons into GUIContainer
+         */
         void loadButtons();
 };
 
 /************************************************
  * \class MainMenu
  *
- * Main menu. Is displayed after title screen.
+ * Main menu. Displayed at program startup.
  *
 ************************************************/
 

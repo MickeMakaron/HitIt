@@ -24,11 +24,6 @@
 #define HITIT_MENUTHEMESTATE_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "State.hpp"
 #include "AudioSampler.hpp"
@@ -37,16 +32,25 @@
 class Spawner;
 ////////////////////////////////////////////////
 
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RectangleShape.hpp"
+////////////////////////////////////////////////
+
 class MenuThemeState : public State
 {
 	public:
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
         MenuThemeState(StateStack& stack, sf::RenderTarget& target);
+
+        /**
+         * \brief Destructor
+         */
         ~MenuThemeState();
 
         /**
@@ -57,36 +61,39 @@ class MenuThemeState : public State
         /**
          * \brief Update state
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should continue updating further states
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool update();
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
          * \param event event to handle
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should allow further states to handle events
-         * (true) or not (false).
+         * (true) or not (false)
          */
         virtual bool handleEvent(const sf::Event& event);
 
     private:
+        /**
+         * \brief Load resources into memory
+         */
         void loadAssets();
 
-
     protected:
-        const std::string       M_THEME_FILE_PATH = "assets/midi/Mikael Hernvall - HitIt OST.mid";
-        TextureList             mTextures;
-        sf::RenderTarget&       mTarget;
-        AudioSampler            mSampler;
-        SceneNode               mNotes;
-        Spawner*                mSpawner1;
-        Spawner*                mSpawner2;
-        sf::RectangleShape      mBackground;
+        const std::string       M_THEME_FILE_PATH = "assets/midi/Mikael Hernvall - HitIt OST.mid"; ///< File path to HitIt soundtrack
+
+        TextureList             mTextures;      ///< Texture resources
+        sf::RenderTarget&       mTarget;        ///< SFML RenderTarget object to draw to
+        AudioSampler            mSampler;       ///< Sampler for playing the Spawner notes
+        SceneNode               mNotes;         ///< Current notes in the scene
+        Spawner*                mSpawner1;      ///< First spawner object before looping
+        Spawner*                mSpawner2;      ///< Intermediate spawner object used when transgressing from track end to track begin
+        sf::RectangleShape      mBackground;    ///< State background
 };
 
 /************************************************

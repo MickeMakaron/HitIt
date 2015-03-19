@@ -23,7 +23,10 @@
 #ifndef HITIT_VERTEXARRAYNODE_HPP
 #define HITIT_VERTEXARRAYNODE_HPP
 
-
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "SceneNode.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // STD - C++ Standard Library
@@ -34,12 +37,6 @@
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/VertexArray.hpp"
 ////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "SceneNode.hpp"
-////////////////////////////////////////////////
-
 
 class VertexArrayNode : public SceneNode
 {
@@ -60,8 +57,16 @@ class VertexArrayNode : public SceneNode
          */
         VertexArrayNode(sf::PrimitiveType type, int category = 0);
 
+        /**
+         * \brief Destructor
+         */
         virtual ~VertexArrayNode();
 
+        /**
+         * \brief Get world position of node.
+         *
+         * \return absolute world position of node.
+         */
         virtual sf::Vector2f getWorldPosition() const;
 
         /**
@@ -74,34 +79,77 @@ class VertexArrayNode : public SceneNode
         /**
          * \brief Draw shape.
          *
-         * \param target SFML RenderTarget object to draw shape to.
-         * \param states SFML RenderStates object to transform draw with.
+         * \param target SFML RenderTarget object to draw vertex array to
+         * \param states SFML RenderStates object to transform draw with
          */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        /**
+         * \brief Get vertex count
+         *
+         * \return Vertex count
+         */
         unsigned int getCount() const;
+
+        /**
+         * \brief Get primitive count
+         *
+         * \return Primitive count
+         */
         unsigned int getSize() const;
 
+        /**
+         * \brief Insert primitive into vertex array
+         *
+         * \param primitive Primitive to insert represented by a vector of vertices
+         *
+         * \return Index of inserted primitive
+         */
         unsigned int insert(std::vector<sf::Vertex> primitive);
+
+        /**
+         * \brief Free primitive index in vertex array
+         *
+         * \param index Primitive index to free
+         */
         void free(unsigned int index);
 
+        /**
+         * \brief Access operator
+         *
+         * \param index Index of vertex to access
+         *
+         * \return Reference to vertex at index
+         */
         sf::Vertex& operator[](unsigned int index);
+
+        /**
+         * \brief Const access operator
+         *
+         * \param index Index of vertex to access
+         *
+         * \return Const reference to vertex at index
+         */
         const sf::Vertex& operator[](unsigned int index) const;
 
     private:
+        /**
+         * \brief Update primitive size
+         */
         void updatePrimitiveSize();
 
     private:
-        sf::VertexArray             mArray;
-        unsigned int                mPrimitiveSize;
-
-        std::queue<unsigned int>    mFreeIndices;
+        sf::VertexArray             mArray;         ///< Vertex array to draw
+        unsigned int                mPrimitiveSize; ///< Size of primitives
+        std::queue<unsigned int>    mFreeIndices;   ///< Queue of currently free primitive indices
 };
 
 /************************************************
  * \class VertexArrayNode
  *
- * Rectangularly shaped scene node.
+ * For batch drawing many nodes that share the same
+ * drawing properties, i.e. texture, color, vertex count,
+ * etc. . A prime example is particle systems.
  *
 ************************************************/
 

@@ -20,15 +20,14 @@
 ****************************************************************
 ****************************************************************/
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "Text.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
 // SFML - Simple and Fast Media Library
 #include "SFML/Graphics/RenderTarget.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "Text.hpp"
 ////////////////////////////////////////////////
 
 Text::Text(sf::Text text)
@@ -38,16 +37,21 @@ Text::Text(sf::Text text)
     mText.setColor(sf::Color::Black);
 }
 
+////////////////////////////////////////////////
+
 void Text::setText(std::string text)
 {
     mText.setString(text);
 }
 
+////////////////////////////////////////////////
 
 void Text::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mText, states);
 }
+
+////////////////////////////////////////////////
 
 sf::FloatRect Text::getBoundingRect() const
 {

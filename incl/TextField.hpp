@@ -24,7 +24,13 @@
 #define HITIT_TEXTFIELD_HPP
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// HitIt internal headers
+#include "GUIElement.hpp"
+#include "SoundPlayer.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// STD - C++ Standard Library
 #include <limits>
 ////////////////////////////////////////////////
 
@@ -34,44 +40,107 @@
 #include "SFML/Graphics/RectangleShape.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "GUIElement.hpp"
-#include "SoundPlayer.hpp"
-////////////////////////////////////////////////
-
 class TextField : public GUIElement
 {
     public:
+        /**
+         * \brief Constructor
+         *
+         * \param text SFML Text object to display
+         * \param soundBuffer SFML SoundBuffer object that contains selection sound
+         * \param maxLength Maximum length of string in text field
+         */
         TextField(sf::Text text, const sf::SoundBuffer& soundBuffer, unsigned int maxLength = std::numeric_limits<unsigned int>::max());
 
+		/**
+		 * \brief Get bounding rectangle of node
+		 *
+		 * \return bounding rectangle of node
+		 */
         virtual sf::FloatRect getBoundingRect() const;
 
+        /**
+         * \brief Indicate whether element can be activated or not
+         *
+         * \return True if activatable, else false
+         */
         virtual bool isActivatable() const;
+
+        /**
+         * \brief Indicate whether element is selectable or not
+         *
+         * \return True if selectable, else false
+         */
         virtual bool isSelectable() const;
 
+        /**
+         * \brief Get current string
+         *
+         * \return Current string of text field
+         */
         std::string getString() const;
 
     private:
+        /**
+         * \brief Draw this node.
+         *
+         * \param target SFML RenderTarget object to draw this node to
+         * \param states SFML RenderStates object to transform draw with
+         */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+
+		/**
+		 * \brief Handle device input for this node
+		 *
+		 * \param event event to handle
+		 */
         virtual void handleEventCurrent(const sf::Event& event);
 
-        virtual void activate();
-        virtual void deactivate();
-
+        /**
+         * \brief Select element
+         */
         virtual void select();
+
+        /**
+         * \brief Deselect element
+         */
         virtual void deselect();
 
+        /**
+         * \brief Activate element
+         */
+        virtual void activate();
+
+        /**
+         * \brief Deactivate element
+         */
+        virtual void deactivate();
+
+        /**
+         * \brief Erase character at end
+         */
         void erase();
+
+        /**
+         * \brief Insert character at end
+         *
+         * \param character Character to insert
+         */
         void insert(char character);
 
-
     private:
-       sf::Text             mText;
-       SoundPlayer          mSoundPlayer;
-       sf::RectangleShape   mInsertionCursor;
-       unsigned int         mMaxLength;
+       sf::Text             mText;              ///< SFML Text object to display
+       SoundPlayer          mSoundPlayer;       ///< Sound to play when selected or activated
+       sf::RectangleShape   mInsertionCursor;   ///< Insertion cursor to display at end of text field when active
+       unsigned int         mMaxLength;         ///< Max length of string in text field
 };
 
+/************************************************
+ * \class StateStack
+ *
+ * Text field element in GUIs for capturing and
+ * displaying user text input.
+ *
+************************************************/
 
 #endif // HITIT_TEXTFIELD_HPP

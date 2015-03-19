@@ -24,30 +24,57 @@
 #define HITIT_TEXT_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/Text.hpp"
+// HitIt internal headers
+#include "GUIElement.hpp"
 ////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// HitIt internal headers
-#include "GUIElement.hpp"
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/Text.hpp"
 ////////////////////////////////////////////////
 
 class Text : public GUIElement
 {
     public:
+        /**
+         * \brief Constructor
+         *
+         * \param text SFML text object to display
+         */
         Text(sf::Text text);
 
+		/**
+		 * \brief Get bounding rectangle of node
+		 *
+		 * \return bounding rectangle of node
+		 */
         virtual sf::FloatRect getBoundingRect() const;
 
+        /**
+         * \brief Set string to display
+         *
+         * \param text String to display
+         */
         void setText(std::string text);
 
     private:
+        /**
+         * \brief Draw this node.
+         *
+         * \param target SFML RenderTarget object to draw this node to.
+         * \param states SFML RenderStates object to transform draw with
+         */
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
     private:
         sf::Text	    mText;
 };
 
+/************************************************
+ * \class Text
+ *
+ * Simple text element in GUIs.
+ *
+************************************************/
 
 #endif // HITIT_TEXT_HPP

@@ -24,17 +24,16 @@
 #define HITIT_MENUSTATE_HPP
 
 ////////////////////////////////////////////////
-// SFML - Simple and Fast Media Library
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/Text.hpp"
-////////////////////////////////////////////////
-
-////////////////////////////////////////////////
 // HitIt internal headers
 #include "State.hpp"
 #include "AssetList.hpp"
 #include "GUIContainer.hpp"
-#include "SoundPlayer.hpp"
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+// SFML - Simple and Fast Media Library
+#include "SFML/Graphics/RectangleShape.hpp"
+#include "SFML/Graphics/Text.hpp"
 ////////////////////////////////////////////////
 
 class MenuState : public State
@@ -43,10 +42,10 @@ class MenuState : public State
         /**
          * \brief Constructor
          *
-         * \param stack to insert state into at construction.
-         * \param target SFML RenderTarget object to draw to.
+         * \param stack Stack to insert state into at construction
+         * \param target SFML RenderTarget object to draw to
          */
-        MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIElement*> elements = std::list<GUIElement*>(0));
+        MenuState(StateStack& stack, sf::RenderTarget& target);
 
         /**
          * \brief Draw state
@@ -56,53 +55,55 @@ class MenuState : public State
         /**
          * \brief Update state
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should continue updating further states
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool update();
 
         /**
-         * \brief Handle input events.
+         * \brief Handle input events
          *
-         * \return indicate whether the state stack
+         * \return Indicate whether the state stack
          * should allow further states to handle events
-         * (true) or not (false).
+         * (true) or not (false)
          */
 		virtual bool handleEvent(const sf::Event& event);
 
         /**
-         * \brief Set background texture.
+         * \brief Set background texture
          *
-         * \param texture background texture.
+         * \param texture background texture
          */
         void setBackground(const sf::Texture& texture);
 
         /**
-         * \brief Set background color.
+         * \brief Set background color
          *
-         * \param color background color.
+         * \param color background color
          */
         void setBackground(sf::Color color);
 
-
     private:
+        /**
+         * \brief Load resources into memory
+         */
         void loadAssets();
 
     protected:
-        sf::RenderTarget&   mTarget;
-        TextureList         mTextures;
-        SoundList           mSounds;
-        FontList            mFonts;
-        GUIContainer        mMenu;
-        sf::RectangleShape  mBackground;
-        sf::Text            mWaterMark;
+        sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to
+        TextureList         mTextures;      ///< Texture resources
+        SoundList           mSounds;        ///< Sound resources
+        FontList            mFonts;         ///< Font resources
+        GUIContainer        mMenu;          ///< GUI container for GUI elements
+        sf::RectangleShape  mBackground;    ///< State background
+        sf::Text            mWaterMark;     ///< Copyright watermark at the lower right corner
 };
 
 /************************************************
  * \class MenuState
  *
- * Program state for managing the menus.
+ * Program state menus.
  *
 ************************************************/
 

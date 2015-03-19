@@ -20,9 +20,14 @@
 ****************************************************************
 ****************************************************************/
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "GUIContainer.hpp"
+#include "GUIElement.hpp"
+////////////////////////////////////////////////
 
 ////////////////////////////////////////////////
-// C++ Standard Library
+// STD - C++ Standard Library
 #include <cassert>
 #include <limits>
 ////////////////////////////////////////////////
@@ -33,18 +38,26 @@
 #include "SFML/Window/Event.hpp"
 ////////////////////////////////////////////////
 
-////////////////////////////////////////////////
-// HitIt internal headers
-#include "GUIContainer.hpp"
-////////////////////////////////////////////////
+GUIContainer::GUIContainer()
+: mSelection(mElements.end())
+{
+    mBackground.setFillColor(sf::Color::Transparent);
+}
 
+////////////////////////////////////////////////
 
 GUIContainer::GUIContainer(std::list<GUIElement*> elements)
 : mSelection(mElements.end())
 {
     mBackground.setFillColor(sf::Color::Transparent);
-
     insert(elements);
+}
+
+////////////////////////////////////////////////
+
+GUIContainer::~GUIContainer()
+{
+    mElements.clear();
 }
 
 ////////////////////////////////////////////////
@@ -98,6 +111,8 @@ void GUIContainer::handleEvent(const sf::Event& event)
         (*mSelection)->handleEvent(event);
 }
 
+////////////////////////////////////////////////
+
 void GUIContainer::activate()
 {
     if(!mElements.empty() && (*mSelection)->isActivatable())
@@ -126,8 +141,6 @@ void GUIContainer::selectNext()
         (*mSelection)->toggleSelection();
     }
 }
-
-
 
 ////////////////////////////////////////////////
 
@@ -190,6 +203,8 @@ void GUIContainer::insert(std::list<GUIElement*> elements)
 
 }
 
+////////////////////////////////////////////////
+
 void GUIContainer::updateSize()
 {
     sf::Vector2f min(std::numeric_limits<float>::max(), std::numeric_limits<float>::max());
@@ -215,12 +230,14 @@ void GUIContainer::updateSize()
     mBackground.setPosition(pos - size * 0.05f);
 }
 
+////////////////////////////////////////////////
 
 sf::FloatRect GUIContainer::getGlobalBounds() const
 {
     return getTransform().transformRect(mBounds);
 }
 
+////////////////////////////////////////////////
 
 void GUIContainer::setBackground(sf::Color fillColor, sf::Color outlineColor, float outlineThickness)
 {
