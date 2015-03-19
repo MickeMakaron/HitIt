@@ -10,7 +10,7 @@ HitIt uses MIDI files, which means that you can play against your favourite song
 ######Note: Due to limitations caused by the MidiFile library, some MIDI tracks simply do not work for whatever reason.
 
 ###I just want to play the game
-If you just want to download a copy, get it at [HitIt's web page](http://mikael.hernvall.com/hitit).
+If you just want to download a copy, get it at [HitIt's web page](http://mikael.hernvall.com/hitit) or directly from [this repository](https://github.com/MickeMakaron/HitIt/releases/latest).
 
 ###I want to compile it myself
 HitIt depends on the [SFML-2.1](http://www.sfml-dev.org/download/sfml/2.1/) and the [MidiFile](http://midifile.sapp.org/) libraries. These libraries are not included in this repository. So, to compile the game yourself you must first get these libraries. SFML-2.1 offers pre-built libraries, whereas MidiFile does not. 
