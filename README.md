@@ -15,7 +15,7 @@ If you just want to download a copy, get it at [HitIt's web page](http://mikael.
 ###I want to compile it myself
 HitIt depends on the [SFML-2.1](http://www.sfml-dev.org/download/sfml/2.1/) and the [MidiFile](http://midifile.sapp.org/) libraries. These libraries are not included in this repository. So, to compile the game yourself you must first get these libraries. SFML-2.1 offers pre-built libraries, whereas MidiFile does not. 
 
-If you are having trouble building the MidiFile library (which I had), you can download the copy I managed to build and used when making the game [here](http://mikael.hernvall.com/hitit/midifile). It is not certain it will work in your environment, though, so cross your fingers.
+If you are having trouble building the MidiFile library (which I had), you can download the copy I managed to build and used when making the game [here](http://mikael.hernvall.com/hitit/libmidifile.rar). It is not certain it will work in your environment, though, so cross your fingers.
 
 ####Search directories
 The following are the necessary search directories for your compiler to compile the game with the libraries.
