@@ -20,6 +20,10 @@
 ****************************************************************
 ****************************************************************/
 
+////////////////////////////////////////////////
+// HitIt internal headers
+#include "Assets.hpp"
+////////////////////////////////////////////////
 
 template <typename AssetIdentifierT>
 AssetList<AssetIdentifierT>::AssetList(std::list<Asset> assets)

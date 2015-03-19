@@ -87,14 +87,13 @@ class MenuState : public State
 
 
     private:
-        std::list<TextureList::Asset>   getTextures() const;
-        std::list<SoundList::Asset>     getSounds() const;
+        void loadAssets();
 
     protected:
         sf::RenderTarget&   mTarget;
         TextureList         mTextures;
         SoundList           mSounds;
-        SoundPlayer         mSoundPlayer;
+        FontList            mFonts;
         GUIContainer        mMenu;
         sf::RectangleShape  mBackground;
         sf::Text            mWaterMark;

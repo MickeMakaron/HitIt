@@ -80,20 +80,6 @@ void GUIElement::toggleSelection()
 
 ////////////////////////////////////////////////
 
-void GUIElement::update()
-{
-    // Do nothing by default.
-}
-
-////////////////////////////////////////////////
-
-void GUIElement::handleEvent(const sf::Event& event)
-{
-    // Do nothing by default.
-}
-
-////////////////////////////////////////////////
-
 void GUIElement::activate()
 {
     // Nothing by default.

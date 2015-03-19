@@ -73,7 +73,7 @@ void HighScoreMenu::createButtons()
 
     text.setCharacterSize(100);
     text.setString("Done");
-    Button* done = new Button(text, mSoundPlayer, [this]()
+    Button* done = new Button(text, Assets::get(ResourceID::Sound::Button), [this]()
     {
         if(mTextField)
             mHighScore.insert(mMidiFile, mTextField->getString(), mScore);
@@ -143,7 +143,7 @@ void HighScoreMenu::createList()
         text.setString(it->name);
         if(it == iScore)
         {
-            mTextField = new TextField(text, mSoundPlayer, 16);
+            mTextField = new TextField(text, Assets::get(ResourceID::Sound::Button), 16);
             entry = mTextField;
         }
         else

@@ -31,7 +31,6 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "StateStack.hpp"
-#include "AssetList.hpp"
 ////////////////////////////////////////////////
 
 class HitIt
@@ -88,7 +87,6 @@ class HitIt
         WindowSettings      mWindowSettings;
         sf::RenderWindow    mWindow;    ///< SFML window object.
         StateStack          mStateStack;      ///< State stack for program states.
-        FontList            mFonts;
 };
 
 

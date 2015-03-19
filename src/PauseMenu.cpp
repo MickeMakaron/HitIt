@@ -47,7 +47,7 @@ PauseMenu::PauseMenu(StateStack& stack, sf::RenderTarget& target, GameState& gam
     text.setString("Paused");
 
     mMenu.insert(new Text(text));
-    mMenu.insert(getButtons());
+    loadButtons();
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 
     mGame.pause();
@@ -74,7 +74,7 @@ bool PauseMenu::handleEvent(const sf::Event& event)
 }
 
 
-std::list<GUIElement*> PauseMenu::getButtons()
+void PauseMenu::loadButtons()
 {
     sf::Text buttonText;
     buttonText.setCharacterSize(80);
@@ -84,7 +84,7 @@ std::list<GUIElement*> PauseMenu::getButtons()
     Button* resume = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this](){requestStackPop(); mGame.resume();}
     );
 
@@ -92,7 +92,7 @@ std::list<GUIElement*> PauseMenu::getButtons()
     Button* exit = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -109,9 +109,5 @@ std::list<GUIElement*> PauseMenu::getButtons()
     resume->setPosition(pos);
     pos.y += yIncrement;
     exit->setPosition(pos);
-    return
-    {
-        resume,
-        exit,
-    };
+    mMenu.insert({resume, exit});
 }

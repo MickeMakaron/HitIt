@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "GUIElement.hpp"
-class SoundPlayer;
+#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 class Button : public GUIElement
@@ -39,7 +39,7 @@ class Button : public GUIElement
     public:
         typedef std::function<void()> Callback;
 
-        Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback);
+        Button(const sf::Text& text, const sf::SoundBuffer& soundBuffer, Callback callback);
 
 
         virtual bool isActivatable() const;
@@ -50,13 +50,13 @@ class Button : public GUIElement
         virtual void activate();
 
         virtual sf::FloatRect getBoundingRect() const;
-    private:
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    private:
+        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
     private:
         sf::Text	    mText;
-        SoundPlayer&    mSoundPlayer;
+        SoundPlayer     mSoundPlayer;
         Callback	    mCallback;
 };
 

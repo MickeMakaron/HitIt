@@ -51,7 +51,7 @@ class PauseMenu : public MenuState
 
 
     private:
-        std::list<GUIElement*> getButtons();
+        void loadButtons();
 
     private:
         GameState& mGame;

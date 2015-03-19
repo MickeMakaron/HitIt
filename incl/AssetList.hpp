@@ -31,7 +31,7 @@
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "Assets.hpp"
+#include "ResourceIdentifiers.hpp"
 ////////////////////////////////////////////////
 
 template <typename AssetIdentifierT>

@@ -37,7 +37,6 @@
 AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
 : MenuState(stack, target)
 {
-    mTextures.insert(getTextures());
     Assets::get(ResourceID::Texture::About).setSmooth(true);
     mAbout.setTexture(Assets::get(ResourceID::Texture::About));
 
@@ -47,7 +46,7 @@ AboutMenu::AboutMenu(StateStack& stack, sf::RenderTarget& target)
     mAbout.setScale(0.8f, 0.8f);
     setBackground(sf::Color::Transparent);
 
-    mMenu.insert(getButtons());
+    loadButtons();
 
     mGUIBackground.setFillColor(sf::Color(100, 100, 100, 100));
     mGUIBackground.setOutlineColor(sf::Color(240, 240, 240, 150));
@@ -73,24 +72,15 @@ bool AboutMenu::update()
     return true;
 }
 
-std::list<GUIElement*> AboutMenu::getButtons()
+void AboutMenu::loadButtons()
 {
     sf::Text text;
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
     text.setCharacterSize(100);
     text.setString("Ok!");
 
-    Button* ok = new Button(text, mSoundPlayer, [this](){requestStackPop(); requestStackPush(new MainMenu(getStack(), mTarget));});
+    Button* ok = new Button(text, Assets::get(ResourceID::Sound::Button), [this](){requestStackPop(); requestStackPush(new MainMenu(getStack(), mTarget));});
     ok->setOrigin(0, ok->getBoundingRect().height / 2.f);
     ok->setPosition(mTarget.getView().getSize().x / 2.f, mTarget.getView().getSize().y * 2.f / 3.f);
-    return {ok};
-}
-
-std::list<TextureList::Asset> AboutMenu::getTextures() const
-{
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::About, "textures/about.png"),
-    };
+    mMenu.insert(ok);
 }

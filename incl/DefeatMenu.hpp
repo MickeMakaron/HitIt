@@ -52,7 +52,7 @@ class DefeatMenu : public MenuState
 
 
     private:
-        std::list<GUIElement*> getButtons();
+        void loadButtons();
 
     private:
         SoundPlayer mTaunt; ///< Taunt the player for losing with this annoying sound.

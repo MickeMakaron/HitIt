@@ -50,9 +50,9 @@ class AboutMenu : public MenuState
 
 		virtual void draw();
         virtual bool update();
+
     private:
-        std::list<TextureList::Asset> getTextures() const;
-        std::list<GUIElement*> getButtons();
+        void loadButtons();
 
     private:
         sf::Sprite              mAbout;

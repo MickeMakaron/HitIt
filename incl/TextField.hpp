@@ -37,17 +37,15 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "GUIElement.hpp"
-class SoundPlayer;
+#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
 class TextField : public GUIElement
 {
     public:
-        TextField(sf::Text text, SoundPlayer& soundPlayer, unsigned int maxLength = std::numeric_limits<unsigned int>::max());
+        TextField(sf::Text text, const sf::SoundBuffer& soundBuffer, unsigned int maxLength = std::numeric_limits<unsigned int>::max());
 
         virtual sf::FloatRect getBoundingRect() const;
-
-        virtual void handleEvent(const sf::Event& event);
 
         virtual bool isActivatable() const;
         virtual bool isSelectable() const;
@@ -55,7 +53,8 @@ class TextField : public GUIElement
         std::string getString() const;
 
     private:
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void handleEventCurrent(const sf::Event& event);
 
         virtual void activate();
         virtual void deactivate();
@@ -69,7 +68,7 @@ class TextField : public GUIElement
 
     private:
        sf::Text             mText;
-       SoundPlayer&         mSoundPlayer;
+       SoundPlayer          mSoundPlayer;
        sf::RectangleShape   mInsertionCursor;
        unsigned int         mMaxLength;
 };

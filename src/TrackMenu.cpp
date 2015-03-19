@@ -52,7 +52,7 @@ TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
     text.setString("Pick a track");
 
     mMenu.insert(new Text(text));
-    mMenu.insert(getButtons());
+    loadButtons();
 
     Assets::get(ResourceID::Texture::MenuStateBg).setRepeated(true);
     mBackground.setTexture(&Assets::get(ResourceID::Texture::MenuStateBg));
@@ -63,7 +63,7 @@ TrackMenu::TrackMenu(StateStack& stack, sf::RenderTarget& target)
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y * 2.f / 5.f);
 }
 
-std::list<GUIElement*> TrackMenu::getButtons()
+void TrackMenu::loadButtons()
 {
     sf::Text buttonText;
     buttonText.setCharacterSize(30);
@@ -96,7 +96,7 @@ std::list<GUIElement*> TrackMenu::getButtons()
         Button* button = new Button
         (
             buttonText,
-            mSoundPlayer,
+            Assets::get(ResourceID::Sound::Button),
             [=](){requestStackClear(); requestStackPush(new GameState(getStack(), mTarget, filePath));}
         );
         button->setOrigin(0.f, 0.f);
@@ -113,7 +113,7 @@ std::list<GUIElement*> TrackMenu::getButtons()
     Button* mainMenu = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackPop();
@@ -126,5 +126,5 @@ std::list<GUIElement*> TrackMenu::getButtons()
     mainMenu->setPosition(pos);
     buttons.push_back(mainMenu);
 
-    return buttons;
+    mMenu.insert(buttons);
 }

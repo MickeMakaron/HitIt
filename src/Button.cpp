@@ -29,12 +29,11 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "Button.hpp"
-#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
-Button::Button(const sf::Text& text, SoundPlayer& soundPlayer, Callback callback)
+Button::Button(const sf::Text& text, const sf::SoundBuffer& soundBuffer, Callback callback)
 : mText(text)
-, mSoundPlayer(soundPlayer)
+, mSoundPlayer(soundBuffer)
 , mCallback(callback)
 {
     sf::FloatRect textBounds = mText.getLocalBounds();
@@ -66,9 +65,8 @@ void Button::activate()
     mCallback();
 }
 
-void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Button::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    states.transform *= getTransform();
     target.draw(mText, states);
 }
 

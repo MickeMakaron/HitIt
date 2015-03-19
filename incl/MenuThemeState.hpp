@@ -75,7 +75,7 @@ class MenuThemeState : public State
         virtual bool handleEvent(const sf::Event& event);
 
     private:
-        std::list<TextureList::Asset> getTextures() const;
+        void loadAssets();
 
 
     protected:

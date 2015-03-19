@@ -52,12 +52,6 @@ HitIt::HitIt()
     TIME_PER_FRAME::setAsSeconds(1/60.f);
 
     Assets::setDirectory("assets/");
-    mFonts.setAssets
-    ({
-        FontList::Asset(ResourceID::Font::OldGateLaneNF,    "fonts/OldGateLaneNF.ttf"),
-        FontList::Asset(ResourceID::Font::Arial,            "fonts/arial.ttf"),
-    });
-
 
     mStateStack.push(new MenuThemeState(mStateStack, mWindow));
     mStateStack.push(new MainMenu(mStateStack, mWindow));

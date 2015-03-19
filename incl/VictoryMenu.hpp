@@ -41,7 +41,7 @@ class VictoryMenu : public MenuState
         VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std::string& midiFile);
 
     private:
-        std::list<GUIElement*>          getButtons();
+        void loadButtons();
 
     private:
         std::string             mMidiFile;

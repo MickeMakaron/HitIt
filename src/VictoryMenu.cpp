@@ -53,7 +53,7 @@ VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std:
     text.setString("Woohoo!");
 
     mMenu.insert(new Text(text));
-    mMenu.insert(getButtons());
+    loadButtons();
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 
     sf::Color background = sf::Color::Black;
@@ -63,7 +63,7 @@ VictoryMenu::VictoryMenu(StateStack& stack, sf::RenderTarget& target, const std:
     mMenu.setBackground(sf::Color(200, 200, 200, 100), sf::Color(240, 240, 240, 150), 3.f);
 }
 
-std::list<GUIElement*> VictoryMenu::getButtons()
+void VictoryMenu::loadButtons()
 {
     sf::Text buttonText;
     buttonText.setCharacterSize(80);
@@ -73,7 +73,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     Button* playSame = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -85,7 +85,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     Button* playOther = new Button
     {
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -98,7 +98,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     Button* mainMenu = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -118,12 +118,7 @@ std::list<GUIElement*> VictoryMenu::getButtons()
     pos.y += yIncrement;
     mainMenu->setPosition(pos);
 
-    return
-    {
-        playSame,
-        playOther,
-        mainMenu,
-    };
+    mMenu.insert({playSame, playOther, mainMenu});
 }
 
 

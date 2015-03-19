@@ -44,6 +44,8 @@ GameState::GameState(StateStack& stack, sf::RenderTarget& target, std::string mi
 , mWorld(mTarget, midiFile)
 , mMidiFile(midiFile)
 {
+    loadAssets();
+    mWorld.buildWorld();
 }
 
 ////////////////////////////////////////////////
@@ -103,4 +105,30 @@ void GameState::pause()
 void GameState::resume()
 {
     mWorld.resume();
+}
+
+
+void GameState::loadAssets()
+{
+    using namespace ResourceID;
+    mTextures.insert
+    ({
+        TextureList::Asset(Texture::Player,  "textures/player_placeholder.png"),
+        TextureList::Asset(Texture::Hp,      "textures/hp_placeholder.png"),
+    });
+
+    mSounds.insert
+    ({
+        SoundList::Asset(Sound::PlayerDamaged, "sounds/player_damaged.ogg"),
+        SoundList::Asset(Sound::PlayerStep,    "sounds/player_step.ogg"),
+        SoundList::Asset(Sound::PickupPoint,   "sounds/pickup_point.ogg"),
+        SoundList::Asset(Sound::Bonus1,        "sounds/bonus1.ogg"),
+        SoundList::Asset(Sound::Bonus2,        "sounds/bonus2.ogg"),
+    });
+
+    mFonts.insert
+    ({
+        FontList::Asset(Font::OldGateLaneNF,    "fonts/OldGateLaneNF.ttf"),
+        FontList::Asset(Font::Arial,            "fonts/arial.ttf"),
+    });
 }

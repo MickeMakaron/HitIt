@@ -40,7 +40,7 @@ class TrackMenu : public MenuState
         TrackMenu(StateStack& stack, sf::RenderTarget& target);
 
     private:
-        std::list<GUIElement*> getButtons();
+        void loadButtons();
 };
 
 /************************************************

@@ -44,9 +44,8 @@ void Text::setText(std::string text)
 }
 
 
-void Text::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Text::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    states.transform *= getTransform();
     target.draw(mText, states);
 }
 

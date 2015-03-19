@@ -34,20 +34,13 @@
 
 
 HealthBar::HealthBar(const sf::Texture& texture, const Player& player)
-: mPlayer(player)
+: RectangleNode(texture)
+, mPlayer(player)
 , mNumHitPoints(player.getHp())
 {
-    mHitPoints.setTexture(&texture);
-
-    mHitPoints.setSize(sf::Vector2f(0.f, mHitPoints.getTexture()->getSize().y));
+    mShape.setSize(sf::Vector2f(0.f, mShape.getTexture()->getSize().y));
 
     updateShape();
-}
-
-
-void HealthBar::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(mHitPoints, states);
 }
 
 void HealthBar::offsetHp(int hp)
@@ -61,20 +54,14 @@ void HealthBar::offsetHp(int hp)
 
 void HealthBar::updateShape()
 {
-    sf::Vector2u texSize = mHitPoints.getTexture()->getSize();
+    sf::Vector2u texSize = mShape.getTexture()->getSize();
     sf::Vector2f size(texSize.x * mNumHitPoints, texSize.y);
-    mHitPoints.setSize(size);
-    mHitPoints.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
+    mShape.setSize(size);
+    mShape.setTextureRect(sf::IntRect(0, 0, size.x, size.y));
 }
 
 void HealthBar::updateCurrent()
 {
     if(mPlayer.getHp() != mNumHitPoints)
         offsetHp(mPlayer.getHp() - mNumHitPoints);
-}
-
-
-sf::FloatRect HealthBar::getBoundingRect() const
-{
-    return getWorldTransform().transformRect(mHitPoints.getLocalBounds());
 }

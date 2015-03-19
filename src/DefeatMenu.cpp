@@ -42,7 +42,6 @@ DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::s
 : MenuState(stack, target)
 , mMidiFile(midiFile)
 {
-    mSounds.insert({SoundList::Asset(ResourceID::Sound::Defeat, "sounds/defeat.ogg")});
     mTaunt.setBuffer(Assets::get(ResourceID::Sound::Defeat));
     mTaunt.play();
 
@@ -52,7 +51,8 @@ DefeatMenu::DefeatMenu(StateStack& stack, sf::RenderTarget& target, const std::s
     text.setString("Dangit!");
 
     mMenu.insert(new Text(text));
-    mMenu.insert(getButtons());
+    loadButtons();
+
     mMenu.setPosition(target.getView().getSize().x / 2.f, target.getView().getSize().y / 3.f);
 
     sf::Color background = sf::Color::Black;
@@ -66,7 +66,7 @@ bool DefeatMenu::handleEvent(const sf::Event& event)
     return false;
 }
 
-std::list<GUIElement*> DefeatMenu::getButtons()
+void DefeatMenu::loadButtons()
 {
     sf::Text buttonText;
     buttonText.setCharacterSize(100);
@@ -76,7 +76,7 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     Button* tryAgain = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -88,7 +88,7 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     Button* tryAnother = new Button
     {
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -101,7 +101,7 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     Button* mainMenu = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this]()
         {
             requestStackClear();
@@ -121,10 +121,5 @@ std::list<GUIElement*> DefeatMenu::getButtons()
     pos.y += yIncrement;
     mainMenu->setPosition(pos);
 
-    return
-    {
-        tryAgain,
-        tryAnother,
-        mainMenu,
-    };
+    mMenu.insert({tryAgain, tryAnother, mainMenu});
 }

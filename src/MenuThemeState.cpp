@@ -42,7 +42,7 @@ MenuThemeState::MenuThemeState(StateStack& stack, sf::RenderTarget& target)
 , mSpawner2(nullptr)
 , mBackground(mTarget.getView().getSize())
 {
-    mTextures.insert(getTextures());
+    loadAssets();
     mSampler.setVolume(60.f);
 
     Assets::get(ResourceID::Texture::MenuStateBg).setRepeated(true);
@@ -108,11 +108,7 @@ bool MenuThemeState::handleEvent(const sf::Event& event)
     return true;
 }
 
-std::list<TextureList::Asset> MenuThemeState::getTextures() const
+void MenuThemeState::loadAssets()
 {
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::MenuStateBg,  "textures/menu_bg.png"),
-    };
+    mTextures.insert({TextureList::Asset(ResourceID::Texture::MenuStateBg, "textures/menu_bg.png")});
 }

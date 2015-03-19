@@ -86,7 +86,7 @@ class RectangleNode : public SceneNode
          */
         void setSize(float x, float y);
 
-    private:
+    protected:
         sf::RectangleShape mShape;
 };
 

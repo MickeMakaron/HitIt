@@ -92,7 +92,7 @@ class Obstacle : public SceneNode
         SoundPlayer&        mSoundPlayer;   ///< Use this to play sounds.
         VertexArrayNode&    mArray;
         sf::FloatRect       mRect;
-        unsigned int  M_VERTEX_ARRAY_INDEX;
+        unsigned int        M_VERTEX_ARRAY_INDEX;
         const float         M_PLAYLINE;
         const float         M_DEATHLINE;
         State               mState;

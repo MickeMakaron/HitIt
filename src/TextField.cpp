@@ -36,13 +36,12 @@
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "TextField.hpp"
-#include "SoundPlayer.hpp"
 ////////////////////////////////////////////////
 
-TextField::TextField(sf::Text text, SoundPlayer& soundPlayer, unsigned int maxLength)
+TextField::TextField(sf::Text text, const sf::SoundBuffer& soundBuffer, unsigned int maxLength)
 : GUIElement()
 , mText(text)
-, mSoundPlayer(soundPlayer)
+, mSoundPlayer(soundBuffer)
 , mInsertionCursor(sf::Vector2f(mText.getCharacterSize() / 10.f, mText.getGlobalBounds().height))
 , mMaxLength(maxLength)
 {
@@ -53,7 +52,7 @@ TextField::TextField(sf::Text text, SoundPlayer& soundPlayer, unsigned int maxLe
     mInsertionCursor.setFillColor(mText.getColor());
 }
 
-void TextField::handleEvent(const sf::Event& event)
+void TextField::handleEventCurrent(const sf::Event& event)
 {
     if(event.type == sf::Event::KeyPressed)
     {
@@ -138,9 +137,8 @@ void TextField::erase()
     mInsertionCursor.move(dWidth, 0);
 }
 
-void TextField::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void TextField::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    states.transform *= getTransform();
     target.draw(mText, states);
 
     if(isActive())

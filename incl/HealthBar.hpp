@@ -35,11 +35,11 @@
 
 ////////////////////////////////////////////////
 // HitIt internal headers
-#include "SceneNode.hpp"
+#include "RectangleNode.hpp"
 class Player;
 ////////////////////////////////////////////////
 
-class HealthBar : public SceneNode
+class HealthBar : public RectangleNode
 {
     public:
         /**
@@ -56,21 +56,6 @@ class HealthBar : public SceneNode
          */
         virtual void updateCurrent();
 
-        /**
-         * \brief Draw health points.
-         *
-         * \param target SFML RenderTarget object to draw points to.
-         * \param states SFML RenderStates object to transform draw with.
-         */
-        virtual void            drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-
-        /**
-         * \brief Get bounding rect of bar.
-         *
-         * \return bounding rect.
-         */
-        virtual sf::FloatRect getBoundingRect() const;
-
     private:
         /**
          * \brief Offset current hp
@@ -85,7 +70,6 @@ class HealthBar : public SceneNode
         void updateShape();
 
     private:
-        sf::RectangleShape      mHitPoints;
         const Player&           mPlayer; ///< Player node to keep track of.
         int                     mNumHitPoints;
 };

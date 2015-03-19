@@ -34,6 +34,7 @@
 #include "TIME_PER_FRAME.hpp"
 #include "Player.hpp"
 #include "CollissionCategory.hpp"
+#include "Collission.hpp"
 #include "Midi.hpp"
 #include "HealthBar.hpp"
 #include "ScoreDisplay.hpp"
@@ -43,34 +44,29 @@
 
 World::World(sf::RenderTarget& target, std::string midiFile)
 : mTarget(target)
-, mTextures(getTextures())
-, mSounds(getSounds())
-, mSampler()
 , mBounds(0.f, 0.f, mTarget.getView().getSize().x, mTarget.getView().getSize().y)
 , mSpawner(std::string(midiFile), mSampler, mBounds, mScene.getLayer(SceneGraph::Layer::Middle))
-, mPlayer(new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5))
-, mBonusStrip(*(new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height), mSpawner.getNoteWidth())))
+, mPlayer(nullptr)
+, mBonusStrip(nullptr)
 , mScoreDisplay(nullptr)
-, mCollission(*mPlayer, mBonusStrip)
+, mCollission(nullptr)
 , mState(Starting)
 , mTimer(0.f)
 , mPlayerIsDamaged(false)
 , mStateFuncs(StateCount, [](){})
 {
-    mPlayer->setPosition(sf::Vector2f(mBounds.left + 1.f + mSpawner.getNoteWidth() * (int)((mBounds.width / 2.f)/ mSpawner.getNoteWidth()), mBounds.height / 2.f));
-
-    buildWorld();
-
     mStateFuncs[Starting]   = [this](){updateStart();};
     mStateFuncs[Running]    = [this](){updateRun();};
     mStateFuncs[Victory]    = [this](){updateVictory();};
 }
 
+////////////////////////////////////////////////
+
 World::~World()
 {
     mScene.clear();
+    delete mCollission;
 }
-
 
 ////////////////////////////////////////////////
 
@@ -84,7 +80,7 @@ void World::draw()
 void World::update()
 {
     mScene.update();
-    mCollission.update();
+    mCollission->update();
     keepPlayerInBounds();
 
     if(mPlayerIsDamaged)
@@ -105,7 +101,7 @@ void World::update()
 
     mStateFuncs[mState]();
 
-    mCollission.removeWrecks();
+    mCollission->removeWrecks();
     mScene.removeWrecks();
 }
 
@@ -130,7 +126,7 @@ void World::updateRun()
         mStateFuncs[Victory]();
 
     for(SceneNode* node : mSpawner.spawn())
-        mCollission.insert(node);
+        mCollission->insert(node);
 }
 
 void World::updateVictory()
@@ -160,6 +156,9 @@ void World::buildWorld()
     sf::Color gray(200, 200, 200);
     background->setFillColor(gray);
     mScene.insert(background, SceneGraph::Background);
+
+    mPlayer = new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5);
+    mPlayer->setPosition(sf::Vector2f(mBounds.left + 1.f + mSpawner.getNoteWidth() * (int)((mBounds.width / 2.f)/ mSpawner.getNoteWidth()), mBounds.height / 2.f));
     mScene.insert(mPlayer, SceneGraph::Middle);
 
     for(float x = mSpawner.getNoteWidth(); x < mBounds.width; x += mSpawner.getNoteWidth())
@@ -182,14 +181,18 @@ void World::buildWorld()
     HealthBar* hpBar = new HealthBar(Assets::get(ID::Hp), *mPlayer);
     mScene.insert(hpBar, SceneGraph::Foreground);
 
+
+    mBonusStrip = new BonusStrip(mSpawner.getObstacles(), sf::Vector2f(mBounds.width, mBounds.height), mSpawner.getNoteWidth());
+    mScene.insert(mBonusStrip, SceneGraph::Layer::Background);
+
     sf::Text text;
     text.setCharacterSize(80);
     text.setFont(Assets::get(ResourceID::Font::OldGateLaneNF));
-    mScoreDisplay = new ScoreDisplay(text, *mPlayer, mBonusStrip);
+    mScoreDisplay = new ScoreDisplay(text, *mPlayer, *mBonusStrip);
     mScoreDisplay->setPosition(10.f, 30.f);
     mScene.insert(mScoreDisplay, SceneGraph::Foreground);
 
-    mScene.insert(&mBonusStrip, SceneGraph::Layer::Background);
+    mCollission = new Collission(*mPlayer, *mBonusStrip);
 }
 
 void World::keepPlayerInBounds()
@@ -204,29 +207,6 @@ void World::keepPlayerInBounds()
         mPlayer->move(mSpawner.getNoteWidth(), 0.f);
     else if(playerRect.left + playerRect.width > mBounds.width)
         mPlayer->move(-mSpawner.getNoteWidth(), 0.f);
-}
-
-std::list<TextureList::Asset> World::getTextures() const
-{
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::Player,          "textures/player_placeholder.png"),
-        TextureList::Asset(ID::Hp,              "textures/hp_placeholder.png"),
-    };
-}
-
-std::list<SoundList::Asset> World::getSounds() const
-{
-    namespace ID = ResourceID::Sound;
-    return
-    {
-        SoundList::Asset(ID::PlayerDamaged,     "sounds/player_damaged.ogg"),
-        SoundList::Asset(ID::PlayerStep,        "sounds/player_step.ogg"),
-        SoundList::Asset(ID::PickupPoint,       "sounds/pickup_point.ogg"),
-        SoundList::Asset(ID::Bonus1,            "sounds/bonus1.ogg"),
-        SoundList::Asset(ID::Bonus2,            "sounds/bonus2.ogg"),
-    };
 }
 
 World::State World::getState() const

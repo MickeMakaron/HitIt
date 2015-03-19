@@ -45,7 +45,7 @@ MainMenu::MainMenu(StateStack& stack, sf::RenderTarget& target)
     text.setString("Hit it!");
 
     mMenu.insert(new Text(text));
-    mMenu.insert(getButtons());
+    loadButtons();
 
     setBackground(sf::Color::Transparent);
 
@@ -60,7 +60,7 @@ bool MainMenu::update()
     return true;
 }
 
-std::list<GUIElement*> MainMenu::getButtons()
+void MainMenu::loadButtons()
 {
     sf::Text buttonText;
     buttonText.setCharacterSize(100);
@@ -70,7 +70,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     Button* play = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this](){requestStackClear(); requestStackPush(new TrackMenu(getStack(), mTarget));}
     );
 
@@ -78,7 +78,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     Button* about = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this](){requestStackPop(); requestStackPush(new AboutMenu(getStack(), mTarget));}
     );
 
@@ -86,7 +86,7 @@ std::list<GUIElement*> MainMenu::getButtons()
     Button* exit = new Button
     (
         buttonText,
-        mSoundPlayer,
+        Assets::get(ResourceID::Sound::Button),
         [this](){requestStackClear();}
     );
 
@@ -102,10 +102,5 @@ std::list<GUIElement*> MainMenu::getButtons()
     pos.y += yIncrement;
 
     exit->setPosition(pos);
-    return
-    {
-        play,
-        about,
-        exit,
-    };
+    mMenu.insert({play, about, exit});
 }

@@ -39,13 +39,12 @@ namespace sf
 ////////////////////////////////////////////////
 // HitIt internal headers
 #include "SceneGraph.hpp"
-#include "AssetList.hpp"
-#include "Collission.hpp"
 #include "Spawner.hpp"
 #include "AudioSampler.hpp"
 class Player;
 class BonusStrip;
 class ScoreDisplay;
+class Collission;
 ////////////////////////////////////////////////
 
 class World
@@ -109,11 +108,13 @@ class World
 
         unsigned int getScore() const;
 
-    private:
         /**
          * \brief Perform initialization of world.
          */
         void buildWorld();
+
+    private:
+
 
         void updateStart();
         void updateRun();
@@ -124,34 +125,18 @@ class World
          */
          void keepPlayerInBounds();
 
-        /**
-         * \brief Get required texture list.
-         *
-         * \return list of texture assets.
-         */
-        std::list<TextureList::Asset> getTextures() const;
-
-        /**
-         * \brief Get required sound list.
-         *
-         * \return list of sound assets.
-         */
-        std::list<SoundList::Asset> getSounds() const;
-
 
 
     private:
         sf::RenderTarget&   mTarget;        ///< SFML RenderTarget to draw to.
         SceneGraph          mScene;         ///< Scene graph of all game objects.
-        TextureList         mTextures;      ///< Asset list for textures.
-        SoundList           mSounds;        ///< Asset list for sounds.
         AudioSampler        mSampler;
         sf::FloatRect       mBounds;        ///< Area where player is allowed to reside.
         Spawner             mSpawner;       ///< Spawn new obstacles.
         Player*             mPlayer;        ///< Player controlled node.
-        BonusStrip&         mBonusStrip;
+        BonusStrip*         mBonusStrip;
         ScoreDisplay*       mScoreDisplay;
-        Collission          mCollission;    ///< Collission manager.
+        Collission*         mCollission;    ///< Collission manager.
         State               mState;         ///< Current world state.
         float               mTimer;
         bool                mPlayerIsDamaged; ///< Player state.

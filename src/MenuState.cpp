@@ -38,12 +38,10 @@
 MenuState::MenuState(StateStack& stack, sf::RenderTarget& target, std::list<GUIElement*> elements)
 : State(stack)
 , mTarget(target)
-, mTextures(getTextures())
-, mSounds(getSounds())
-, mSoundPlayer(Assets::get(ResourceID::Sound::Button))
 , mMenu(elements)
 , mBackground(mTarget.getView().getSize())
 {
+    loadAssets();
     sf::Text text;
     mWaterMark.setString("© 2015 Mikael Hernvall");
     mWaterMark.setFont(Assets::get(ResourceID::Font::ID::OldGateLaneNF));
@@ -88,20 +86,24 @@ void MenuState::setBackground(sf::Color color)
     mBackground.setFillColor(color);
 }
 
-std::list<TextureList::Asset> MenuState::getTextures() const
+void MenuState::loadAssets()
 {
-    namespace ID = ResourceID::Texture;
-    return
-    {
-        TextureList::Asset(ID::MenuStateBg,  "textures/menu_bg.png"),
-    };
-}
+    using namespace ResourceID;
+    mTextures.insert
+    ({
+        TextureList::Asset(Texture::MenuStateBg,     "textures/menu_bg.png"),
+        TextureList::Asset(Texture::About,           "textures/about.png"),
+    });
 
-std::list<SoundList::Asset> MenuState::getSounds() const
-{
-    namespace ID = ResourceID::Sound;
-    return
-    {
-        SoundList::Asset(ID::Button, "sounds/button_placeholder.ogg"),
-    };
+    mSounds.insert
+    ({
+        SoundList::Asset(Sound::Button, "sounds/button_placeholder.ogg"),
+        SoundList::Asset(Sound::Defeat, "sounds/defeat.ogg"),
+    });
+
+    mFonts.insert
+    ({
+        FontList::Asset(Font::OldGateLaneNF,    "fonts/OldGateLaneNF.ttf"),
+        FontList::Asset(Font::Arial,            "fonts/arial.ttf"),
+     });
 }

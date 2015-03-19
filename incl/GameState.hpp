@@ -27,6 +27,7 @@
 // HitIt internal headers
 #include "State.hpp"
 #include "World.hpp"
+#include "AssetList.hpp"
 ////////////////////////////////////////////////
 
 class GameState : public State
@@ -68,9 +69,15 @@ class GameState : public State
 		void resume();
 
     private:
+        void loadAssets();
+
+    private:
         sf::RenderTarget&   mTarget;
         World               mWorld;
         std::string         mMidiFile;
+        TextureList         mTextures;
+        SoundList           mSounds;
+        FontList            mFonts;
 };
 
 /************************************************

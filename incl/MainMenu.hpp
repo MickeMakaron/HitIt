@@ -43,7 +43,7 @@ class MainMenu : public MenuState
         virtual bool update();
 
     private:
-        std::list<GUIElement*>  getButtons();
+        void loadButtons();
 };
 
 /************************************************
