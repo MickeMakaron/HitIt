@@ -65,6 +65,7 @@ void HighScore::readFile()
         Entry* entries = (Entry*)data;
         mEntries.assign(entries, entries + numEntries);
 
+        delete[] data;
     }
 }
 
@@ -106,7 +107,7 @@ std::list<HighScore::Score>::iterator HighScore::insertRecord(std::list<HighScor
             if(it->score < score.score)
             {
                 auto iScore = scores.insert(it, score);
-                if(scores.size() >= M_NUM_ENTRIES_PER_TRACK)
+                if(scores.size() > M_NUM_ENTRIES_PER_TRACK)
                     scores.pop_back();
                 return iScore;
             }
