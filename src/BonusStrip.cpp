@@ -115,15 +115,17 @@ void BonusStrip::insertQuad(float topLeft, float botLeft, float top, float bot, 
     quad[2].position = sf::Vector2f(botLeft + width, bot);
     quad[3].position = sf::Vector2f(botLeft, bot);
 
+    sf::Color brown(163, 112, 49);
+    sf::Color darkBrown(115, 79, 34);
     if(isLeft)
     {
-        quad[0].color = quad[3].color = sf::Color::Black;
-        quad[1].color = quad[2].color = sf::Color::White;
+        quad[0].color = quad[3].color = darkBrown;
+        quad[1].color = quad[2].color = brown;
     }
     else
     {
-        quad[0].color = quad[3].color = sf::Color::White;
-        quad[1].color = quad[2].color = sf::Color::Black;
+        quad[0].color = quad[3].color = brown;
+        quad[1].color = quad[2].color = darkBrown;
     }
 
     mQuadIndexQueue.push(insert(quad));

@@ -155,8 +155,8 @@ void World::handleEvent(const sf::Event& event)
 void World::buildWorld()
 {
     RectangleNode* background = new RectangleNode(mTarget.getView().getSize());
-    sf::Color gray(200, 200, 200);
-    background->setFillColor(gray);
+    sf::Color brown(163, 112, 49);
+    background->setFillColor(brown);
     mScene.insert(background, SceneGraph::Background);
 
     mPlayer = new Player(Assets::get(ResourceID::Texture::Player), mSpawner.getNoteWidth(), 5);
