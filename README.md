@@ -1,5 +1,7 @@
-# [HitIt](http://mikael.hernvall.com/hitit)
+#![hitit-logo](http://mikael.hernvall.com/file/playhouse/img/HitIt.png) [HitIt](http://mikael.hernvall.com/hitit)
 Top-down 2D game where the goal is to NOT hit the music.
+
+![hitit](http://mikael.hernvall.com/file/playhouse/img/hitit.png)
 
 
 ##Description
