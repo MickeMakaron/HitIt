@@ -64,8 +64,6 @@ std::list<Midi::Note> Midi::getNotes()
             notes.push_back(note);
         }
     }
-    mFile.splitTracks();
-    mFile.clearLinks();
 
     return notes;
 }

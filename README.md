@@ -9,8 +9,6 @@ In HitIt you control a character in musical danger. Music notes are literally de
 
 HitIt uses MIDI files, which means that you can play against your favourite songs if you find MIDI versions of them. Simply put them in the "tracks" folder and they will show up in the track list in-game. 
 
-######Note: Due to limitations caused by the MidiFile library, some MIDI tracks simply do not work for whatever reason.
-
 ###I just want to play the game
 If you just want to download a copy, get it at [HitIt's web page](http://mikael.hernvall.com/hitit) or directly from [this repository](https://github.com/MickeMakaron/HitIt/releases/latest).
 
